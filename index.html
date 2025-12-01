@@ -1175,7 +1175,86 @@
 		.savings-highlight {
 			text-align: center;
 		}
+		
+		/* Add to CSS for better mobile touch targets */
+		@media (max-width: 600px) {
+			.equipment-toggle {
+				width: 60px;
+				height: 32px;
+			}
+			
+			.equipment-toggle::after {
+				width: 28px;
+				height: 28px;
+			}
+			
+			.equipment-toggle.active::after {
+				left: 30px;
+			}
+			
+			.stepper-btn {
+				width: 44px;
+				height: 44px;
+				font-size: 1.4rem;
+			}
+			
+			.time-option {
+				padding: 20px 10px;
+			}
+		}
+		
+		/* Add screen reader only class */
+		.sr-only {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip: rect(0, 0, 0, 0);
+			white-space: nowrap;
+			border: 0;
+		}
+		
+		/* Add focus states for accessibility */
+		.house-option:focus,
+		.time-option:focus,
+		.room-tab:focus {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+		}
 
+		/* Add active state for buttons */
+		.btn:active {
+			transform: translateY(1px);
+		}
+
+		.stepper-btn:active {
+			transform: scale(0.95);
+		}
+
+		@media print {
+			body {
+				background: white;
+				color: black;
+			}
+			
+			.btn, .btn-group, .progress-container {
+				display: none !important;
+			}
+			
+			.card {
+				border: 1px solid #ccc;
+				box-shadow: none;
+				break-inside: avoid;
+			}
+			
+			.solar-card {
+				background: #f5f5f5 !important;
+				border: 1px solid #ccc;
+			}
+		}
+		
     </style>
 </head>
 <body>
@@ -1193,31 +1272,31 @@
             </div>
             <div class="progress-steps">
                 <div class="progress-step">
-                    <div class="step-circle active" data-step="1">1</div>
+                    <div class="step-circle active" data-step="1" aria-current="step"><span class="sr-only">Step 1 of 7: </span>1</div>
                     <span class="step-label">House</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="2">2</div>
+                    <div class="step-circle" data-step="2" aria-current="step"><span class="sr-only">Step 2 of 7: </span>2</div>
                     <span class="step-label">Equipment</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="3">3</div>
+                    <div class="step-circle" data-step="3" aria-current="step"><span class="sr-only">Step 3 of 7: </span>3</div>
                     <span class="step-label">Usage</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="4">4</div>
+                    <div class="step-circle" data-step="4" aria-current="step"><span class="sr-only">Step 4 of 7: </span>4</div>
                     <span class="step-label">Analysis</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="5">5</div>
+                    <div class="step-circle" data-step="5" aria-current="step"><span class="sr-only">Step 5 of 7: </span>5</div>
                     <span class="step-label">Location</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="6">6</div>
+                    <div class="step-circle" data-step="6" aria-current="step"><span class="sr-only">Step 6 of 7: </span>6</div>
                     <span class="step-label">Solar</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="7">7</div>
+                    <div class="step-circle" data-step="7" aria-current="step"><span class="sr-only">Step 7 of 7: </span>7</div>
                     <span class="step-label">Report</span>
                 </div>
             </div>
@@ -1304,13 +1383,19 @@
                                 <i class="fas fa-tv"></i>
                                 <span>Television</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Television"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
                                 <label class="detail-label">Brand</label>
                                 <select class="detail-select" data-field="brand">
-                                    <option value="">Select Brand</option>
+                                    <option value="" disabled selected>Select Brand</option>
                                     <option value="samsung">Samsung</option>
                                     <option value="lg">LG</option>
                                     <option value="sony">Sony</option>
@@ -1362,9 +1447,15 @@
                         <div class="equipment-header">
                             <div class="equipment-name">
                                 <i class="fas fa-fan"></i>
-                                <span>Ceiling/Standing Fan</span>
+                                <span>Living Room Fan</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Fan"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1399,7 +1490,13 @@
                                 <i class="fas fa-snowflake"></i>
                                 <span>Air Conditioner</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Air Conditioner"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1444,7 +1541,13 @@
                                 <i class="fas fa-lightbulb"></i>
                                 <span>Light Bulbs</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Light Bulbs"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1491,7 +1594,13 @@
                                 <i class="fas fa-volume-up"></i>
                                 <span>Sound System/Speaker</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Sound System"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1535,13 +1644,19 @@
                                 <i class="fas fa-tv"></i>
                                 <span>Bedroom Television</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Television"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
                                 <label class="detail-label">Brand</label>
                                 <select class="detail-select" data-field="brand">
-                                    <option value="">Select Brand</option>
+                                    <option value="" disabled selected>Select Brand</option>
                                     <option value="samsung">Samsung</option>
                                     <option value="lg">LG</option>
                                     <option value="sony">Sony</option>
@@ -1590,7 +1705,13 @@
                                 <i class="fas fa-snowflake"></i>
                                 <span>Bedroom Air Conditioner</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Air Conditioner"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1633,7 +1754,13 @@
                                 <i class="fas fa-fan"></i>
                                 <span>Bedroom Fan</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Fan"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1667,23 +1794,34 @@
                                 <i class="fas fa-lightbulb"></i>
                                 <span>Bedroom Light Bulbs</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Bulbs"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
                                 <label class="detail-label">Type</label>
                                 <select class="detail-select" data-field="type">
+									<option value="">Select Type</option>
                                     <option value="led">LED Bulb</option>
                                     <option value="energy-saving">Energy Saving</option>
+                                    <option value="incandescent">Incandescent</option>
+                                    <option value="fluorescent">Fluorescent</option>
                                 </select>
                             </div>
                             <div class="detail-group">
                                 <label class="detail-label">Wattage</label>
                                 <select class="detail-select" data-field="wattage">
+									<option value="">Select Rating</option>
                                     <option value="5">5W</option>
-                                    <option value="9" selected>9W</option>
+                                    <option value="9">9W</option>
                                     <option value="12">12W</option>
                                     <option value="15">15W</option>
+                                    <option value="20">20W</option>
                                 </select>
                             </div>
                             <div class="detail-group">
@@ -1708,7 +1846,13 @@
                                 <i class="fas fa-mobile-alt"></i>
                                 <span>Phone/Device Chargers</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Phone Chargers"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1741,7 +1885,13 @@
                                 <i class="fas fa-laptop"></i>
                                 <span>Laptop</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Laptop"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1783,7 +1933,13 @@
                                 <i class="fas fa-temperature-low"></i>
                                 <span>Refrigerator</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Refrigerator"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1830,7 +1986,13 @@
                                 <i class="fas fa-snowflake"></i>
                                 <span>Freezer</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Freezer"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1873,7 +2035,13 @@
                                 <i class="fas fa-fire"></i>
                                 <span>Microwave</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Microwave"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1907,7 +2075,13 @@
                                 <i class="fas fa-mug-hot"></i>
                                 <span>Electric Kettle</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Kettle"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1941,7 +2115,13 @@
                                 <i class="fas fa-blender"></i>
                                 <span>Blender</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Blender"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -1975,7 +2155,13 @@
                                 <i class="fas fa-fire-alt"></i>
                                 <span>Electric Cooker/Hot Plate</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Cooker"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2009,23 +2195,34 @@
                                 <i class="fas fa-lightbulb"></i>
                                 <span>Kitchen Light Bulbs</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Bulbs"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
                                 <label class="detail-label">Type</label>
                                 <select class="detail-select" data-field="type">
+									<option value="">Select Type</option>
                                     <option value="led">LED Bulb</option>
                                     <option value="energy-saving">Energy Saving</option>
+                                    <option value="incandescent">Incandescent</option>
+                                    <option value="fluorescent">Fluorescent</option>
                                 </select>
                             </div>
                             <div class="detail-group">
                                 <label class="detail-label">Wattage</label>
                                 <select class="detail-select" data-field="wattage">
+									<option value="">Select Rating</option>
                                     <option value="5">5W</option>
-                                    <option value="9" selected>9W</option>
+                                    <option value="9">9W</option>
                                     <option value="12">12W</option>
                                     <option value="15">15W</option>
+                                    <option value="20">20W</option>
                                 </select>
                             </div>
                             <div class="detail-group">
@@ -2058,7 +2255,13 @@
                                 <i class="fas fa-hot-tub"></i>
                                 <span>Water Heater</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Heater"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2093,23 +2296,34 @@
                                 <i class="fas fa-lightbulb"></i>
                                 <span>Bathroom Light Bulbs</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Bulbs"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
                                 <label class="detail-label">Type</label>
                                 <select class="detail-select" data-field="type">
+									<option value="">Select Type</option>
                                     <option value="led">LED Bulb</option>
                                     <option value="energy-saving">Energy Saving</option>
+                                    <option value="incandescent">Incandescent</option>
+                                    <option value="fluorescent">Fluorescent</option>
                                 </select>
                             </div>
                             <div class="detail-group">
                                 <label class="detail-label">Wattage</label>
                                 <select class="detail-select" data-field="wattage">
+									<option value="">Select Rating</option>
                                     <option value="5">5W</option>
-                                    <option value="9" selected>9W</option>
+                                    <option value="9">9W</option>
                                     <option value="12">12W</option>
                                     <option value="15">15W</option>
+                                    <option value="20">20W</option>
                                 </select>
                             </div>
                             <div class="detail-group">
@@ -2135,7 +2349,13 @@
                                 <i class="fas fa-wind"></i>
                                 <span>Hair Dryer</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Hair Dryer"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2168,7 +2388,13 @@
                                 <i class="fas fa-fan"></i>
                                 <span>Exhaust Fan</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Exhaust Fan"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2209,7 +2435,13 @@
                                 <i class="fas fa-tshirt"></i>
                                 <span>Washing Machine</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Washing Machine"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2244,7 +2476,13 @@
                                 <i class="fas fa-tshirt"></i>
                                 <span>Pressing Iron</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Iron"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2278,7 +2516,13 @@
                                 <i class="fas fa-water"></i>
                                 <span>Water Pump</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Pump"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2313,7 +2557,13 @@
                                 <i class="fas fa-wifi"></i>
                                 <span>WiFi Router/Modem</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Router"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2346,7 +2596,13 @@
                                 <i class="fas fa-satellite-dish"></i>
                                 <span>DSTV/Cable Decoder</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Cable Decoder"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2380,7 +2636,13 @@
                                 <i class="fas fa-lightbulb"></i>
                                 <span>Security/Outdoor Lights</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Outdoor Lights"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2423,7 +2685,13 @@
                                 <i class="fas fa-desktop"></i>
                                 <span>Desktop Computer</span>
                             </div>
-                            <div class="equipment-toggle" data-active="false"></div>
+                            <!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false" 
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Desktop"
+								 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
@@ -2594,7 +2862,14 @@
 								<i class="fas fa-gas-pump"></i>
 								<span>Do you use a Generator?</span>
 							</div>
-							<div class="equipment-toggle" id="generatorToggle" data-active="false"></div>
+							<!-- Equipment toggle should have accessible label -->
+							<div class="equipment-toggle" 
+								 data-active="false"
+								 id="generatorToggle"
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Generator"
+								 tabindex="0"></div>
 						</div>
 						
 						<div class="equipment-details" id="generatorDetails" style="display: none;">
@@ -3107,6 +3382,21 @@
             // Update equipment state
             updateEquipmentState(card);
         });
+		
+		// Update toggle click handler to support keyboard
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Enter' || e.key === ' ') {
+				const toggle = e.target.closest('.equipment-toggle');
+				if (toggle) {
+					e.preventDefault();
+					toggle.click();
+				}
+			}
+		});
+
+		// Update aria-checked when toggling
+		const isActive = toggle.dataset.active === 'true';
+		toggle.setAttribute('aria-checked', (!isActive).toString());
 
         // ==========================================
         // QUANTITY STEPPER
@@ -3149,38 +3439,67 @@
         // WATTAGE CALCULATION
         // ==========================================
         function calculateAndDisplayWattage(card) {
-            const equipmentType = card.dataset.equipment;
-            const selects = card.querySelectorAll('.detail-select');
-            const quantityEl = card.querySelector('.stepper-value');
-            const wattageDisplay = card.querySelector('.wattage-value');
+			if (!card) return;
+			
+			const equipmentType = card.dataset.equipment;
+			const selects = card.querySelectorAll('.detail-select');
+			const quantityEl = card.querySelector('.stepper-value');
+			const wattageDisplay = card.querySelector('.wattage-value');
 
-            if (!wattageDisplay) return;
+			if (!wattageDisplay) return;
 
-            const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
-            
-            // Collect all selected values
-            const values = {};
-            selects.forEach(select => {
-                const field = select.dataset.field;
-                values[field] = select.value;
-            });
+			const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
+			
+			// If no equipment type, try to calculate from direct wattage input
+			if (!equipmentType) {
+				const wattageInput = card.querySelector('input[data-field="wattage"]');
+				const wattageSelect = card.querySelector('select[data-field="wattage"]');
+				
+				if (wattageInput) {
+					const wattage = parseInt(wattageInput.value) || 0;
+					const total = wattage * quantity;
+					wattageDisplay.textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
+				} else if (wattageSelect) {
+					const wattage = parseInt(wattageSelect.value) || 0;
+					const total = wattage * quantity;
+					wattageDisplay.textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
+				}
+				return;
+			}
+			
+			// Collect all selected values
+			const values = {};
+			selects.forEach(select => {
+				const field = select.dataset.field;
+				if (field) {
+					values[field] = select.value;
+				}
+			});
 
-            let wattage = calculateWattage(equipmentType, values);
-            
-            if (wattage > 0) {
-                const totalWattage = wattage * quantity;
-                wattageDisplay.textContent = `${totalWattage.toLocaleString()} W`;
-            } else {
-                wattageDisplay.textContent = '-- W';
-            }
-        }
+			let wattage = calculateWattage(equipmentType, values);
+			
+			if (wattage > 0) {
+				const totalWattage = wattage * quantity;
+				wattageDisplay.textContent = `${totalWattage.toLocaleString()} W`;
+			} else {
+				wattageDisplay.textContent = '-- W';
+			}
+		}
 
         function calculateWattage(equipmentType, values) {
-            let wattage = 0;
-            
-            // Normalize equipment type (remove room prefix like "bedroom-")
-            const baseType = equipmentType.replace(/^(bedroom|kitchen|bathroom|general)-/, '');
-
+			let wattage = 0;
+			
+			// Guard against undefined equipmentType
+			if (!equipmentType) {
+				if (values && values.wattage) {
+					return parseInt(values.wattage);
+				}
+				return 0;
+			}
+			
+			// Normalize equipment type (remove room prefix like "bedroom-")
+			const baseType = equipmentType.replace(/^(bedroom|kitchen|bathroom|general|livingroom)-/, '');
+			
             switch (baseType) {
                 case 'tv':
                     const brand = values.brand || 'other';
@@ -3361,35 +3680,55 @@
         // UPDATE EQUIPMENT STATE
         // ==========================================
         function updateEquipmentState(card) {
-            const equipmentId = card.dataset.equipment;
-            const toggle = card.querySelector('.equipment-toggle');
-            const isActive = toggle.dataset.active === 'true';
+			if (!card) return;
+			
+			const equipmentId = card.dataset.equipment;
+			if (!equipmentId) return;
+			
+			const toggle = card.querySelector('.equipment-toggle');
+			if (!toggle) return;
+			
+			const isActive = toggle.dataset.active === 'true';
 
-            if (!isActive) {
-                delete appState.equipment[equipmentId];
-                return;
-            }
+			if (!isActive) {
+				delete appState.equipment[equipmentId];
+				return;
+			}
 
-            const selects = card.querySelectorAll('.detail-select');
-            const quantityEl = card.querySelector('.stepper-value');
-            const wattageDisplay = card.querySelector('.wattage-value');
+			const selects = card.querySelectorAll('.detail-select');
+			const quantityEl = card.querySelector('.stepper-value');
+			const wattageDisplay = card.querySelector('.wattage-value');
 
-            const values = {};
-            selects.forEach(select => {
-                values[select.dataset.field] = select.value;
-            });
+			const values = {};
+			selects.forEach(select => {
+				const field = select.dataset.field;
+				if (field) {
+					values[field] = select.value;
+				}
+			});
 
-            const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
-            const wattageText = wattageDisplay ? wattageDisplay.textContent : '0 W';
-            const wattage = parseInt(wattageText.replace(/[^0-9]/g, '')) || 0;
+			const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
+			const wattageText = wattageDisplay ? wattageDisplay.textContent : '0 W';
+			const wattage = parseInt(wattageText.replace(/[^0-9]/g, '')) || 0;
 
-            appState.equipment[equipmentId] = {
-                name: card.querySelector('.equipment-name span').textContent,
-                values: values,
-                quantity: quantity,
-                wattage: wattage
-            };
-        }
+			// Get equipment name - handle both span and input elements
+			const nameSpan = card.querySelector('.equipment-name span');
+			const nameInput = card.querySelector('.equipment-name input');
+			let equipmentName = 'Custom Equipment';
+
+			if (nameSpan) {
+				equipmentName = nameSpan.textContent;
+			} else if (nameInput) {
+				equipmentName = nameInput.value || 'Custom Equipment';
+			}
+
+			appState.equipment[equipmentId] = {
+				name: equipmentName,
+				values: values,
+				quantity: quantity,
+				wattage: wattage
+			};
+		}
 
         // ==========================================
         // ADD CUSTOM EQUIPMENT
@@ -3440,12 +3779,26 @@
             // Add event listener for custom wattage input
             const wattageInput = customCard.querySelector('input[data-field="wattage"]');
             wattageInput.addEventListener('input', function() {
-                const quantity = parseInt(customCard.querySelector('.stepper-value').textContent) || 1;
-                const wattage = parseInt(this.value) || 0;
-                const total = wattage * quantity;
-                customCard.querySelector('.wattage-value').textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
-                updateEquipmentState(customCard);
-            });
+				// ADD: Validate input
+				let value = parseInt(this.value) || 0;
+				
+				// Prevent negative values
+				if (value < 0) {
+					value = 0;
+					this.value = 0;
+				}
+				
+				// Cap at reasonable maximum
+				if (value > 50000) {
+					value = 50000;
+					this.value = 50000;
+				}
+				
+				const quantity = parseInt(customCard.querySelector('.stepper-value').textContent) || 1;
+				const total = value * quantity;
+				customCard.querySelector('.wattage-value').textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
+				updateEquipmentState(customCard);
+			});
         });
 
         function removeEquipment(btn) {
@@ -3543,30 +3896,31 @@
 
 			container.innerHTML = html;
 
-			// Add event listeners for sliders
-			container.querySelectorAll('.hours-slider').forEach(slider => {
-				slider.addEventListener('input', function() {
-					const card = this.closest('.equipment-card');
-					updateUsageCardDisplay(card, parseInt(this.value));
-				});
+			// Instead of adding listeners in generateUsagePatterns(), 
+			// use event delegation on the container:
+
+			document.getElementById('usage-patterns-container').addEventListener('input', function(e) {
+				if (e.target.classList.contains('hours-slider')) {
+					const card = e.target.closest('.equipment-card');
+					updateUsageCardDisplay(card, parseInt(e.target.value));
+				}
 			});
 
-			// Add event listeners for time options
-			container.querySelectorAll('.time-option').forEach(option => {
-				option.addEventListener('click', function() {
-					this.classList.toggle('selected');
-					const card = this.closest('.equipment-card');
-					recalculateHoursFromPeriods(card);
-				});
-			});
-
-			// Add event listeners for frequency select
-			container.querySelectorAll('.frequency-select').forEach(select => {
-				select.addEventListener('change', function() {
-					const card = this.closest('.equipment-card');
+			document.getElementById('usage-patterns-container').addEventListener('change', function(e) {
+				if (e.target.classList.contains('frequency-select')) {
+					const card = e.target.closest('.equipment-card');
 					const hours = parseInt(card.querySelector('.hours-slider').value);
 					updateUsageCardDisplay(card, hours);
-				});
+				}
+			});
+
+			document.getElementById('usage-patterns-container').addEventListener('click', function(e) {
+				if (e.target.closest('.time-option')) {
+					const option = e.target.closest('.time-option');
+					option.classList.toggle('selected');
+					const card = option.closest('.equipment-card');
+					recalculateHoursFromPeriods(card);
+				}
 			});
 		}
 
@@ -3618,48 +3972,76 @@
 		}
 		
 		function getDefaultHours(equipmentId) {
-    const defaults = {
-        'refrigerator': 8,
-        'freezer': 8,
-        'router': 24,
-        'decoder': 8,
-        'bulb': 5,
-        'bedroom-bulb': 4,
-		'kitchen-bulb': 1,
-		'bathroom-bulb': 1,
-        'security-light': 10,
-        'tv': 4,
-        'bedroom-tv': 3,
-        'ac': 6,
-        'bedroom-ac': 8,
-        'fan': 8,
-        'bedroom-fan': 8,
-        'charger': 3,
-        'laptop': 4
-    };
-    return defaults[equipmentId] || 4;
-}
+			const defaults = {
+				'refrigerator': 8,
+				'freezer': 8,
+				'router': 24,
+				'decoder': 8,
+				'bulb': 5,
+				'livingroom-bulb': 5,  // ADD THIS
+				'bedroom-bulb': 4,
+				'kitchen-bulb': 2,
+				'bathroom-bulb': 1,
+				'security-light': 10,
+				'tv': 4,
+				'bedroom-tv': 3,
+				'ac': 6,
+				'bedroom-ac': 8,
+				'fan': 8,
+				'bedroom-fan': 8,
+				'charger': 3,
+				'laptop': 4,
+				'microwave': 0.5,
+				'kettle': 0.5,
+				'blender': 0.25,
+				'cooker': 2,
+				'water-heater': 1,
+				'hair-dryer': 0.25,
+				'exhaust-fan': 2,
+				'washing-machine': 1,
+				'iron': 1,
+				'water-pump': 1,
+				'sound': 3,
+				'desktop': 4
+			};
+			return defaults[equipmentId] || 4;
+		}
 
-function getDefaultPeriods(equipmentId) {
-    const defaults = {
-        'refrigerator': ['morning', 'afternoon', 'evening', 'night'],
-        'freezer': ['morning', 'afternoon', 'evening', 'night'],
-        'router': ['morning', 'afternoon', 'evening', 'night'],
-        'bulb': ['evening', 'night'],
-        'bedroom-bulb': ['evening', 'night'],
-		'bathroom-bulb': ['evening', 'night'],
-		'kitchen-bulb': ['evening', 'night'],
-        'security-light': ['evening', 'night'],
-        'tv': ['evening'],
-        'bedroom-tv': ['night'],
-        'ac': ['afternoon', 'night'],
-        'bedroom-ac': ['night'],
-        'fan': ['afternoon', 'evening', 'night'],
-        'charger': ['night'],
-        'laptop': ['morning', 'afternoon', 'evening']
-    };
-    return defaults[equipmentId] || ['evening'];
-}
+		function getDefaultPeriods(equipmentId) {
+			const defaults = {
+				'refrigerator': ['morning', 'afternoon', 'evening', 'night'],
+				'freezer': ['morning', 'afternoon', 'evening', 'night'],
+				'router': ['morning', 'afternoon', 'evening', 'night'],
+				'decoder': ['morning', 'afternoon', 'evening', 'night'],
+				'bulb': ['evening', 'night'],
+				'livingroom-bulb': ['evening', 'night'],  // ADD
+				'bedroom-bulb': ['evening', 'night'],
+				'bathroom-bulb': ['evening', 'night'],
+				'kitchen-bulb': ['evening', 'night'],
+				'security-light': ['evening', 'night'],
+				'tv': ['evening'],
+				'bedroom-tv': ['night'],
+				'ac': ['afternoon', 'night'],
+				'bedroom-ac': ['night'],
+				'fan': ['afternoon', 'evening', 'night'],
+				'bedroom-fan': ['afternoon', 'evening', 'night'],
+				'charger': ['night'],
+				'laptop': ['morning', 'afternoon', 'evening'],
+				'microwave': ['morning', 'evening'],
+				'kettle': ['morning', 'evening'],
+				'blender': ['morning'],
+				'cooker': ['morning', 'evening'],
+				'water-heater': ['morning', 'evening'],
+				'hair-dryer': ['morning'],
+				'exhaust-fan': ['morning', 'evening'],
+				'washing-machine': ['morning'],
+				'iron': ['morning', 'afternoon'],
+				'water-pump': ['morning', 'evening'],
+				'sound': ['evening'],
+				'desktop': ['morning', 'afternoon', 'evening']
+			};
+			return defaults[equipmentId] || ['evening'];
+		}
 
         // ==========================================
 // STEP 4: ANALYSIS DASHBOARD - COMPLETE
@@ -3764,6 +4146,7 @@ function collectUsageData() {
 }
 
 function calculateEnergyAnalysis() {
+	try{
     let dailyKwh = 0;
     let peakLoad = 0;
     let baseLoad = 0;
@@ -3853,7 +4236,22 @@ function calculateEnergyAnalysis() {
         peakEquipment: peakEquipment,
         peakTip: peakTip
     };
+} catch (error) {
+        console.error('Error calculating energy analysis:', error);
+        return {
+            dailyKwh: 0,
+            monthlyKwh: 0,
+            peakLoad: 0,
+            baseLoad: 0,
+            breakdown: [],
+            periodLoads: { morning: 0, afternoon: 0, evening: 0, night: 0 },
+            peakPeriod: 'evening hours',
+            peakEquipment: null,
+            peakTip: 'Unable to calculate tips at this time.'
+        };
+    }
 }
+
 
 function generateBreakdownItems(breakdown) {
     const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#84cc16'];
@@ -4027,6 +4425,19 @@ function initializeStep5() {
             });
         }
     });
+	
+	// ADD: Check if generator was previously enabled
+    if (appState.costEstimate?.useGenerator) {
+        const toggle = document.getElementById('generatorToggle');
+        const details = document.getElementById('generatorDetails');
+        const genCostSection = document.getElementById('generatorCostSection');
+        
+        toggle.dataset.active = 'true';
+        toggle.classList.add('active');
+        details.classList.add('show');
+        details.style.display = 'grid';
+        genCostSection.style.display = 'block';
+    }
 
     // Initial calculations
     updateAllCosts();
@@ -4262,6 +4673,12 @@ function getEquipmentTip(equipmentName) {
 // ==========================================
 function generateSolarRecommendations() {
     const container = document.getElementById('solar-recommendations');
+	
+	// ADD: Ensure analysis exists
+    if (!appState.analysis) {
+        generateAnalysisDashboard(); // Generate it if missing
+    }
+	
     const analysis = appState.analysis || calculateEnergyAnalysis();
     const costData = appState.costEstimate || {};
     const solar = calculateSolarRequirements(analysis, costData);
@@ -4633,7 +5050,7 @@ function submitForm() {
                     <li style="padding: 8px 0;">✅ Equipment Analyzed: <strong>${Object.keys(appState.equipment).length} items</strong></li>
                     <li style="padding: 8px 0;">✅ Daily Consumption: <strong>${appState.analysis?.dailyKwh?.toFixed(2) || 'N/A'} kWh</strong></li>
                     <li style="padding: 8px 0;">✅ Monthly Estimate: <strong>${appState.analysis?.monthlyKwh?.toFixed(0) || 'N/A'} kWh</strong></li>
-                    <li style="padding: 8px 0;">✅ Estimated Monthly Cost: <strong>₦${formatNumber(appState.costEstimate?.currentCost || 0)}</strong></li>
+                    <li style="padding: 8px 0;">✅ Estimated Monthly Cost: <strong>₦${formatNumber(appState.costEstimate?.totalMonthlyCost || 0)}</strong></li>
                 </ul>
             </div>
             
@@ -4666,7 +5083,45 @@ function formatHouseType(type) {
 // ==========================================
 // NAVIGATION UPDATE - Add step-specific initialization
 // ==========================================
+
+// Add localStorage persistence
+function saveState() {
+    try {
+        localStorage.setItem('energix_state', JSON.stringify(appState));
+    } catch (e) {
+        console.warn('Could not save state:', e);
+    }
+}
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem('energix_state');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            Object.assign(appState, parsed);
+            return true;
+        }
+    } catch (e) {
+        console.warn('Could not load state:', e);
+    }
+    return false;
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', function() {
+    if (loadState()) {
+        // Restore UI state
+        restoreUIFromState();
+    }
+});
+
+// Call after each step
 function goToStep(step) {
+    // Show loading for heavy calculations
+    if (step === 4 || step === 6) {
+        showLoadingState(step);
+    }
+	
     // Validate before moving forward
     if (step > currentStep) {
         if (!validateCurrentStep()) {
@@ -4709,6 +5164,56 @@ function goToStep(step) {
             break;
     }
 }
+    saveState();
+}
+
+function showLoadingState(step) {
+    const container = document.getElementById(`step${step}`);
+    const card = container.querySelector('.card');
+    const originalContent = card.innerHTML;
+    
+    card.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <div class="typing-indicator" style="justify-content: center;">
+                <span></span><span></span><span></span>
+            </div>
+            <p style="margin-top: 20px; color: var(--gray);">Calculating your energy profile...</p>
+        </div>
+    `;
+    
+    // Restore after calculation (use Promise or callback in real implementation)
+    setTimeout(() => {
+        card.innerHTML = originalContent;
+    }, 100);
+}
+
+// ==========================================
+// UTILITY FUNCTIONS
+// ==========================================
+// debounce utility
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Use for sliders that trigger heavy calculations
+const debouncedUpdateCosts = debounce(updateAllCosts, 150);
+
+// In initializeStep5():
+if (powerHoursSlider) {
+    powerHoursSlider.addEventListener('input', function() {
+        document.getElementById('power-hours-display').textContent = this.value;
+        debouncedUpdateCosts(); // Use debounced version
+    });
+}
+
     </script>
 </body>
 </html>
