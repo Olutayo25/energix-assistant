@@ -4335,111 +4335,120 @@ const generatorFuelConsumption = {
     20: { petrol: 4.0, diesel: 3.0 }      // Large industrial
 };
 
+// Track if Step 5 has been initialized
+let step5Initialized = false;
+
 function initializeStep5() {
-    const stateSelect = document.getElementById('stateSelect');
-    const discoSelect = document.getElementById('discoSelect');
-    const tariffSelect = document.getElementById('tariffBand');
-    const powerHoursSlider = document.getElementById('powerHours');
-    const generatorToggle = document.getElementById('generatorToggle');
+    // Prevent duplicate event listeners
+    if (!step5Initialized) {
+        const stateSelect = document.getElementById('stateSelect');
+        const discoSelect = document.getElementById('discoSelect');
+        const tariffSelect = document.getElementById('tariffBand');
+        const powerHoursSlider = document.getElementById('powerHours');
+        const generatorToggle = document.getElementById('generatorToggle');
 
-    // Auto-select DisCo based on state
-    if (stateSelect) {
-        stateSelect.addEventListener('change', function() {
-            const state = this.value.toLowerCase();
-            for (const [disco, states] of Object.entries(discoStates)) {
-                if (states.includes(state)) {
-                    discoSelect.value = disco;
-                    break;
+        // Auto-select DisCo based on state
+        if (stateSelect) {
+            stateSelect.addEventListener('change', function() {
+                const state = this.value.toLowerCase();
+                for (const [disco, states] of Object.entries(discoStates)) {
+                    if (states.includes(state)) {
+                        discoSelect.value = disco;
+                        break;
+                    }
                 }
-            }
-            updateAllCosts();
-        });
-    }
-
-    // Update cost when tariff changes
-    if (tariffSelect) {
-        tariffSelect.addEventListener('change', updateAllCosts);
-    }
-
-    // Update cost when power hours changes
-    if (powerHoursSlider) {
-        powerHoursSlider.addEventListener('input', function() {
-            document.getElementById('power-hours-display').textContent = this.value;
-            updateAllCosts();
-        });
-    }
-
-    // Generator toggle
-	if (generatorToggle) {
-		generatorToggle.addEventListener('click', function() {
-			const isActive = this.dataset.active === 'true';
-			const newState = !isActive;
-			this.dataset.active = newState.toString();
-			this.classList.toggle('active');
-			
-			const details = document.getElementById('generatorDetails');
-			const genCostSection = document.getElementById('generatorCostSection');
-			
-			if (newState) {
-				// Generator is now ON
-				details.classList.add('show');
-				details.style.display = 'grid';
-				genCostSection.style.display = 'block';
-			} else {
-				// Generator is now OFF
-				details.classList.remove('show');
-				details.style.display = 'none';
-				genCostSection.style.display = 'none';
-			}
-			
-			updateAllCosts();
-		});
-	}
-
-    // Generator hours slider
-    const genHoursSlider = document.getElementById('generatorHoursSlider');
-    if (genHoursSlider) {
-        genHoursSlider.addEventListener('input', function() {
-            document.getElementById('gen-hours-display').textContent = this.value;
-            updateGeneratorCosts();
-            updateAllCosts();
-        });
-    }
-
-    // Generator input change listeners
-    const generatorInputs = [
-        'generatorSize', 'fuelType', 'generatorFrequency', 
-        'fuelPrice', 'litresPerFill', 'fillsPerWeek', 'generatorMaintenance'
-    ];
-    
-    generatorInputs.forEach(inputId => {
-        const element = document.getElementById(inputId);
-        if (element) {
-            element.addEventListener('change', function() {
-                updateGeneratorCosts();
                 updateAllCosts();
             });
-            element.addEventListener('input', function() {
+        }
+
+        // Update cost when tariff changes
+        if (tariffSelect) {
+            tariffSelect.addEventListener('change', updateAllCosts);
+        }
+
+        // Update cost when power hours changes
+        if (powerHoursSlider) {
+            powerHoursSlider.addEventListener('input', function() {
+                document.getElementById('power-hours-display').textContent = this.value;
+                updateAllCosts();
+            });
+        }
+
+        // Generator toggle
+        if (generatorToggle) {
+            generatorToggle.addEventListener('click', function() {
+                const isActive = this.dataset.active === 'true';
+                const newState = !isActive;
+                this.dataset.active = newState.toString();
+                this.classList.toggle('active');
+                
+                const details = document.getElementById('generatorDetails');
+                const genCostSection = document.getElementById('generatorCostSection');
+                
+                if (newState) {
+                    details.classList.add('show');
+                    details.style.display = 'grid';
+                    genCostSection.style.display = 'block';
+                } else {
+                    details.classList.remove('show');
+                    details.style.display = 'none';
+                    genCostSection.style.display = 'none';
+                }
+                
+                updateAllCosts();
+            });
+        }
+
+        // Generator hours slider
+        const genHoursSlider = document.getElementById('generatorHoursSlider');
+        if (genHoursSlider) {
+            genHoursSlider.addEventListener('input', function() {
+                document.getElementById('gen-hours-display').textContent = this.value;
                 updateGeneratorCosts();
                 updateAllCosts();
             });
         }
-    });
-	
-	// ADD: Check if generator was previously enabled
+
+        // Generator input change listeners
+        const generatorInputs = [
+            'generatorSize', 'fuelType', 'generatorFrequency', 
+            'fuelPrice', 'litresPerFill', 'fillsPerWeek', 'generatorMaintenance'
+        ];
+        
+        generatorInputs.forEach(inputId => {
+            const element = document.getElementById(inputId);
+            if (element) {
+                element.addEventListener('change', function() {
+                    updateGeneratorCosts();
+                    updateAllCosts();
+                });
+                element.addEventListener('input', function() {
+                    updateGeneratorCosts();
+                    updateAllCosts();
+                });
+            }
+        });
+
+        step5Initialized = true;
+    }
+
+    // These should run EVERY time step 5 is visited (not just first time)
+    // Restore generator state if previously enabled
     if (appState.costEstimate?.useGenerator) {
         const toggle = document.getElementById('generatorToggle');
         const details = document.getElementById('generatorDetails');
         const genCostSection = document.getElementById('generatorCostSection');
         
-        toggle.dataset.active = 'true';
-        toggle.classList.add('active');
-        details.classList.add('show');
-        details.style.display = 'grid';
-        genCostSection.style.display = 'block';
+        if (toggle && !toggle.classList.contains('active')) {
+            toggle.dataset.active = 'true';
+            toggle.classList.add('active');
+            details.classList.add('show');
+            details.style.display = 'grid';
+            genCostSection.style.display = 'block';
+        }
     }
 
-    // Initial calculations
+    // Initial calculations - always run
     updateAllCosts();
 }
 
@@ -5010,9 +5019,27 @@ function submitForm() {
         return;
     }
 
+    // Name validation - at least 2 characters
+    if (name.length < 2) {
+        alert('Please enter a valid name');
+        return;
+    }
+
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         alert('Please enter a valid email address');
+        return;
+    }
+
+    // Phone validation - basic international format
+    // Allows: +, digits, spaces, dashes, parentheses
+    // Minimum 7 digits (shortest valid phone numbers)
+    const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+    const phoneRegex = /^\+?[0-9]{7,15}$/;
+    
+    if (!phoneRegex.test(cleanPhone)) {
+        alert('Please enter a valid phone number (7-15 digits)');
         return;
     }
 
