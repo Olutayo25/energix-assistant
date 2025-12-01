@@ -1498,6 +1498,34 @@
 				padding: 15px;
 			}
 		}
+		
+		/* Generator Section Styles */
+		.generator-section {
+			margin-top: 30px;
+			padding-top: 20px;
+			border-top: 1px solid rgba(255,255,255,0.1);
+		}
+
+		.generator-section .equipment-card {
+			background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(239, 68, 68, 0.05));
+			border-color: rgba(245, 158, 11, 0.2);
+		}
+
+		.generator-section .equipment-name i {
+			color: var(--warning);
+		}
+
+		.generator-cost-display {
+			background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.1)) !important;
+			border-color: rgba(245, 158, 11, 0.3) !important;
+		}
+
+		#generatorCostSection {
+			display: none;
+			margin-top: 20px;
+			padding-top: 20px;
+			border-top: 1px solid rgba(255,255,255,0.1);
+		}
 
     </style>
 </head>
@@ -3087,131 +3115,131 @@
                 </div>
 
                 <!-- Generator Section -->
-                <div class="generator-section" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <div class="equipment-card">
-                        <div class="equipment-header">
-                            <div class="equipment-name">
-                                <i class="fas fa-gas-pump" aria-hidden="true"></i>
-                                <span>Do you use a Generator?</span>
-                            </div>
-                            <div class="equipment-toggle" 
-                                 data-active="false"
-                                 id="generatorToggle"
-                                 role="switch" 
-                                 aria-checked="false"
-                                 aria-label="Toggle Generator usage"
-                                 tabindex="0"></div>
-                        </div>
-                        
-                        <div class="equipment-details" id="generatorDetails">
-                            <div class="detail-group">
-                                <label class="detail-label" for="generatorSize">Generator Size</label>
-                                <select class="detail-select" id="generatorSize">
-                                    <option value="" disabled selected>Select Size</option>
-                                    <option value="1">Small (0.5 - 1 kVA)</option>
-                                    <option value="2.5">Medium (2 - 3 kVA)</option>
-                                    <option value="5">Large (5 - 6.5 kVA)</option>
-                                    <option value="10">Extra Large (8 - 10 kVA)</option>
-                                    <option value="15">Industrial (12 - 15 kVA)</option>
-                                    <option value="20">Industrial (18 - 20+ kVA)</option>
-                                </select>
-                            </div>
-                            
-                            <div class="detail-group">
-                                <label class="detail-label" for="fuelType">Fuel Type</label>
-                                <select class="detail-select" id="fuelType">
-                                    <option value="petrol">Petrol (PMS)</option>
-                                    <option value="diesel">Diesel (AGO)</option>
-                                </select>
-                            </div>
-                            
-                            <div class="detail-group">
-                                <label class="detail-label" for="generatorFrequency">Usage Frequency</label>
-                                <select class="detail-select" id="generatorFrequency">
-                                    <option value="daily">Daily</option>
-                                    <option value="weekdays">Weekdays Only</option>
-                                    <option value="weekends">Weekends Only</option>
-                                    <option value="few-times">Few times a week</option>
-                                    <option value="rarely">Rarely (few times a month)</option>
-                                </select>
-                            </div>
-                            
-                            <div class="detail-group">
-                                <label class="detail-label" for="generatorHours">Hours per Use</label>
-                                <select class="detail-select" id="generatorHours">
-                                    <option value="1">1-2 hours</option>
-                                    <option value="3">3-4 hours</option>
-                                    <option value="5" selected>5-6 hours</option>
-                                    <option value="8">7-8 hours</option>
-                                    <option value="10">9-10 hours</option>
-                                    <option value="12">10+ hours</option>
-                                </select>
-                            </div>
-                            
-                            <div class="detail-group" style="grid-column: 1 / -1;">
-                                <label class="form-label" for="generatorHoursSlider">Average hours per day when used: <strong id="gen-hours-display">5</strong> hours</label>
-                                <div class="slider-container">
-                                    <input type="range" class="slider" min="1" max="24" value="5" id="generatorHoursSlider" aria-describedby="gen-hours-display">
-                                    <div class="slider-labels" aria-hidden="true">
-                                        <span>1h</span>
-                                        <span>6h</span>
-                                        <span>12h</span>
-                                        <span>18h</span>
-                                        <span>24h</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="detail-group">
-                                <label class="detail-label" for="fuelPrice">Current Fuel Price (₦/Litre)</label>
-                                <input type="number" class="detail-input" id="fuelPrice" placeholder="e.g., 700" value="700" min="0" max="10000">
-                            </div>
-                            
-                            <div class="detail-group">
-                                <label class="detail-label" for="litresPerFill">Litres per Fill</label>
-                                <input type="number" class="detail-input" id="litresPerFill" placeholder="e.g., 10" value="10" min="1" max="500">
-                            </div>
-                            
-                            <div class="detail-group">
-                                <label class="detail-label" for="fillsPerWeek">Fills per Week</label>
-                                <select class="detail-select" id="fillsPerWeek">
-                                    <option value="1">Once a week</option>
-                                    <option value="2" selected>Twice a week</option>
-                                    <option value="3">3 times a week</option>
-                                    <option value="4">4 times a week</option>
-                                    <option value="5">5 times a week</option>
-                                    <option value="7">Daily</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Generator Cost Summary -->
-                            <div class="wattage-display generator-cost-display" style="grid-column: 1 / -1; flex-direction: column; align-items: stretch; gap: 10px;">
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span class="wattage-label">Weekly Fuel Cost</span>
-                                    <span class="wattage-value" id="weeklyFuelCost" aria-live="polite">₦14,000</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span class="wattage-label">Monthly Fuel Cost</span>
-                                    <span class="wattage-value" id="monthlyFuelCost" style="color: var(--warning);" aria-live="polite">₦56,000</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span class="wattage-label">Annual Fuel Cost</span>
-                                    <span class="wattage-value" id="annualFuelCost" style="color: var(--danger);" aria-live="polite">₦672,000</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Generator Maintenance Info -->
-                            <div class="ai-bubble" style="grid-column: 1 / -1; margin-top: 10px;">
-                                <p style="font-size: 0.85rem;">💡 <strong>Tip:</strong> Don't forget generator maintenance costs! Oil changes, servicing, and repairs typically add <strong>₦5,000 - ₦15,000</strong> monthly depending on usage.</p>
-                            </div>
-                            
-                            <div class="detail-group">
-                                <label class="detail-label" for="generatorMaintenance">Est. Monthly Maintenance (₦)</label>
-                                <input type="number" class="detail-input" id="generatorMaintenance" placeholder="e.g., 10000" value="10000" min="0" max="100000">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				<div class="generator-section">
+					<div class="equipment-card" data-equipment="generator">
+						<div class="equipment-header">
+							<div class="equipment-name">
+								<i class="fas fa-gas-pump" aria-hidden="true"></i>
+								<span>Do you use a Generator?</span>
+							</div>
+							<div class="equipment-toggle" 
+								 data-active="false"
+								 role="switch" 
+								 aria-checked="false"
+								 aria-label="Toggle Generator usage"
+								 tabindex="0"></div>
+						</div>
+						
+						<div class="equipment-details" id="generatorDetails">
+							<div class="detail-group">
+								<label class="detail-label" for="generatorSize">Generator Size</label>
+								<select class="detail-select" id="generatorSize">
+									<option value="" disabled selected>Select Size</option>
+									<option value="1">Small (0.5 - 1 kVA)</option>
+									<option value="2.5">Medium (2 - 3 kVA)</option>
+									<option value="5">Large (5 - 6.5 kVA)</option>
+									<option value="10">Extra Large (8 - 10 kVA)</option>
+									<option value="15">Industrial (12 - 15 kVA)</option>
+									<option value="20">Industrial (18 - 20+ kVA)</option>
+								</select>
+							</div>
+							
+							<div class="detail-group">
+								<label class="detail-label" for="fuelType">Fuel Type</label>
+								<select class="detail-select" id="fuelType">
+									<option value="petrol">Petrol (PMS)</option>
+									<option value="diesel">Diesel (AGO)</option>
+								</select>
+							</div>
+							
+							<div class="detail-group">
+								<label class="detail-label" for="generatorFrequency">Usage Frequency</label>
+								<select class="detail-select" id="generatorFrequency">
+									<option value="daily">Daily</option>
+									<option value="weekdays">Weekdays Only</option>
+									<option value="weekends">Weekends Only</option>
+									<option value="few-times">Few times a week</option>
+									<option value="rarely">Rarely (few times a month)</option>
+								</select>
+							</div>
+							
+							<div class="detail-group">
+								<label class="detail-label" for="generatorHours">Hours per Use</label>
+								<select class="detail-select" id="generatorHours">
+									<option value="1">1-2 hours</option>
+									<option value="3">3-4 hours</option>
+									<option value="5" selected>5-6 hours</option>
+									<option value="8">7-8 hours</option>
+									<option value="10">9-10 hours</option>
+									<option value="12">10+ hours</option>
+								</select>
+							</div>
+							
+							<div class="detail-group" style="grid-column: 1 / -1;">
+								<label class="form-label" for="generatorHoursSlider">Average hours per day when used: <strong id="gen-hours-display">5</strong> hours</label>
+								<div class="slider-container">
+									<input type="range" class="slider" min="1" max="24" value="5" id="generatorHoursSlider" aria-describedby="gen-hours-display">
+									<div class="slider-labels" aria-hidden="true">
+										<span>1h</span>
+										<span>6h</span>
+										<span>12h</span>
+										<span>18h</span>
+										<span>24h</span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="detail-group">
+								<label class="detail-label" for="fuelPrice">Current Fuel Price (₦/Litre)</label>
+								<input type="number" class="detail-input" id="fuelPrice" placeholder="e.g., 700" value="700" min="0" max="10000">
+							</div>
+							
+							<div class="detail-group">
+								<label class="detail-label" for="litresPerFill">Litres per Fill</label>
+								<input type="number" class="detail-input" id="litresPerFill" placeholder="e.g., 10" value="10" min="1" max="500">
+							</div>
+							
+							<div class="detail-group">
+								<label class="detail-label" for="fillsPerWeek">Fills per Week</label>
+								<select class="detail-select" id="fillsPerWeek">
+									<option value="1">Once a week</option>
+									<option value="2" selected>Twice a week</option>
+									<option value="3">3 times a week</option>
+									<option value="4">4 times a week</option>
+									<option value="5">5 times a week</option>
+									<option value="7">Daily</option>
+								</select>
+							</div>
+							
+							<!-- Generator Cost Summary -->
+							<div class="wattage-display generator-cost-display" style="grid-column: 1 / -1; flex-direction: column; align-items: stretch; gap: 10px;">
+								<div style="display: flex; justify-content: space-between;">
+									<span class="wattage-label">Weekly Fuel Cost</span>
+									<span class="wattage-value" id="weeklyFuelCost" aria-live="polite">₦14,000</span>
+								</div>
+								<div style="display: flex; justify-content: space-between;">
+									<span class="wattage-label">Monthly Fuel Cost</span>
+									<span class="wattage-value" id="monthlyFuelCost" style="color: var(--warning);" aria-live="polite">₦56,000</span>
+								</div>
+								<div style="display: flex; justify-content: space-between;">
+									<span class="wattage-label">Annual Fuel Cost</span>
+									<span class="wattage-value" id="annualFuelCost" style="color: var(--danger);" aria-live="polite">₦672,000</span>
+								</div>
+							</div>
+							
+							<!-- Generator Maintenance Info -->
+							<div class="ai-bubble" style="grid-column: 1 / -1; margin-top: 10px;">
+								<p style="font-size: 0.85rem;">💡 <strong>Tip:</strong> Don't forget generator maintenance costs! Oil changes, servicing, and repairs typically add <strong>₦5,000 - ₦15,000</strong> monthly depending on usage.</p>
+							</div>
+							
+							<div class="detail-group">
+								<label class="detail-label" for="generatorMaintenance">Est. Monthly Maintenance (₦)</label>
+								<input type="number" class="detail-input" id="generatorMaintenance" placeholder="e.g., 10000" value="10000" min="0" max="100000">
+							</div>
+						</div>
+					</div>
+				</div>
+
 
                 <!-- Cost Estimate Card -->
                 <div class="solar-card" id="costEstimateCard" style="margin-top: 25px;">
@@ -3772,45 +3800,40 @@
     });
 
     // ==========================================
-    // EQUIPMENT TOGGLE
-    // ==========================================
-    document.addEventListener('click', function(e) {
-        const toggle = e.target.closest('.equipment-toggle');
-        if (!toggle) return;
-        
-        // Skip if this is the generator toggle (handled separately)
-        if (toggle.id === 'generatorToggle') return;
+	// EQUIPMENT TOGGLE
+	// ==========================================
+	document.addEventListener('click', function(e) {
+		const toggle = e.target.closest('.equipment-toggle');
+		if (!toggle) return;
 
-        const isActive = toggle.dataset.active === 'true';
-        toggle.dataset.active = (!isActive).toString();
-        toggle.classList.toggle('active');
-        
-        // Update aria-checked for accessibility
-        toggle.setAttribute('aria-checked', (!isActive).toString());
+		const isActive = toggle.dataset.active === 'true';
+		toggle.dataset.active = (!isActive).toString();
+		toggle.classList.toggle('active');
+		
+		// Update aria-checked for accessibility
+		toggle.setAttribute('aria-checked', (!isActive).toString());
 
-        const card = toggle.closest('.equipment-card');
-        const details = card.querySelector('.equipment-details');
-        
-        if (!isActive) {
-            details.classList.add('show');
-        } else {
-            details.classList.remove('show');
-        }
+		const card = toggle.closest('.equipment-card');
+		const details = card.querySelector('.equipment-details');
+		
+		if (!isActive) {
+			details.classList.add('show');
+		} else {
+			details.classList.remove('show');
+		}
 
-        // Update equipment state
-        updateEquipmentState(card);
-    });
-    
-    // Keyboard support for equipment toggle
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-            const toggle = e.target.closest('.equipment-toggle');
-            if (toggle) {
-                e.preventDefault();
-                toggle.click();
-            }
-        }
-    });
+		// Update equipment state (skip for generator - it's not tracked as equipment)
+		const equipmentId = card.dataset.equipment;
+		if (equipmentId !== 'generator') {
+			updateEquipmentState(card);
+		}
+		
+		// If this is the generator toggle, update costs
+		if (equipmentId === 'generator') {
+			updateGeneratorCosts();
+			updateAllCosts();
+		}
+	});
 
     // ==========================================
     // QUANTITY STEPPER
@@ -4718,6 +4741,14 @@
             `;
         }).join('');
     }
+	
+	function isGeneratorActive() {
+		const generatorCard = document.querySelector('.equipment-card[data-equipment="generator"]');
+		if (!generatorCard) return false;
+		
+		const toggle = generatorCard.querySelector('.equipment-toggle');
+		return toggle && toggle.dataset.active === 'true';
+	}
 
     // ==========================================
     // STEP 5: LOCATION & COST CALCULATION
@@ -4753,227 +4784,211 @@
     // Debounced version of updateAllCosts
     const debouncedUpdateCosts = debounce(updateAllCosts, 150);
 
-    function initializeStep5() {
-        // Prevent duplicate event listeners
-        if (!step5Initialized) {
-            const stateSelect = document.getElementById('stateSelect');
-            const discoSelect = document.getElementById('discoSelect');
-            const tariffSelect = document.getElementById('tariffBand');
-            const powerHoursSlider = document.getElementById('powerHours');
-            const generatorToggle = document.getElementById('generatorToggle');
+    // Track if Step 5 has been initialized
+	let step5Initialized = false;
 
-            // Auto-select DisCo based on state
-            if (stateSelect) {
-                stateSelect.addEventListener('change', function() {
-                    const state = this.value.toLowerCase();
-                    for (const [disco, states] of Object.entries(discoStates)) {
-                        if (states.includes(state)) {
-                            discoSelect.value = disco;
-                            break;
-                        }
-                    }
-                    debouncedUpdateCosts();
-                });
-            }
+	function initializeStep5() {
+		// Prevent duplicate event listeners
+		if (!step5Initialized) {
+			const stateSelect = document.getElementById('stateSelect');
+			const discoSelect = document.getElementById('discoSelect');
+			const tariffSelect = document.getElementById('tariffBand');
+			const powerHoursSlider = document.getElementById('powerHours');
 
-            // Update cost when tariff changes
-            if (tariffSelect) {
-                tariffSelect.addEventListener('change', debouncedUpdateCosts);
-            }
+			// Auto-select DisCo based on state
+			if (stateSelect) {
+				stateSelect.addEventListener('change', function() {
+					const state = this.value.toLowerCase();
+					for (const [disco, states] of Object.entries(discoStates)) {
+						if (states.includes(state)) {
+							discoSelect.value = disco;
+							break;
+						}
+					}
+					debouncedUpdateCosts();
+				});
+			}
 
-            // Update cost when power hours changes
-            if (powerHoursSlider) {
-                powerHoursSlider.addEventListener('input', function() {
-                    document.getElementById('power-hours-display').textContent = this.value;
-                    debouncedUpdateCosts();
-                });
-            }
+			// Update cost when tariff changes
+			if (tariffSelect) {
+				tariffSelect.addEventListener('change', debouncedUpdateCosts);
+			}
 
-            // Generator toggle
-            if (generatorToggle) {
-                generatorToggle.addEventListener('click', function() {
-                    const isActive = this.dataset.active === 'true';
-                    const newState = !isActive;
-                    this.dataset.active = newState.toString();
-                    this.classList.toggle('active');
-                    
-                    const details = document.getElementById('generatorDetails');
-                    const genCostSection = document.getElementById('generatorCostSection');
-                    
-                    if (newState) {
-                        details.classList.add('show');
-                        details.style.display = 'grid';
-                        genCostSection.style.display = 'block';
-                    } else {
-                        details.classList.remove('show');
-                        details.style.display = 'none';
-                        genCostSection.style.display = 'none';
-                    }
-                    
-                    updateAllCosts();
-                });
-            }
+			// Update cost when power hours changes
+			if (powerHoursSlider) {
+				powerHoursSlider.addEventListener('input', function() {
+					document.getElementById('power-hours-display').textContent = this.value;
+					debouncedUpdateCosts();
+				});
+			}
 
-            // Generator hours slider
-            const genHoursSlider = document.getElementById('generatorHoursSlider');
-            if (genHoursSlider) {
-                genHoursSlider.addEventListener('input', function() {
-                    document.getElementById('gen-hours-display').textContent = this.value;
-                    updateGeneratorCosts();
-                    debouncedUpdateCosts();
-                });
-            }
+			// Generator hours slider
+			const genHoursSlider = document.getElementById('generatorHoursSlider');
+			if (genHoursSlider) {
+				genHoursSlider.addEventListener('input', function() {
+					document.getElementById('gen-hours-display').textContent = this.value;
+					updateGeneratorCosts();
+					debouncedUpdateCosts();
+				});
+			}
 
-            // Generator input change listeners
-            const generatorInputs = [
-                'generatorSize', 'fuelType', 'generatorFrequency', 
-                'fuelPrice', 'litresPerFill', 'fillsPerWeek', 'generatorMaintenance'
-            ];
-            
-            generatorInputs.forEach(inputId => {
-                const element = document.getElementById(inputId);
-                if (element) {
-                    element.addEventListener('change', function() {
-                        updateGeneratorCosts();
-                        debouncedUpdateCosts();
-                    });
-                    element.addEventListener('input', function() {
-                        updateGeneratorCosts();
-                        debouncedUpdateCosts();
-                    });
-                }
-            });
+			// Generator input change listeners
+			const generatorInputs = [
+				'generatorSize', 'fuelType', 'generatorFrequency', 
+				'fuelPrice', 'litresPerFill', 'fillsPerWeek', 'generatorMaintenance'
+			];
+			
+			generatorInputs.forEach(inputId => {
+				const element = document.getElementById(inputId);
+				if (element) {
+					element.addEventListener('change', function() {
+						updateGeneratorCosts();
+						debouncedUpdateCosts();
+					});
+					element.addEventListener('input', function() {
+						updateGeneratorCosts();
+						debouncedUpdateCosts();
+					});
+				}
+			});
 
-            step5Initialized = true;
-        }
+			step5Initialized = true;
+		}
 
-        // These should run EVERY time step 5 is visited
-        // Restore generator state if previously enabled
-        if (appState.costEstimate?.useGenerator) {
-            const toggle = document.getElementById('generatorToggle');
-            const details = document.getElementById('generatorDetails');
-            const genCostSection = document.getElementById('generatorCostSection');
-            
-            if (toggle && !toggle.classList.contains('active')) {
-                toggle.dataset.active = 'true';
-                toggle.classList.add('active');
-                details.classList.add('show');
-                details.style.display = 'grid';
-                genCostSection.style.display = 'block';
-            }
-        }
-
-        // Initial calculations - always run
-        updateAllCosts();
-    }
+		// Initial calculations - always run
+		updateAllCosts();
+	}
 
     function updateGeneratorCosts() {
-        const generatorToggle = document.getElementById('generatorToggle');
-        const useGenerator = generatorToggle?.dataset.active === 'true';
-        
-        if (!useGenerator) {
-            return { weekly: 0, monthly: 0, annual: 0 };
-        }
-        
-        const fuelPrice = parseFloat(document.getElementById('fuelPrice')?.value) || 700;
-        const litresPerFill = parseFloat(document.getElementById('litresPerFill')?.value) || 10;
-        const fillsPerWeek = parseFloat(document.getElementById('fillsPerWeek')?.value) || 2;
-        
-        const weeklyFuelCost = fuelPrice * litresPerFill * fillsPerWeek;
-        const monthlyFuelCost = weeklyFuelCost * 4.33;
-        const annualFuelCost = monthlyFuelCost * 12;
-        
-        const weeklyDisplay = document.getElementById('weeklyFuelCost');
-        const monthlyDisplay = document.getElementById('monthlyFuelCost');
-        const annualDisplay = document.getElementById('annualFuelCost');
-        
-        if (weeklyDisplay) weeklyDisplay.textContent = `₦${formatNumber(weeklyFuelCost)}`;
-        if (monthlyDisplay) monthlyDisplay.textContent = `₦${formatNumber(monthlyFuelCost)}`;
-        if (annualDisplay) annualDisplay.textContent = `₦${formatNumber(annualFuelCost)}`;
-        
-        return { weekly: weeklyFuelCost, monthly: monthlyFuelCost, annual: annualFuelCost };
-    }    
+		const useGenerator = isGeneratorActive();
+		
+		// If generator is not enabled, return zeros
+		if (!useGenerator) {
+			return { weekly: 0, monthly: 0, annual: 0 };
+		}
+		
+		const fuelPrice = parseFloat(document.getElementById('fuelPrice')?.value) || 700;
+		const litresPerFill = parseFloat(document.getElementById('litresPerFill')?.value) || 10;
+		const fillsPerWeek = parseFloat(document.getElementById('fillsPerWeek')?.value) || 2;
+		
+		const weeklyFuelCost = fuelPrice * litresPerFill * fillsPerWeek;
+		const monthlyFuelCost = weeklyFuelCost * 4.33;
+		const annualFuelCost = monthlyFuelCost * 12;
+		
+		// Update displays in generator section
+		const weeklyDisplay = document.getElementById('weeklyFuelCost');
+		const monthlyDisplay = document.getElementById('monthlyFuelCost');
+		const annualDisplay = document.getElementById('annualFuelCost');
+		
+		if (weeklyDisplay) weeklyDisplay.textContent = `₦${formatNumber(weeklyFuelCost)}`;
+		if (monthlyDisplay) monthlyDisplay.textContent = `₦${formatNumber(monthlyFuelCost)}`;
+		if (annualDisplay) annualDisplay.textContent = `₦${formatNumber(annualFuelCost)}`;
+		
+		return { weekly: weeklyFuelCost, monthly: monthlyFuelCost, annual: annualFuelCost };
+	}    
 
     function updateAllCosts() {
-        const tariffSelect = document.getElementById('tariffBand');
-        const powerHoursSlider = document.getElementById('powerHours');
-        const generatorToggle = document.getElementById('generatorToggle');
-        
-        const band = tariffSelect?.value || 'b';
-        const powerHours = powerHoursSlider ? parseInt(powerHoursSlider.value) : 12;
-        const useGenerator = generatorToggle?.dataset.active === 'true';
-        
-        const analysis = appState.analysis || { dailyKwh: 15, monthlyKwh: 450 };
-        const tariff = tariffRates[band] || tariffRates.b;
-        
-        const adjustedDailyKwh = (analysis.dailyKwh / 24) * powerHours;
-        const adjustedMonthlyKwh = adjustedDailyKwh * 30;
-        
-        const currentGridCost = adjustedMonthlyKwh * tariff.rate;
-        const fullDayGridCost = analysis.monthlyKwh * tariff.rate;
-        const bandACost = analysis.monthlyKwh * tariffRates.a.rate;
+		const tariffSelect = document.getElementById('tariffBand');
+		const powerHoursSlider = document.getElementById('powerHours');
+		
+		const band = tariffSelect?.value || 'b';
+		const powerHours = powerHoursSlider ? parseInt(powerHoursSlider.value) : 12;
+		const useGenerator = isGeneratorActive();
+		
+		// Get analysis data
+		const analysis = appState.analysis || { dailyKwh: 15, monthlyKwh: 450 };
+		
+		// Get tariff rate
+		const tariff = tariffRates[band] || tariffRates.b;
+		
+		// Calculate grid costs
+		const adjustedDailyKwh = (analysis.dailyKwh / 24) * powerHours;
+		const adjustedMonthlyKwh = adjustedDailyKwh * 30;
+		
+		const currentGridCost = adjustedMonthlyKwh * tariff.rate;
+		const fullDayGridCost = analysis.monthlyKwh * tariff.rate;
+		const bandACost = analysis.monthlyKwh * tariffRates.a.rate;
 
-        document.getElementById('costSubtitle').textContent = `Based on ${tariff.name} tariff @ ₦${tariff.rate}/kWh`;
-        document.getElementById('currentGridCost').textContent = `₦${formatNumber(currentGridCost)}`;
-        document.getElementById('currentGridLabel').textContent = `Grid (${powerHours}hrs)`;
-        document.getElementById('fullDayGridCost').textContent = `₦${formatNumber(fullDayGridCost)}`;
-        document.getElementById('bandACost').textContent = `₦${formatNumber(bandACost)}`;
+		// Update grid cost displays
+		document.getElementById('costSubtitle').textContent = `Based on ${tariff.name} tariff @ ₦${tariff.rate}/kWh`;
+		document.getElementById('currentGridCost').textContent = `₦${formatNumber(currentGridCost)}`;
+		document.getElementById('currentGridLabel').textContent = `Grid (${powerHours}hrs)`;
+		document.getElementById('fullDayGridCost').textContent = `₦${formatNumber(fullDayGridCost)}`;
+		document.getElementById('bandACost').textContent = `₦${formatNumber(bandACost)}`;
 
-        let generatorCosts = { monthly: 0, maintenance: 0, total: 0 };
+		// Calculate generator costs if enabled
+		let generatorCosts = { monthly: 0, maintenance: 0, total: 0 };
 
-        if (useGenerator) {
-            const fuelCosts = updateGeneratorCosts();
-            const maintenance = parseFloat(document.getElementById('generatorMaintenance')?.value) || 10000;
-            
-            generatorCosts = {
-                monthly: fuelCosts.monthly,
-                maintenance: maintenance,
-                total: fuelCosts.monthly + maintenance
-            };
-            
-            document.getElementById('genMonthlyCost').textContent = `₦${formatNumber(generatorCosts.monthly)}`;
-            document.getElementById('genMaintenanceCost').textContent = `₦${formatNumber(generatorCosts.maintenance)}`;
-            document.getElementById('genTotalCost').textContent = `₦${formatNumber(generatorCosts.total)}`;
-        } else {
-            const genMonthlyCost = document.getElementById('genMonthlyCost');
-            const genMaintenanceCost = document.getElementById('genMaintenanceCost');
-            const genTotalCost = document.getElementById('genTotalCost');
-            
-            if (genMonthlyCost) genMonthlyCost.textContent = `₦0`;
-            if (genMaintenanceCost) genMaintenanceCost.textContent = `₦0`;
-            if (genTotalCost) genTotalCost.textContent = `₦0`;
-        }
+		if (useGenerator) {
+			const fuelCosts = updateGeneratorCosts();
+			const maintenance = parseFloat(document.getElementById('generatorMaintenance')?.value) || 10000;
+			
+			generatorCosts = {
+				monthly: fuelCosts.monthly,
+				maintenance: maintenance,
+				total: fuelCosts.monthly + maintenance
+			};
+			
+			// Show generator cost section
+			const genCostSection = document.getElementById('generatorCostSection');
+			if (genCostSection) {
+				genCostSection.style.display = 'block';
+			}
+			
+			// Update generator cost displays
+			document.getElementById('genMonthlyCost').textContent = `₦${formatNumber(generatorCosts.monthly)}`;
+			document.getElementById('genMaintenanceCost').textContent = `₦${formatNumber(generatorCosts.maintenance)}`;
+			document.getElementById('genTotalCost').textContent = `₦${formatNumber(generatorCosts.total)}`;
+		} else {
+			// Hide generator cost section
+			const genCostSection = document.getElementById('generatorCostSection');
+			if (genCostSection) {
+				genCostSection.style.display = 'none';
+			}
+			
+			// Reset generator displays
+			const genMonthlyCost = document.getElementById('genMonthlyCost');
+			const genMaintenanceCost = document.getElementById('genMaintenanceCost');
+			const genTotalCost = document.getElementById('genTotalCost');
+			
+			if (genMonthlyCost) genMonthlyCost.textContent = `₦0`;
+			if (genMaintenanceCost) genMaintenanceCost.textContent = `₦0`;
+			if (genTotalCost) genTotalCost.textContent = `₦0`;
+		}
 
-        const totalMonthly = currentGridCost + (useGenerator ? generatorCosts.total : 0);
-        const totalAnnual = totalMonthly * 12;
+		// Calculate total costs
+		const totalMonthly = currentGridCost + (useGenerator ? generatorCosts.total : 0);
+		const totalAnnual = totalMonthly * 12;
 
-        document.getElementById('totalMonthlyCost').textContent = `₦${formatNumber(totalMonthly)}`;
-        document.getElementById('totalAnnualCost').textContent = `₦${formatNumber(totalAnnual)}`;
+		// Update total displays
+		document.getElementById('totalMonthlyCost').textContent = `₦${formatNumber(totalMonthly)}`;
+		document.getElementById('totalAnnualCost').textContent = `₦${formatNumber(totalAnnual)}`;
 
-        appState.costEstimate = {
-            band: band,
-            rate: tariff.rate,
-            powerHours: powerHours,
-            currentGridCost: currentGridCost,
-            fullDayGridCost: fullDayGridCost,
-            bandACost: bandACost,
-            monthlyKwh: adjustedMonthlyKwh,
-            useGenerator: useGenerator,
-            generator: useGenerator ? {
-                size: document.getElementById('generatorSize')?.value || '2.5',
-                fuelType: document.getElementById('fuelType')?.value || 'petrol',
-                fuelPrice: parseFloat(document.getElementById('fuelPrice')?.value) || 700,
-                litresPerFill: parseFloat(document.getElementById('litresPerFill')?.value) || 10,
-                fillsPerWeek: parseFloat(document.getElementById('fillsPerWeek')?.value) || 2,
-                hoursPerDay: parseFloat(document.getElementById('generatorHoursSlider')?.value) || 5,
-                monthlyFuelCost: generatorCosts.monthly,
-                maintenanceCost: generatorCosts.maintenance,
-                totalMonthlyCost: generatorCosts.total
-            } : null,
-            totalMonthlyCost: totalMonthly,
-            totalAnnualCost: totalAnnual
-        };
-    }
+		// Store for later use
+		appState.costEstimate = {
+			band: band,
+			rate: tariff.rate,
+			powerHours: powerHours,
+			currentGridCost: currentGridCost,
+			fullDayGridCost: fullDayGridCost,
+			bandACost: bandACost,
+			monthlyKwh: adjustedMonthlyKwh,
+			useGenerator: useGenerator,
+			generator: useGenerator ? {
+				size: document.getElementById('generatorSize')?.value || '2.5',
+				fuelType: document.getElementById('fuelType')?.value || 'petrol',
+				fuelPrice: parseFloat(document.getElementById('fuelPrice')?.value) || 700,
+				litresPerFill: parseFloat(document.getElementById('litresPerFill')?.value) || 10,
+				fillsPerWeek: parseFloat(document.getElementById('fillsPerWeek')?.value) || 2,
+				hoursPerDay: parseFloat(document.getElementById('generatorHoursSlider')?.value) || 5,
+				monthlyFuelCost: generatorCosts.monthly,
+				maintenanceCost: generatorCosts.maintenance,
+				totalMonthlyCost: generatorCosts.total
+			} : null,
+			totalMonthlyCost: totalMonthly,
+			totalAnnualCost: totalAnnual
+		};
+	}
 
     // ==========================================
     // SOLAR SYSTEM SIZING CALCULATIONS
