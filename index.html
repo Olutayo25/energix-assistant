@@ -423,7 +423,7 @@
             color: var(--gray);
         }
 
-        .detail-input, .detail-select {
+        .detail-select {
             padding: 10px 12px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
@@ -432,10 +432,43 @@
             font-size: 0.9rem;
         }
 
-        .detail-input:focus, .detail-select:focus {
+        .detail-select:focus {
             outline: none;
             border-color: var(--primary);
         }
+		
+		/* Detail input styling - CONSOLIDATED */
+		.detail-input {
+			padding: 10px 12px;
+			background: rgba(255,255,255,0.05);
+			border: 1px solid rgba(255,255,255,0.1);
+			border-radius: 8px;
+			color: var(--light);
+			font-size: 0.9rem;
+			width: 100%;
+			transition: all 0.3s ease;
+		}
+
+		.detail-input:focus {
+			outline: none;
+			border-color: var(--primary);
+			box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+		}
+
+		.detail-input::placeholder {
+			color: var(--gray);
+		}
+
+		/* Number input spinner removal */
+		.detail-input[type="number"]::-webkit-inner-spin-button,
+		.detail-input[type="number"]::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		.detail-input[type="number"] {
+			-moz-appearance: textfield;
+		}
 
         /* Wattage Auto-display */
         .wattage-display {
@@ -1040,36 +1073,6 @@
 			background: rgba(239, 68, 68, 0.1);
 		}
 
-		/* Detail input styling */
-		.detail-input {
-			padding: 10px 12px;
-			background: rgba(255,255,255,0.05);
-			border: 1px solid rgba(255,255,255,0.1);
-			border-radius: 8px;
-			color: var(--light);
-			font-size: 0.9rem;
-			width: 100%;
-		}
-
-		.detail-input:focus {
-			outline: none;
-			border-color: var(--primary);
-		}
-
-		.detail-input::placeholder {
-			color: var(--gray);
-		}
-
-		/* Number input spinner removal for cleaner look */
-		.detail-input[type="number"]::-webkit-inner-spin-button,
-		.detail-input[type="number"]::-webkit-outer-spin-button {
-			-webkit-appearance: none;
-			margin: 0;
-		}
-
-		.detail-input[type="number"] {
-			-moz-appearance: textfield;
-		}
 		
 		/* Current Costs Grid */
 		.current-costs-grid {
@@ -1255,6 +1258,247 @@
 			}
 		}
 		
+		/* ==========================================
+		   ADDITIONAL/MISSING STYLES
+		   ========================================== */
+
+		/* Frequency select in usage patterns */
+		.frequency-select {
+			width: 100%;
+			margin-top: 5px;
+		}
+
+		/* Hours display in usage patterns */
+		.hours-display {
+			color: var(--primary);
+			font-weight: 700;
+		}
+
+		/* Daily kWh value (standalone) */
+		.daily-kwh-value {
+			font-size: 0.85rem;
+			color: var(--warning);
+			font-weight: 500;
+		}
+
+		/* Focus state for equipment toggle (keyboard navigation) */
+		.equipment-toggle:focus {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+		}
+
+		.equipment-toggle:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+		}
+
+		/* Projection section */
+		.projection-section {
+			margin-top: 25px;
+		}
+
+		/* Room tab button reset (since changed from div to button) */
+		.room-tab {
+			font-family: inherit;
+			color: var(--light);
+		}
+
+		/* Report form wrapper */
+		#reportForm {
+			width: 100%;
+		}
+
+		/* Disabled button state */
+		.btn:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+			transform: none !important;
+		}
+
+		.btn:disabled:hover {
+			transform: none !important;
+			box-shadow: none !important;
+		}
+
+		/* Form validation states */
+		.form-input:invalid:not(:placeholder-shown) {
+			border-color: var(--danger);
+		}
+
+		.form-input:valid:not(:placeholder-shown) {
+			border-color: rgba(34, 197, 94, 0.5);
+		}
+
+		/* Button loading state */
+		.btn.loading {
+			pointer-events: none;
+			opacity: 0.7;
+		}
+
+		.btn.loading::after {
+			content: '';
+			width: 16px;
+			height: 16px;
+			border: 2px solid transparent;
+			border-top-color: currentColor;
+			border-radius: 50%;
+			animation: spin 0.8s linear infinite;
+			margin-left: 8px;
+		}
+
+		@keyframes spin {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		/* Slider focus states */
+		.slider:focus {
+			outline: none;
+		}
+
+		.slider:focus::-webkit-slider-thumb {
+			box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3), 0 0 10px rgba(16, 185, 129, 0.5);
+		}
+
+		.slider:focus::-moz-range-thumb {
+			box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3), 0 0 10px rgba(16, 185, 129, 0.5);
+		}
+
+		/* House option keyboard focus */
+		.house-option:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+			border-color: var(--primary);
+		}
+
+		/* Time option keyboard focus */
+		.time-option:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+		}
+
+		/* Stepper button focus */
+		.stepper-btn:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+		}
+
+		/* Add equipment button focus */
+		.add-equipment-btn:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+			border-color: var(--primary);
+			color: var(--primary);
+		}
+
+		/* Select focus-visible for keyboard users */
+		.form-select:focus-visible,
+		.detail-select:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 2px;
+		}
+
+		/* Ensure proper spacing in usage patterns container */
+		#usage-patterns-container {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+		}
+
+		#usage-patterns-container .equipment-card {
+			margin-bottom: 0;
+		}
+
+		/* Analysis dashboard container */
+		#analysis-dashboard {
+			min-height: 200px;
+		}
+
+		/* Solar recommendations container */
+		#solar-recommendations {
+			min-height: 200px;
+		}
+
+		/* High contrast mode support */
+		@media (prefers-contrast: high) {
+			.card {
+				border-width: 2px;
+			}
+			
+			.equipment-toggle {
+				border: 2px solid var(--light);
+			}
+			
+			.btn {
+				border: 2px solid currentColor;
+			}
+		}
+
+		/* Reduced motion preference */
+		@media (prefers-reduced-motion: reduce) {
+			*,
+			*::before,
+			*::after {
+				animation-duration: 0.01ms !important;
+				animation-iteration-count: 1 !important;
+				transition-duration: 0.01ms !important;
+			}
+			
+			.step-content.active {
+				animation: none;
+			}
+			
+			.room-content.active {
+				animation: none;
+			}
+		}
+
+		/* Dark mode is default, but add light mode support if needed later */
+		@media (prefers-color-scheme: light) {
+			/* Can add light mode overrides here if needed */
+		}
+
+		/* Improve touch targets on mobile */
+		@media (max-width: 600px) {
+			.form-input,
+			.form-select,
+			.detail-input,
+			.detail-select {
+				min-height: 48px;
+				font-size: 16px; /* Prevents iOS zoom on focus */
+			}
+			
+			.house-option {
+				min-height: 100px;
+			}
+			
+			.slider::-webkit-slider-thumb {
+				width: 28px;
+				height: 28px;
+			}
+			
+			.slider::-moz-range-thumb {
+				width: 28px;
+				height: 28px;
+			}
+		}
+
+		/* Landscape mobile adjustments */
+		@media (max-width: 600px) and (orientation: landscape) {
+			.app-header {
+				padding: 15px 0;
+			}
+			
+			.logo {
+				font-size: 2rem;
+			}
+			
+			.card {
+				padding: 15px;
+			}
+		}
+
     </style>
 </head>
 <body>
@@ -1272,31 +1516,45 @@
             </div>
             <div class="progress-steps">
                 <div class="progress-step">
-                    <div class="step-circle active" data-step="1" aria-current="step"><span class="sr-only">Step 1 of 7: </span>1</div>
+                    <div class="step-circle active" data-step="1" aria-current="step">
+                        <span class="sr-only">Step 1 of 7: House</span>1
+                    </div>
                     <span class="step-label">House</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="2" aria-current="step"><span class="sr-only">Step 2 of 7: </span>2</div>
+                    <div class="step-circle" data-step="2">
+                        <span class="sr-only">Step 2 of 7: Equipment</span>2
+                    </div>
                     <span class="step-label">Equipment</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="3" aria-current="step"><span class="sr-only">Step 3 of 7: </span>3</div>
+                    <div class="step-circle" data-step="3">
+                        <span class="sr-only">Step 3 of 7: Usage</span>3
+                    </div>
                     <span class="step-label">Usage</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="4" aria-current="step"><span class="sr-only">Step 4 of 7: </span>4</div>
+                    <div class="step-circle" data-step="4">
+                        <span class="sr-only">Step 4 of 7: Analysis</span>4
+                    </div>
                     <span class="step-label">Analysis</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="5" aria-current="step"><span class="sr-only">Step 5 of 7: </span>5</div>
+                    <div class="step-circle" data-step="5">
+                        <span class="sr-only">Step 5 of 7: Location</span>5
+                    </div>
                     <span class="step-label">Location</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="6" aria-current="step"><span class="sr-only">Step 6 of 7: </span>6</div>
+                    <div class="step-circle" data-step="6">
+                        <span class="sr-only">Step 6 of 7: Solar</span>6
+                    </div>
                     <span class="step-label">Solar</span>
                 </div>
                 <div class="progress-step">
-                    <div class="step-circle" data-step="7" aria-current="step"><span class="sr-only">Step 7 of 7: </span>7</div>
+                    <div class="step-circle" data-step="7">
+                        <span class="sr-only">Step 7 of 7: Report</span>7
+                    </div>
                     <span class="step-label">Report</span>
                 </div>
             </div>
@@ -1312,44 +1570,44 @@
                 <h2 class="card-title"><i class="fas fa-home"></i> What type of home do you live in?</h2>
                 <p class="card-subtitle">Select the option that best describes your living space</p>
 
-                <div class="house-grid" id="houseGrid">
-                    <div class="house-option" data-value="self-contain">
-                        <i class="fas fa-door-open"></i>
+                <div class="house-grid" id="houseGrid" role="listbox" aria-label="House type selection">
+                    <div class="house-option" data-value="self-contain" role="option" tabindex="0">
+                        <i class="fas fa-door-open" aria-hidden="true"></i>
                         <span>Self Contain</span>
                     </div>
-                    <div class="house-option" data-value="1-room-parlor">
-                        <i class="fas fa-couch"></i>
+                    <div class="house-option" data-value="1-room-parlor" role="option" tabindex="0">
+                        <i class="fas fa-couch" aria-hidden="true"></i>
                         <span>1 Room & Parlor</span>
                     </div>
-                    <div class="house-option" data-value="2-bedroom">
-                        <i class="fas fa-bed"></i>
+                    <div class="house-option" data-value="2-bedroom" role="option" tabindex="0">
+                        <i class="fas fa-bed" aria-hidden="true"></i>
                         <span>2 Bedroom Flat</span>
                     </div>
-                    <div class="house-option" data-value="3-bedroom">
-                        <i class="fas fa-house-user"></i>
+                    <div class="house-option" data-value="3-bedroom" role="option" tabindex="0">
+                        <i class="fas fa-house-user" aria-hidden="true"></i>
                         <span>3 Bedroom Flat</span>
                     </div>
-                    <div class="house-option" data-value="4-bedroom">
-                        <i class="fas fa-building"></i>
+                    <div class="house-option" data-value="4-bedroom" role="option" tabindex="0">
+                        <i class="fas fa-building" aria-hidden="true"></i>
                         <span>4 Bedroom</span>
                     </div>
-                    <div class="house-option" data-value="duplex">
-                        <i class="fas fa-city"></i>
+                    <div class="house-option" data-value="duplex" role="option" tabindex="0">
+                        <i class="fas fa-city" aria-hidden="true"></i>
                         <span>Duplex</span>
                     </div>
-                    <div class="house-option" data-value="bungalow">
-                        <i class="fas fa-warehouse"></i>
+                    <div class="house-option" data-value="bungalow" role="option" tabindex="0">
+                        <i class="fas fa-warehouse" aria-hidden="true"></i>
                         <span>Bungalow</span>
                     </div>
-                    <div class="house-option" data-value="office">
-                        <i class="fas fa-briefcase"></i>
+                    <div class="house-option" data-value="office" role="option" tabindex="0">
+                        <i class="fas fa-briefcase" aria-hidden="true"></i>
                         <span>Office Space</span>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="goToStep(2)">
-                        Continue <i class="fas fa-arrow-right"></i>
+                    <button class="btn btn-primary" onclick="goToStep(2)" type="button">
+                        Continue <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -1366,35 +1624,34 @@
                 <p class="card-subtitle">Select equipment in each room and I'll calculate the power rating</p>
 
                 <!-- Room Tabs -->
-                <div class="room-tabs" id="roomTabs">
-                    <div class="room-tab active" data-room="living">Living Room</div>
-                    <div class="room-tab" data-room="bedroom">Bedroom(s)</div>
-                    <div class="room-tab" data-room="kitchen">Kitchen</div>
-                    <div class="room-tab" data-room="bathroom">Bathroom</div>
-                    <div class="room-tab" data-room="general">General</div>
+                <div class="room-tabs" id="roomTabs" role="tablist" aria-label="Room selection">
+                    <button class="room-tab active" data-room="living" role="tab" aria-selected="true" aria-controls="room-living" type="button">Living Room</button>
+                    <button class="room-tab" data-room="bedroom" role="tab" aria-selected="false" aria-controls="room-bedroom" type="button">Bedroom(s)</button>
+                    <button class="room-tab" data-room="kitchen" role="tab" aria-selected="false" aria-controls="room-kitchen" type="button">Kitchen</button>
+                    <button class="room-tab" data-room="bathroom" role="tab" aria-selected="false" aria-controls="room-bathroom" type="button">Bathroom</button>
+                    <button class="room-tab" data-room="general" role="tab" aria-selected="false" aria-controls="room-general" type="button">General</button>
                 </div>
 
                 <!-- Living Room Equipment -->
-                <div class="room-content active" id="room-living">
+                <div class="room-content active" id="room-living" role="tabpanel" aria-labelledby="tab-living">
                     <!-- TV Equipment Card -->
                     <div class="equipment-card" data-equipment="tv">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-tv"></i>
+                                <i class="fas fa-tv" aria-hidden="true"></i>
                                 <span>Television</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Television"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Television"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Brand</label>
-                                <select class="detail-select" data-field="brand">
+                                <label class="detail-label" for="tv-brand">Brand</label>
+                                <select class="detail-select" data-field="brand" id="tv-brand">
                                     <option value="" disabled selected>Select Brand</option>
                                     <option value="samsung">Samsung</option>
                                     <option value="lg">LG</option>
@@ -1405,9 +1662,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Size</label>
-                                <select class="detail-select" data-field="size">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="tv-size">Size</label>
+                                <select class="detail-select" data-field="size" id="tv-size">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="32">32 inches</option>
                                     <option value="43">43 inches</option>
                                     <option value="50">50 inches</option>
@@ -1417,9 +1674,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="tv-type">Type</label>
+                                <select class="detail-select" data-field="type" id="tv-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="led">LED</option>
                                     <option value="oled">OLED</option>
                                     <option value="qled">QLED</option>
@@ -1430,14 +1687,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1446,22 +1703,21 @@
                     <div class="equipment-card" data-equipment="fan">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-fan"></i>
+                                <i class="fas fa-fan" aria-hidden="true"></i>
                                 <span>Living Room Fan</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Fan"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Living Room Fan"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="fan-type">Type</label>
+                                <select class="detail-select" data-field="type" id="fan-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="ceiling">Ceiling Fan</option>
                                     <option value="standing">Standing Fan</option>
                                     <option value="table">Table Fan</option>
@@ -1471,14 +1727,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1487,22 +1743,21 @@
                     <div class="equipment-card" data-equipment="ac">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-snowflake"></i>
+                                <i class="fas fa-snowflake" aria-hidden="true"></i>
                                 <span>Air Conditioner</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Air Conditioner"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Air Conditioner"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="ac-type">Type</label>
+                                <select class="detail-select" data-field="type" id="ac-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="split">Split Unit</option>
                                     <option value="window">Window Unit</option>
                                     <option value="portable">Portable</option>
@@ -1510,9 +1765,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Capacity</label>
-                                <select class="detail-select" data-field="capacity">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="ac-capacity">Capacity</label>
+                                <select class="detail-select" data-field="capacity" id="ac-capacity">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="1">1 HP</option>
                                     <option value="1.5">1.5 HP</option>
                                     <option value="2">2 HP</option>
@@ -1522,14 +1777,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1538,22 +1793,21 @@
                     <div class="equipment-card" data-equipment="livingroom-bulb">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-lightbulb"></i>
+                                <i class="fas fa-lightbulb" aria-hidden="true"></i>
                                 <span>Light Bulbs</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Light Bulbs"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Light Bulbs"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-									<option value="">Select Type</option>
+                                <label class="detail-label" for="livingroom-bulb-type">Type</label>
+                                <select class="detail-select" data-field="type" id="livingroom-bulb-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="led">LED Bulb</option>
                                     <option value="energy-saving">Energy Saving</option>
                                     <option value="incandescent">Incandescent</option>
@@ -1561,9 +1815,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Wattage</label>
-                                <select class="detail-select" data-field="wattage">
-									<option value="">Select Rating</option>
+                                <label class="detail-label" for="livingroom-bulb-wattage">Wattage</label>
+                                <select class="detail-select" data-field="wattage" id="livingroom-bulb-wattage">
+                                    <option value="" disabled selected>Select Rating</option>
                                     <option value="5">5W</option>
                                     <option value="9">9W</option>
                                     <option value="12">12W</option>
@@ -1574,39 +1828,37 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
-					
 
                     <!-- Sound System -->
                     <div class="equipment-card" data-equipment="sound">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-volume-up"></i>
+                                <i class="fas fa-volume-up" aria-hidden="true"></i>
                                 <span>Sound System/Speaker</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Sound System"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Sound System"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="sound-type">Type</label>
+                                <select class="detail-select" data-field="type" id="sound-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="soundbar">Soundbar</option>
                                     <option value="home-theater">Home Theater</option>
                                     <option value="bluetooth">Bluetooth Speaker</option>
@@ -1616,46 +1868,45 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Add Custom Equipment -->
-                    <button class="add-equipment-btn" data-room="living">
-                        <i class="fas fa-plus"></i>
+                    <button class="add-equipment-btn" data-room="living" type="button">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
                         Add Custom Equipment
                     </button>
                 </div>
 
                 <!-- Bedroom Equipment -->
-                <div class="room-content" id="room-bedroom">
+                <div class="room-content" id="room-bedroom" role="tabpanel" aria-labelledby="tab-bedroom">
                     <!-- Bedroom TV -->
                     <div class="equipment-card" data-equipment="bedroom-tv">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-tv"></i>
+                                <i class="fas fa-tv" aria-hidden="true"></i>
                                 <span>Bedroom Television</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Television"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Bedroom Television"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Brand</label>
-                                <select class="detail-select" data-field="brand">
+                                <label class="detail-label" for="bedroom-tv-brand">Brand</label>
+                                <select class="detail-select" data-field="brand" id="bedroom-tv-brand">
                                     <option value="" disabled selected>Select Brand</option>
                                     <option value="samsung">Samsung</option>
                                     <option value="lg">LG</option>
@@ -1666,9 +1917,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Size</label>
-                                <select class="detail-select" data-field="size">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="bedroom-tv-size">Size</label>
+                                <select class="detail-select" data-field="size" id="bedroom-tv-size">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="32">32 inches</option>
                                     <option value="43">43 inches</option>
                                     <option value="50">50 inches</option>
@@ -1676,9 +1927,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="bedroom-tv-type">Type</label>
+                                <select class="detail-select" data-field="type" id="bedroom-tv-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="led">LED</option>
                                     <option value="smart">Smart TV</option>
                                 </select>
@@ -1686,14 +1937,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1702,31 +1953,30 @@
                     <div class="equipment-card" data-equipment="bedroom-ac">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-snowflake"></i>
+                                <i class="fas fa-snowflake" aria-hidden="true"></i>
                                 <span>Bedroom Air Conditioner</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Air Conditioner"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Bedroom Air Conditioner"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="bedroom-ac-type">Type</label>
+                                <select class="detail-select" data-field="type" id="bedroom-ac-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="split">Split Unit</option>
                                     <option value="window">Window Unit</option>
                                     <option value="inverter">Inverter AC</option>
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Capacity</label>
-                                <select class="detail-select" data-field="capacity">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="bedroom-ac-capacity">Capacity</label>
+                                <select class="detail-select" data-field="capacity" id="bedroom-ac-capacity">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="1">1 HP</option>
                                     <option value="1.5">1.5 HP</option>
                                     <option value="2">2 HP</option>
@@ -1735,14 +1985,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1751,22 +2001,21 @@
                     <div class="equipment-card" data-equipment="bedroom-fan">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-fan"></i>
+                                <i class="fas fa-fan" aria-hidden="true"></i>
                                 <span>Bedroom Fan</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Fan"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Bedroom Fan"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="bedroom-fan-type">Type</label>
+                                <select class="detail-select" data-field="type" id="bedroom-fan-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="ceiling">Ceiling Fan</option>
                                     <option value="standing">Standing Fan</option>
                                     <option value="table">Table Fan</option>
@@ -1775,14 +2024,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1791,22 +2040,21 @@
                     <div class="equipment-card" data-equipment="bedroom-bulb">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-lightbulb"></i>
+                                <i class="fas fa-lightbulb" aria-hidden="true"></i>
                                 <span>Bedroom Light Bulbs</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Bulbs"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Bedroom Light Bulbs"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-									<option value="">Select Type</option>
+                                <label class="detail-label" for="bedroom-bulb-type">Type</label>
+                                <select class="detail-select" data-field="type" id="bedroom-bulb-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="led">LED Bulb</option>
                                     <option value="energy-saving">Energy Saving</option>
                                     <option value="incandescent">Incandescent</option>
@@ -1814,9 +2062,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Wattage</label>
-                                <select class="detail-select" data-field="wattage">
-									<option value="">Select Rating</option>
+                                <label class="detail-label" for="bedroom-bulb-wattage">Wattage</label>
+                                <select class="detail-select" data-field="wattage" id="bedroom-bulb-wattage">
+                                    <option value="" disabled selected>Select Rating</option>
                                     <option value="5">5W</option>
                                     <option value="9">9W</option>
                                     <option value="12">12W</option>
@@ -1827,14 +2075,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">2</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">2</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Total Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1843,21 +2091,21 @@
                     <div class="equipment-card" data-equipment="charger">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-mobile-alt"></i>
+                                <i class="fas fa-mobile-alt" aria-hidden="true"></i>
                                 <span>Phone/Device Chargers</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Phone Chargers"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Phone Chargers"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
+                                <label class="detail-label" for="charger-type">Type</label>
+                                <select class="detail-select" data-field="type" id="charger-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="standard">Standard (5W)</option>
                                     <option value="fast">Fast Charger (18W)</option>
                                     <option value="super-fast">Super Fast (45W)</option>
@@ -1866,38 +2114,37 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">2</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">2</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
-					
-					<!-- Laptop -->
+
+                    <!-- Laptop -->
                     <div class="equipment-card" data-equipment="laptop">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-laptop"></i>
+                                <i class="fas fa-laptop" aria-hidden="true"></i>
                                 <span>Laptop</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Laptop"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Laptop"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select"  data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="laptop-type">Type</label>
+                                <select class="detail-select" data-field="type" id="laptop-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="ultrabook">Ultrabook (45W)</option>
                                     <option value="standard">Standard (65W)</option>
                                     <option value="gaming">Gaming Laptop (150W)</option>
@@ -1906,46 +2153,45 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">2</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
 
-                    <button class="add-equipment-btn" data-room="bedroom">
-                        <i class="fas fa-plus"></i>
+                    <button class="add-equipment-btn" data-room="bedroom" type="button">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
                         Add Custom Equipment
                     </button>
                 </div>
 
                 <!-- Kitchen Equipment -->
-                <div class="room-content" id="room-kitchen">
+                <div class="room-content" id="room-kitchen" role="tabpanel" aria-labelledby="tab-kitchen">
                     <!-- Refrigerator -->
                     <div class="equipment-card" data-equipment="refrigerator">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-temperature-low"></i>
+                                <i class="fas fa-temperature-low" aria-hidden="true"></i>
                                 <span>Refrigerator</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Refrigerator"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Refrigerator"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="fridge-type">Type</label>
+                                <select class="detail-select" data-field="type" id="fridge-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="single-door">Single Door</option>
                                     <option value="double-door">Double Door</option>
                                     <option value="side-by-side">Side by Side</option>
@@ -1954,9 +2200,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Size (Litres)</label>
-                                <select class="detail-select" data-field="size">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="fridge-size">Size (Litres)</label>
+                                <select class="detail-select" data-field="size" id="fridge-size">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="100">Under 100L</option>
                                     <option value="200">100-200L</option>
                                     <option value="300">200-300L</option>
@@ -1967,14 +2213,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -1983,30 +2229,29 @@
                     <div class="equipment-card" data-equipment="freezer">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-snowflake"></i>
+                                <i class="fas fa-snowflake" aria-hidden="true"></i>
                                 <span>Freezer</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Freezer"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Freezer"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="freezer-type">Type</label>
+                                <select class="detail-select" data-field="type" id="freezer-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="chest">Chest Freezer</option>
                                     <option value="upright">Upright Freezer</option>
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Size (Litres)</label>
-                                <select class="detail-select" data-field="size">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="freezer-size">Size (Litres)</label>
+                                <select class="detail-select" data-field="size" id="freezer-size">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="100">Under 100L</option>
                                     <option value="200">100-200L</option>
                                     <option value="300">200-300L</option>
@@ -2016,14 +2261,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2032,22 +2277,21 @@
                     <div class="equipment-card" data-equipment="microwave">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-fire"></i>
+                                <i class="fas fa-fire" aria-hidden="true"></i>
                                 <span>Microwave</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Microwave"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Microwave"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Size</label>
-                                <select class="detail-select" data-field="size">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="microwave-size">Size</label>
+                                <select class="detail-select" data-field="size" id="microwave-size">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="small">Small (20L)</option>
                                     <option value="medium">Medium (25-30L)</option>
                                     <option value="large">Large (30L+)</option>
@@ -2056,14 +2300,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2072,22 +2316,21 @@
                     <div class="equipment-card" data-equipment="kettle">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-mug-hot"></i>
+                                <i class="fas fa-mug-hot" aria-hidden="true"></i>
                                 <span>Electric Kettle</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Kettle"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Electric Kettle"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Size</label>
-                                <select class="detail-select" data-field="size">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="kettle-size">Size</label>
+                                <select class="detail-select" data-field="size" id="kettle-size">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="small">Small (1L)</option>
                                     <option value="medium">Medium (1.5-2L)</option>
                                     <option value="large">Large (2L+)</option>
@@ -2096,14 +2339,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2112,22 +2355,21 @@
                     <div class="equipment-card" data-equipment="blender">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-blender"></i>
+                                <i class="fas fa-blender" aria-hidden="true"></i>
                                 <span>Blender</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Blender"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Blender"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="blender-type">Type</label>
+                                <select class="detail-select" data-field="type" id="blender-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="small">Small/Personal</option>
                                     <option value="medium">Medium</option>
                                     <option value="large">Large/Commercial</option>
@@ -2136,14 +2378,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2152,22 +2394,21 @@
                     <div class="equipment-card" data-equipment="cooker">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-fire-alt"></i>
+                                <i class="fas fa-fire-alt" aria-hidden="true"></i>
                                 <span>Electric Cooker/Hot Plate</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Cooker"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Electric Cooker"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="cooker-type">Type</label>
+                                <select class="detail-select" data-field="type" id="cooker-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="single">Single Burner</option>
                                     <option value="double">Double Burner</option>
                                     <option value="induction">Induction Cooker</option>
@@ -2176,14 +2417,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2192,22 +2433,21 @@
                     <div class="equipment-card" data-equipment="kitchen-bulb">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-lightbulb"></i>
+                                <i class="fas fa-lightbulb" aria-hidden="true"></i>
                                 <span>Kitchen Light Bulbs</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Bulbs"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Kitchen Light Bulbs"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-									<option value="">Select Type</option>
+                                <label class="detail-label" for="kitchen-bulb-type">Type</label>
+                                <select class="detail-select" data-field="type" id="kitchen-bulb-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="led">LED Bulb</option>
                                     <option value="energy-saving">Energy Saving</option>
                                     <option value="incandescent">Incandescent</option>
@@ -2215,9 +2455,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Wattage</label>
-                                <select class="detail-select" data-field="wattage">
-									<option value="">Select Rating</option>
+                                <label class="detail-label" for="kitchen-bulb-wattage">Wattage</label>
+                                <select class="detail-select" data-field="wattage" id="kitchen-bulb-wattage">
+                                    <option value="" disabled selected>Select Rating</option>
                                     <option value="5">5W</option>
                                     <option value="9">9W</option>
                                     <option value="12">12W</option>
@@ -2228,46 +2468,45 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">2</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">2</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Total Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
 
-                    <button class="add-equipment-btn" data-room="kitchen">
-                        <i class="fas fa-plus"></i>
+                    <button class="add-equipment-btn" data-room="kitchen" type="button">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
                         Add Kitchen Appliance
                     </button>
                 </div>
 
                 <!-- Bathroom Equipment -->
-                <div class="room-content" id="room-bathroom">
+                <div class="room-content" id="room-bathroom" role="tabpanel" aria-labelledby="tab-bathroom">
                     <!-- Water Heater -->
                     <div class="equipment-card" data-equipment="water-heater">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-hot-tub"></i>
+                                <i class="fas fa-hot-tub" aria-hidden="true"></i>
                                 <span>Water Heater</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Heater"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Water Heater"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="heater-type">Type</label>
+                                <select class="detail-select" data-field="type" id="heater-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="instant">Instant Water Heater</option>
                                     <option value="storage-25">Storage (25L)</option>
                                     <option value="storage-50">Storage (50L)</option>
@@ -2277,14 +2516,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2293,22 +2532,21 @@
                     <div class="equipment-card" data-equipment="bathroom-bulb">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-lightbulb"></i>
+                                <i class="fas fa-lightbulb" aria-hidden="true"></i>
                                 <span>Bathroom Light Bulbs</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Bulbs"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Bathroom Light Bulbs"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-									<option value="">Select Type</option>
+                                <label class="detail-label" for="bathroom-bulb-type">Type</label>
+                                <select class="detail-select" data-field="type" id="bathroom-bulb-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="led">LED Bulb</option>
                                     <option value="energy-saving">Energy Saving</option>
                                     <option value="incandescent">Incandescent</option>
@@ -2316,9 +2554,9 @@
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Wattage</label>
-                                <select class="detail-select" data-field="wattage">
-									<option value="">Select Rating</option>
+                                <label class="detail-label" for="bathroom-bulb-wattage">Wattage</label>
+                                <select class="detail-select" data-field="wattage" id="bathroom-bulb-wattage">
+                                    <option value="" disabled selected>Select Rating</option>
                                     <option value="5">5W</option>
                                     <option value="9">9W</option>
                                     <option value="12">12W</option>
@@ -2329,39 +2567,37 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">2</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">2</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Total Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
 
-                    
                     <!-- Hair Dryer -->
                     <div class="equipment-card" data-equipment="hair-dryer">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-wind"></i>
+                                <i class="fas fa-wind" aria-hidden="true"></i>
                                 <span>Hair Dryer</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Hair Dryer"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Hair Dryer"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="hairdryer-type">Type</label>
+                                <select class="detail-select" data-field="type" id="hairdryer-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="standard">Standard</option>
                                     <option value="professional">Professional</option>
                                 </select>
@@ -2369,14 +2605,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2385,22 +2621,21 @@
                     <div class="equipment-card" data-equipment="exhaust-fan">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-fan"></i>
+                                <i class="fas fa-fan" aria-hidden="true"></i>
                                 <span>Exhaust Fan</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Exhaust Fan"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Exhaust Fan"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Size</label>
-                                <select class="detail-select" data-field="size">
-                                    <option value="">Select Size</option>
+                                <label class="detail-label" for="exhaust-size">Size</label>
+                                <select class="detail-select" data-field="size" id="exhaust-size">
+                                    <option value="" disabled selected>Select Size</option>
                                     <option value="small">Small (6-8 inch)</option>
                                     <option value="medium">Medium (10-12 inch)</option>
                                 </select>
@@ -2408,46 +2643,45 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
 
-                    <button class="add-equipment-btn" data-room="bathroom">
-                        <i class="fas fa-plus"></i>
+                    <button class="add-equipment-btn" data-room="bathroom" type="button">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
                         Add Bathroom Equipment
                     </button>
                 </div>
 
                 <!-- General Equipment -->
-                <div class="room-content" id="room-general">
+                <div class="room-content" id="room-general" role="tabpanel" aria-labelledby="tab-general">
                     <!-- Washing Machine -->
                     <div class="equipment-card" data-equipment="washing-machine">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-tshirt"></i>
+                                <i class="fas fa-tshirt" aria-hidden="true"></i>
                                 <span>Washing Machine</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Washing Machine"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Washing Machine"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="washer-type">Type</label>
+                                <select class="detail-select" data-field="type" id="washer-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="top-manual">Top Load (Manual)</option>
                                     <option value="top-auto">Top Load (Automatic)</option>
                                     <option value="front-auto">Front Load (Automatic)</option>
@@ -2457,14 +2691,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2473,22 +2707,21 @@
                     <div class="equipment-card" data-equipment="iron">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-tshirt"></i>
+                                <i class="fas fa-tshirt" aria-hidden="true"></i>
                                 <span>Pressing Iron</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Iron"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Pressing Iron"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
-                                    <option value="">Select Type</option>
+                                <label class="detail-label" for="iron-type">Type</label>
+                                <select class="detail-select" data-field="type" id="iron-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="dry">Dry Iron</option>
                                     <option value="steam">Steam Iron</option>
                                     <option value="cordless">Cordless Iron</option>
@@ -2497,14 +2730,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2513,22 +2746,21 @@
                     <div class="equipment-card" data-equipment="water-pump">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-water"></i>
+                                <i class="fas fa-water" aria-hidden="true"></i>
                                 <span>Water Pump</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Pump"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Water Pump"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Capacity</label>
-                                <select class="detail-select" data-field="capacity">
-                                    <option value="">Select Capacity</option>
+                                <label class="detail-label" for="pump-capacity">Capacity</label>
+                                <select class="detail-select" data-field="capacity" id="pump-capacity">
+                                    <option value="" disabled selected>Select Capacity</option>
                                     <option value="0.5">0.5 HP</option>
                                     <option value="1">1 HP</option>
                                     <option value="1.5">1.5 HP</option>
@@ -2538,14 +2770,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-									<button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2554,21 +2786,21 @@
                     <div class="equipment-card" data-equipment="router">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-wifi"></i>
+                                <i class="fas fa-wifi" aria-hidden="true"></i>
                                 <span>WiFi Router/Modem</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Router"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle WiFi Router"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
+                                <label class="detail-label" for="router-type">Type</label>
+                                <select class="detail-select" data-field="type" id="router-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="router">Standard Router</option>
                                     <option value="modem-router">Modem + Router</option>
                                     <option value="mesh">Mesh System</option>
@@ -2577,14 +2809,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2593,21 +2825,21 @@
                     <div class="equipment-card" data-equipment="decoder">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-satellite-dish"></i>
+                                <i class="fas fa-satellite-dish" aria-hidden="true"></i>
                                 <span>DSTV/Cable Decoder</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Cable Decoder"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Cable Decoder"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
+                                <label class="detail-label" for="decoder-type">Type</label>
+                                <select class="detail-select" data-field="type" id="decoder-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="dstv">DSTV</option>
                                     <option value="gotv">GOTV</option>
                                     <option value="startimes">StarTimes</option>
@@ -2617,14 +2849,14 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
@@ -2633,29 +2865,30 @@
                     <div class="equipment-card" data-equipment="security-light">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-lightbulb"></i>
+                                <i class="fas fa-lightbulb" aria-hidden="true"></i>
                                 <span>Security/Outdoor Lights</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Outdoor Lights"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Security Lights"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
+                                <label class="detail-label" for="security-type">Type</label>
+                                <select class="detail-select" data-field="type" id="security-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="led">LED Flood Light</option>
                                     <option value="halogen">Halogen</option>
                                     <option value="sensor">Motion Sensor Light</option>
                                 </select>
                             </div>
                             <div class="detail-group">
-                                <label class="detail-label">Wattage</label>
-                                <select class="detail-select" data-field="wattage">
+                                <label class="detail-label" for="security-wattage">Wattage</label>
+                                <select class="detail-select" data-field="wattage" id="security-wattage">
+                                    <option value="" disabled selected>Select Wattage</option>
                                     <option value="10">10W</option>
                                     <option value="20">20W</option>
                                     <option value="30">30W</option>
@@ -2666,15 +2899,15 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">2</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">2</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Total Power Rating</span>
-                                <span class="wattage-value">-- W</span>
-                            </div>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
+                                                        </div>
                         </div>
                     </div>
 
@@ -2682,21 +2915,21 @@
                     <div class="equipment-card" data-equipment="desktop">
                         <div class="equipment-header">
                             <div class="equipment-name">
-                                <i class="fas fa-desktop"></i>
+                                <i class="fas fa-desktop" aria-hidden="true"></i>
                                 <span>Desktop Computer</span>
                             </div>
-                            <!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false" 
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Desktop"
-								 tabindex="0"></div>
+                            <div class="equipment-toggle" 
+                                 data-active="false" 
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Desktop Computer"
+                                 tabindex="0"></div>
                         </div>
                         <div class="equipment-details">
                             <div class="detail-group">
-                                <label class="detail-label">Type</label>
-                                <select class="detail-select" data-field="type">
+                                <label class="detail-label" for="desktop-type">Type</label>
+                                <select class="detail-select" data-field="type" id="desktop-type">
+                                    <option value="" disabled selected>Select Type</option>
                                     <option value="basic">Basic/Office</option>
                                     <option value="gaming">Gaming PC</option>
                                     <option value="workstation">Workstation</option>
@@ -2705,58 +2938,57 @@
                             <div class="detail-group">
                                 <label class="detail-label">Quantity</label>
                                 <div class="quantity-stepper">
-                                    <button class="stepper-btn" data-action="decrease">-</button>
-                                    <span class="stepper-value">1</span>
-                                    <button class="stepper-btn" data-action="increase">+</button>
+                                    <button class="stepper-btn" data-action="decrease" type="button" aria-label="Decrease quantity">-</button>
+                                    <span class="stepper-value" aria-live="polite">1</span>
+                                    <button class="stepper-btn" data-action="increase" type="button" aria-label="Increase quantity">+</button>
                                 </div>
                             </div>
                             <div class="wattage-display" style="grid-column: 1 / -1;">
                                 <span class="wattage-label">Estimated Power Rating</span>
-                                <span class="wattage-value">-- W</span>
+                                <span class="wattage-value" aria-live="polite">-- W</span>
                             </div>
                         </div>
                     </div>
 
-                    <button class="add-equipment-btn" data-room="general">
-                        <i class="fas fa-plus"></i>
+                    <button class="add-equipment-btn" data-room="general" type="button">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
                         Add Other Equipment
                     </button>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goToStep(1)">
-                        <i class="fas fa-arrow-left"></i> Back
+                    <button class="btn btn-secondary" onclick="goToStep(1)" type="button">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
                     </button>
-                    <button class="btn btn-primary" onclick="goToStep(3)">
-                        Continue to Usage <i class="fas fa-arrow-right"></i>
+                    <button class="btn btn-primary" onclick="goToStep(3)" type="button">
+                        Continue to Usage <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Steps 3-7 remain the same as before -->
         <!-- STEP 3: Usage Patterns -->
         <div class="step-content" id="step3">
             <div class="card">
                 <div class="ai-bubble">
                     <p>Excellent! Now I need to understand when and how long you use each equipment. This helps me calculate your peak consumption hours and estimate accurate energy costs.</p>
                 </div>
-                <h2 class="card-title"><i class="fas fa-clock"></i> Usage Patterns</h2>
-                <p class="card-subtitle">This section will be dynamically populated based on your equipment selections</p>
+                <h2 class="card-title"><i class="fas fa-clock" aria-hidden="true"></i> Usage Patterns</h2>
+                <p class="card-subtitle">Adjust the usage hours and frequency for each of your selected equipment</p>
                 
                 <div id="usage-patterns-container">
                     <!-- Will be populated dynamically -->
                     <p style="color: var(--gray); text-align: center; padding: 40px;">
-                        <i class="fas fa-info-circle"></i> Your selected equipment usage patterns will appear here.
+                        <i class="fas fa-info-circle" aria-hidden="true"></i> Your selected equipment usage patterns will appear here.
                     </p>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goToStep(2)">
-                        <i class="fas fa-arrow-left"></i> Back
+                    <button class="btn btn-secondary" onclick="goToStep(2)" type="button">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
                     </button>
-                    <button class="btn btn-primary" onclick="goToStep(4)">
-                        View My Analysis <i class="fas fa-chart-bar"></i>
+                    <button class="btn btn-primary" onclick="goToStep(4)" type="button">
+                        View My Analysis <i class="fas fa-chart-bar" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -2768,305 +3000,304 @@
                 <div class="ai-bubble">
                     <p>🎉 Analysis complete! Here's a comprehensive breakdown of your home's energy profile.</p>
                 </div>
-                <h2 class="card-title"><i class="fas fa-chart-pie"></i> Your Energy Profile</h2>
+                <h2 class="card-title"><i class="fas fa-chart-pie" aria-hidden="true"></i> Your Energy Profile</h2>
                 <div id="analysis-dashboard">
                     <!-- Will be populated dynamically -->
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goToStep(3)">
-                        <i class="fas fa-arrow-left"></i> Back
+                    <button class="btn btn-secondary" onclick="goToStep(3)" type="button">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
                     </button>
-                    <button class="btn btn-primary" onclick="goToStep(5)">
-                        Calculate Costs <i class="fas fa-money-bill"></i>
+                    <button class="btn btn-primary" onclick="goToStep(5)" type="button">
+                        Calculate Costs <i class="fas fa-money-bill" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-		<!-- STEP 5: Location & Power Company -->
-		<div class="step-content" id="step5">
-			<div class="card">
-				<div class="ai-bubble">
-					<p>Now let's estimate your electricity costs! Tell me your location and power distribution company, and I'll fetch the current tariff rates to give you an accurate monthly bill estimate.</p>
-				</div>
+        <!-- STEP 5: Location & Power Company -->
+        <div class="step-content" id="step5">
+            <div class="card">
+                <div class="ai-bubble">
+                    <p>Now let's estimate your electricity costs! Tell me your location and power distribution company, and I'll fetch the current tariff rates to give you an accurate monthly bill estimate.</p>
+                </div>
 
-				<h2 class="card-title"><i class="fas fa-map-marker-alt"></i> Location & Utility</h2>
-				<p class="card-subtitle">Select your state and power distribution company</p>
+                <h2 class="card-title"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Location & Utility</h2>
+                <p class="card-subtitle">Select your state and power distribution company</p>
 
-				<div class="form-group">
-					<label class="form-label">State</label>
-					<select class="form-select" id="stateSelect">
-						<option value="">Select your state</option>
-						<option value="lagos">Lagos</option>
-						<option value="abuja">Abuja (FCT)</option>
-						<option value="rivers">Rivers</option>
-						<option value="kano">Kano</option>
-						<option value="oyo">Oyo</option>
-						<option value="delta">Delta</option>
-						<option value="kaduna">Kaduna</option>
-						<option value="enugu">Enugu</option>
-						<option value="anambra">Anambra</option>
-						<option value="edo">Edo</option>
-					</select>
-				</div>
+                <div class="form-group">
+                    <label class="form-label" for="stateSelect">State</label>
+                    <select class="form-select" id="stateSelect">
+                        <option value="" disabled selected>Select your state</option>
+                        <option value="lagos">Lagos</option>
+                        <option value="abuja">Abuja (FCT)</option>
+                        <option value="rivers">Rivers</option>
+                        <option value="kano">Kano</option>
+                        <option value="oyo">Oyo</option>
+                        <option value="delta">Delta</option>
+                        <option value="kaduna">Kaduna</option>
+                        <option value="enugu">Enugu</option>
+                        <option value="anambra">Anambra</option>
+                        <option value="edo">Edo</option>
+                    </select>
+                </div>
 
-				<div class="form-group">
-					<label class="form-label">Distribution Company (DisCo)</label>
-					<select class="form-select" id="discoSelect">
-						<option value="">Select your DisCo</option>
-						<option value="ekedc">Eko Electricity (EKEDC)</option>
-						<option value="ikedc">Ikeja Electric (IKEDC)</option>
-						<option value="aedc">Abuja Electricity (AEDC)</option>
-						<option value="phedc">Port Harcourt Electric (PHEDC)</option>
-						<option value="kedco">Kano Electricity (KEDCO)</option>
-						<option value="ibedc">Ibadan Electricity (IBEDC)</option>
-						<option value="bedc">Benin Electricity (BEDC)</option>
-						<option value="eedc">Enugu Electricity (EEDC)</option>
-					</select>
-				</div>
+                <div class="form-group">
+                    <label class="form-label" for="discoSelect">Distribution Company (DisCo)</label>
+                    <select class="form-select" id="discoSelect">
+                        <option value="" disabled selected>Select your DisCo</option>
+                        <option value="ekedc">Eko Electricity (EKEDC)</option>
+                        <option value="ikedc">Ikeja Electric (IKEDC)</option>
+                        <option value="aedc">Abuja Electricity (AEDC)</option>
+                        <option value="phedc">Port Harcourt Electric (PHEDC)</option>
+                        <option value="kedco">Kano Electricity (KEDCO)</option>
+                        <option value="ibedc">Ibadan Electricity (IBEDC)</option>
+                        <option value="bedc">Benin Electricity (BEDC)</option>
+                        <option value="eedc">Enugu Electricity (EEDC)</option>
+                    </select>
+                </div>
 
-				<div class="form-group">
-					<label class="form-label">Tariff Band (if known)</label>
-					<select class="form-select" id="tariffBand">
-						<option value="">Select tariff band</option>
-						<option value="a">Band A (20+ hours supply)</option>
-						<option value="b">Band B (16-20 hours supply)</option>
-						<option value="c">Band C (12-16 hours supply)</option>
-						<option value="d">Band D (8-12 hours supply)</option>
-						<option value="e">Band E (4-8 hours supply)</option>
-					</select>
-				</div>
+                <div class="form-group">
+                    <label class="form-label" for="tariffBand">Tariff Band (if known)</label>
+                    <select class="form-select" id="tariffBand">
+                        <option value="" disabled selected>Select tariff band</option>
+                        <option value="a">Band A (20+ hours supply)</option>
+                        <option value="b">Band B (16-20 hours supply)</option>
+                        <option value="c">Band C (12-16 hours supply)</option>
+                        <option value="d">Band D (8-12 hours supply)</option>
+                        <option value="e">Band E (4-8 hours supply)</option>
+                    </select>
+                </div>
 
-				<div class="form-group">
-					<label class="form-label">Average daily power supply hours</label>
-					<div class="slider-container">
-						<input type="range" class="slider" min="0" max="24" value="12" id="powerHours">
-						<div class="slider-labels">
-							<span>0h</span>
-							<span>6h</span>
-							<span>12h</span>
-							<span>18h</span>
-							<span>24h</span>
-						</div>
-					</div>
-					<p style="text-align: center; margin-top: 10px; color: var(--primary);">
-						<strong id="power-hours-display">12</strong> hours daily
-					</p>
-				</div>
+                <div class="form-group">
+                    <label class="form-label" for="powerHours">Average daily power supply hours</label>
+                    <div class="slider-container">
+                        <input type="range" class="slider" min="0" max="24" value="12" id="powerHours" aria-describedby="power-hours-display">
+                        <div class="slider-labels" aria-hidden="true">
+                            <span>0h</span>
+                            <span>6h</span>
+                            <span>12h</span>
+                            <span>18h</span>
+                            <span>24h</span>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px; color: var(--primary);">
+                        <strong id="power-hours-display">12</strong> hours daily
+                    </p>
+                </div>
 
-				<!-- Generator Section -->
-				<div class="generator-section" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-					<div class="equipment-card">
-						<div class="equipment-header">
-							<div class="equipment-name">
-								<i class="fas fa-gas-pump"></i>
-								<span>Do you use a Generator?</span>
-							</div>
-							<!-- Equipment toggle should have accessible label -->
-							<div class="equipment-toggle" 
-								 data-active="false"
-								 id="generatorToggle"
-								 role="switch" 
-								 aria-checked="false"
-								 aria-label="Toggle Generator"
-								 tabindex="0"></div>
-						</div>
-						
-						<div class="equipment-details" id="generatorDetails" style="display: none;">
-							<div class="detail-group">
-								<label class="detail-label">Generator Size</label>
-								<select class="detail-select" id="generatorSize">
-									<option value="">Select Size</option>
-									<option value="1">Small (0.5 - 1 kVA)</option>
-									<option value="2.5">Medium (2 - 3 kVA)</option>
-									<option value="5">Large (5 - 6.5 kVA)</option>
-									<option value="10">Extra Large (8 - 10 kVA)</option>
-									<option value="15">Industrial (12 - 15 kVA)</option>
-									<option value="20">Industrial (18 - 20+ kVA)</option>
-								</select>
-							</div>
-							
-							<div class="detail-group">
-								<label class="detail-label">Fuel Type</label>
-								<select class="detail-select" id="fuelType">
-									<option value="petrol">Petrol (PMS)</option>
-									<option value="diesel">Diesel (AGO)</option>
-								</select>
-							</div>
-							
-							<div class="detail-group">
-								<label class="detail-label">Usage Frequency</label>
-								<select class="detail-select" id="generatorFrequency">
-									<option value="daily">Daily</option>
-									<option value="weekdays">Weekdays Only</option>
-									<option value="weekends">Weekends Only</option>
-									<option value="few-times">Few times a week</option>
-									<option value="rarely">Rarely (few times a month)</option>
-								</select>
-							</div>
-							
-							<div class="detail-group">
-								<label class="detail-label">Hours per Use</label>
-								<select class="detail-select" id="generatorHours">
-									<option value="1">1-2 hours</option>
-									<option value="3">3-4 hours</option>
-									<option value="5" selected>5-6 hours</option>
-									<option value="8">7-8 hours</option>
-									<option value="10">9-10 hours</option>
-									<option value="12">10+ hours</option>
-								</select>
-							</div>
-							
-							<div class="detail-group" style="grid-column: 1 / -1;">
-								<label class="form-label">Average hours per day when used: <strong id="gen-hours-display">5</strong> hours</label>
-								<div class="slider-container">
-									<input type="range" class="slider" min="1" max="24" value="5" id="generatorHoursSlider">
-									<div class="slider-labels">
-										<span>1h</span>
-										<span>6h</span>
-										<span>12h</span>
-										<span>18h</span>
-										<span>24h</span>
-									</div>
-								</div>
-							</div>
-							
-							<div class="detail-group">
-								<label class="detail-label">Current Fuel Price (₦/Litre)</label>
-								<input type="number" class="detail-input" id="fuelPrice" placeholder="e.g., 700" value="700">
-							</div>
-							
-							<div class="detail-group">
-								<label class="detail-label">Litres per Fill</label>
-								<input type="number" class="detail-input" id="litresPerFill" placeholder="e.g., 10" value="10">
-							</div>
-							
-							<div class="detail-group">
-								<label class="detail-label">Fills per Week</label>
-								<select class="detail-select" id="fillsPerWeek">
-									<option value="1">Once a week</option>
-									<option value="2" selected>Twice a week</option>
-									<option value="3">3 times a week</option>
-									<option value="4">4 times a week</option>
-									<option value="5">5 times a week</option>
-									<option value="7">Daily</option>
-								</select>
-							</div>
-							
-							<!-- Generator Cost Summary -->
-							<div class="wattage-display generator-cost-display" style="grid-column: 1 / -1; flex-direction: column; align-items: stretch; gap: 10px;">
-								<div style="display: flex; justify-content: space-between;">
-									<span class="wattage-label">Weekly Fuel Cost</span>
-									<span class="wattage-value" id="weeklyFuelCost">₦14,000</span>
-								</div>
-								<div style="display: flex; justify-content: space-between;">
-									<span class="wattage-label">Monthly Fuel Cost</span>
-									<span class="wattage-value" id="monthlyFuelCost" style="color: var(--warning);">₦56,000</span>
-								</div>
-								<div style="display: flex; justify-content: space-between;">
-									<span class="wattage-label">Annual Fuel Cost</span>
-									<span class="wattage-value" id="annualFuelCost" style="color: var(--danger);">₦672,000</span>
-								</div>
-							</div>
-							
-							<!-- Generator Maintenance Info -->
-							<div class="ai-bubble" style="grid-column: 1 / -1; margin-top: 10px;">
-								<p style="font-size: 0.85rem;">💡 <strong>Tip:</strong> Don't forget generator maintenance costs! Oil changes, servicing, and repairs typically add <strong>₦5,000 - ₦15,000</strong> monthly depending on usage.</p>
-							</div>
-							
-							<div class="detail-group">
-								<label class="detail-label">Est. Monthly Maintenance (₦)</label>
-								<input type="number" class="detail-input" id="generatorMaintenance" placeholder="e.g., 10000" value="10000">
-							</div>
-						</div>
-					</div>
-				</div>
+                <!-- Generator Section -->
+                <div class="generator-section" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div class="equipment-card">
+                        <div class="equipment-header">
+                            <div class="equipment-name">
+                                <i class="fas fa-gas-pump" aria-hidden="true"></i>
+                                <span>Do you use a Generator?</span>
+                            </div>
+                            <div class="equipment-toggle" 
+                                 data-active="false"
+                                 id="generatorToggle"
+                                 role="switch" 
+                                 aria-checked="false"
+                                 aria-label="Toggle Generator usage"
+                                 tabindex="0"></div>
+                        </div>
+                        
+                        <div class="equipment-details" id="generatorDetails">
+                            <div class="detail-group">
+                                <label class="detail-label" for="generatorSize">Generator Size</label>
+                                <select class="detail-select" id="generatorSize">
+                                    <option value="" disabled selected>Select Size</option>
+                                    <option value="1">Small (0.5 - 1 kVA)</option>
+                                    <option value="2.5">Medium (2 - 3 kVA)</option>
+                                    <option value="5">Large (5 - 6.5 kVA)</option>
+                                    <option value="10">Extra Large (8 - 10 kVA)</option>
+                                    <option value="15">Industrial (12 - 15 kVA)</option>
+                                    <option value="20">Industrial (18 - 20+ kVA)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="detail-group">
+                                <label class="detail-label" for="fuelType">Fuel Type</label>
+                                <select class="detail-select" id="fuelType">
+                                    <option value="petrol">Petrol (PMS)</option>
+                                    <option value="diesel">Diesel (AGO)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="detail-group">
+                                <label class="detail-label" for="generatorFrequency">Usage Frequency</label>
+                                <select class="detail-select" id="generatorFrequency">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekdays">Weekdays Only</option>
+                                    <option value="weekends">Weekends Only</option>
+                                    <option value="few-times">Few times a week</option>
+                                    <option value="rarely">Rarely (few times a month)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="detail-group">
+                                <label class="detail-label" for="generatorHours">Hours per Use</label>
+                                <select class="detail-select" id="generatorHours">
+                                    <option value="1">1-2 hours</option>
+                                    <option value="3">3-4 hours</option>
+                                    <option value="5" selected>5-6 hours</option>
+                                    <option value="8">7-8 hours</option>
+                                    <option value="10">9-10 hours</option>
+                                    <option value="12">10+ hours</option>
+                                </select>
+                            </div>
+                            
+                            <div class="detail-group" style="grid-column: 1 / -1;">
+                                <label class="form-label" for="generatorHoursSlider">Average hours per day when used: <strong id="gen-hours-display">5</strong> hours</label>
+                                <div class="slider-container">
+                                    <input type="range" class="slider" min="1" max="24" value="5" id="generatorHoursSlider" aria-describedby="gen-hours-display">
+                                    <div class="slider-labels" aria-hidden="true">
+                                        <span>1h</span>
+                                        <span>6h</span>
+                                        <span>12h</span>
+                                        <span>18h</span>
+                                        <span>24h</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-group">
+                                <label class="detail-label" for="fuelPrice">Current Fuel Price (₦/Litre)</label>
+                                <input type="number" class="detail-input" id="fuelPrice" placeholder="e.g., 700" value="700" min="0" max="10000">
+                            </div>
+                            
+                            <div class="detail-group">
+                                <label class="detail-label" for="litresPerFill">Litres per Fill</label>
+                                <input type="number" class="detail-input" id="litresPerFill" placeholder="e.g., 10" value="10" min="1" max="500">
+                            </div>
+                            
+                            <div class="detail-group">
+                                <label class="detail-label" for="fillsPerWeek">Fills per Week</label>
+                                <select class="detail-select" id="fillsPerWeek">
+                                    <option value="1">Once a week</option>
+                                    <option value="2" selected>Twice a week</option>
+                                    <option value="3">3 times a week</option>
+                                    <option value="4">4 times a week</option>
+                                    <option value="5">5 times a week</option>
+                                    <option value="7">Daily</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Generator Cost Summary -->
+                            <div class="wattage-display generator-cost-display" style="grid-column: 1 / -1; flex-direction: column; align-items: stretch; gap: 10px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span class="wattage-label">Weekly Fuel Cost</span>
+                                    <span class="wattage-value" id="weeklyFuelCost" aria-live="polite">₦14,000</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span class="wattage-label">Monthly Fuel Cost</span>
+                                    <span class="wattage-value" id="monthlyFuelCost" style="color: var(--warning);" aria-live="polite">₦56,000</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span class="wattage-label">Annual Fuel Cost</span>
+                                    <span class="wattage-value" id="annualFuelCost" style="color: var(--danger);" aria-live="polite">₦672,000</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Generator Maintenance Info -->
+                            <div class="ai-bubble" style="grid-column: 1 / -1; margin-top: 10px;">
+                                <p style="font-size: 0.85rem;">💡 <strong>Tip:</strong> Don't forget generator maintenance costs! Oil changes, servicing, and repairs typically add <strong>₦5,000 - ₦15,000</strong> monthly depending on usage.</p>
+                            </div>
+                            
+                            <div class="detail-group">
+                                <label class="detail-label" for="generatorMaintenance">Est. Monthly Maintenance (₦)</label>
+                                <input type="number" class="detail-input" id="generatorMaintenance" placeholder="e.g., 10000" value="10000" min="0" max="100000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-				<!-- Cost Estimate Card -->
-				<div class="solar-card" id="costEstimateCard" style="margin-top: 25px;">
-					<div class="solar-header">
-						<div class="solar-icon">💰</div>
-						<div>
-							<h3 class="solar-title">Estimated Monthly Energy Cost</h3>
-							<p class="solar-subtitle" id="costSubtitle">Based on Band B tariff @ ₦63/kWh</p>
-						</div>
-					</div>
-					<div class="solar-specs" id="gridCostSpecs">
-						<div class="spec-item">
-							<div class="spec-value" id="currentGridCost">₦0</div>
-							<div class="spec-label" id="currentGridLabel">Grid (12hrs)</div>
-						</div>
-						<div class="spec-item">
-							<div class="spec-value" id="fullDayGridCost">₦0</div>
-							<div class="spec-label">Grid (24hrs)</div>
-						</div>
-						<div class="spec-item">
-							<div class="spec-value" id="bandACost">₦0</div>
-							<div class="spec-label">If Band A</div>
-						</div>
-					</div>
-					
-					<!-- Generator Cost Addition (shown when generator is active) -->
-					<div id="generatorCostSection" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-						<h4 style="margin-bottom: 15px; color: var(--warning);"><i class="fas fa-gas-pump"></i> Generator Costs</h4>
-						<div class="solar-specs">
-							<div class="spec-item">
-								<div class="spec-value" id="genMonthlyCost" style="color: var(--warning);">₦0</div>
-								<div class="spec-label">Monthly Fuel</div>
-							</div>
-							<div class="spec-item">
-								<div class="spec-value" id="genMaintenanceCost" style="color: var(--warning);">₦0</div>
-								<div class="spec-label">Maintenance</div>
-							</div>
-							<div class="spec-item">
-								<div class="spec-value" id="genTotalCost" style="color: var(--danger);">₦0</div>
-								<div class="spec-label">Total Gen Cost</div>
-							</div>
-						</div>
-					</div>
-					
-					<!-- Total Combined Cost -->
-					<div class="total-cost-section" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-						<div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
-							<div>
-								<span style="font-size: 0.9rem; color: var(--gray);">Total Monthly Energy Cost</span>
-								<p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;">(Grid + Generator)</p>
-							</div>
-							<div style="text-align: right;">
-								<span id="totalMonthlyCost" style="font-size: 1.8rem; font-weight: 700; color: var(--danger);">₦0</span>
-								<p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;"><span id="totalAnnualCost">₦0</span>/year</p>
-							</div>
-						</div>
-					</div>
-				</div>
+                <!-- Cost Estimate Card -->
+                <div class="solar-card" id="costEstimateCard" style="margin-top: 25px;">
+                    <div class="solar-header">
+                        <div class="solar-icon">💰</div>
+                        <div>
+                            <h3 class="solar-title">Estimated Monthly Energy Cost</h3>
+                            <p class="solar-subtitle" id="costSubtitle">Based on Band B tariff @ ₦63/kWh</p>
+                        </div>
+                    </div>
+                    <div class="solar-specs" id="gridCostSpecs">
+                        <div class="spec-item">
+                            <div class="spec-value" id="currentGridCost" aria-live="polite">₦0</div>
+                            <div class="spec-label" id="currentGridLabel">Grid (12hrs)</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value" id="fullDayGridCost" aria-live="polite">₦0</div>
+                            <div class="spec-label">Grid (24hrs)</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-value" id="bandACost" aria-live="polite">₦0</div>
+                            <div class="spec-label">If Band A</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Generator Cost Addition (shown when generator is active) -->
+                    <div id="generatorCostSection" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <h4 style="margin-bottom: 15px; color: var(--warning);"><i class="fas fa-gas-pump" aria-hidden="true"></i> Generator Costs</h4>
+                        <div class="solar-specs">
+                            <div class="spec-item">
+                                <div class="spec-value" id="genMonthlyCost" style="color: var(--warning);" aria-live="polite">₦0</div>
+                                <div class="spec-label">Monthly Fuel</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value" id="genMaintenanceCost" style="color: var(--warning);" aria-live="polite">₦0</div>
+                                <div class="spec-label">Maintenance</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value" id="genTotalCost" style="color: var(--danger);" aria-live="polite">₦0</div>
+                                <div class="spec-label">Total Gen Cost</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Total Combined Cost -->
+                    <div class="total-cost-section" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                            <div>
+                                <span style="font-size: 0.9rem; color: var(--gray);">Total Monthly Energy Cost</span>
+                                <p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;">(Grid + Generator)</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <span id="totalMonthlyCost" style="font-size: 1.8rem; font-weight: 700; color: var(--danger);" aria-live="polite">₦0</span>
+                                <p style="font-size: 0.8rem; color: var(--gray); margin-top: 5px;"><span id="totalAnnualCost" aria-live="polite">₦0</span>/year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-				<div class="btn-group">
-					<button class="btn btn-secondary" onclick="goToStep(4)">
-						<i class="fas fa-arrow-left"></i> Back
-					</button>
-					<button class="btn btn-primary" onclick="goToStep(6)">
-						Solar Options <i class="fas fa-solar-panel"></i>
-					</button>
-				</div>
-			</div>
-		</div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(4)" type="button">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="goToStep(6)" type="button">
+                        Solar Options <i class="fas fa-solar-panel" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- STEP 6: Solar -->
         <div class="step-content" id="step6">
             <div class="card">
                 <div class="ai-bubble">
-                    <p>🌞 Based on your energy profile, here are my solar system recommendations.</p>
+                    <p>🌞 Based on your energy profile, here are my solar system recommendations. These options can significantly reduce or eliminate your electricity costs!</p>
                 </div>
-                <h2 class="card-title"><i class="fas fa-solar-panel"></i> Solar Recommendations</h2>
+                <h2 class="card-title"><i class="fas fa-solar-panel" aria-hidden="true"></i> Solar Recommendations</h2>
                 <div id="solar-recommendations">
                     <!-- Will be populated dynamically -->
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goToStep(5)">
-                        <i class="fas fa-arrow-left"></i> Back
+                    <button class="btn btn-secondary" onclick="goToStep(5)" type="button">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
                     </button>
-                    <button class="btn btn-primary" onclick="goToStep(7)">
-                        Get My Report <i class="fas fa-file-pdf"></i>
+                    <button class="btn btn-primary" onclick="goToStep(7)" type="button">
+                        Get My Report <i class="fas fa-file-pdf" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
@@ -3076,33 +3307,54 @@
         <div class="step-content" id="step7">
             <div class="card">
                 <div class="ai-bubble">
-                    <p>🎊 Your personalized energy report is ready! Enter your details to receive it.</p>
+                    <p>🎊 Your personalized energy report is ready! Enter your details to receive a detailed PDF report via email.</p>
                 </div>
-                <h2 class="card-title"><i class="fas fa-file-alt"></i> Get Your Free Report</h2>
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="userName" placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" id="userEmail" placeholder="Enter your email address">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input" id="userPhone" placeholder="Enter your phone number">
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="goToStep(6)">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <button class="btn btn-primary" style="flex: 1;" onclick="submitForm()">
-                        <i class="fas fa-paper-plane"></i> Send My Report
-                    </button>
-                </div>
+                <h2 class="card-title"><i class="fas fa-file-alt" aria-hidden="true"></i> Get Your Free Report</h2>
+                
+                <form id="reportForm" onsubmit="event.preventDefault(); submitForm();">
+                    <div class="form-group">
+                        <label class="form-label" for="userName">Full Name <span style="color: var(--danger);">*</span></label>
+                        <input type="text" 
+                               class="form-input" 
+                               id="userName" 
+                               placeholder="Enter your full name" 
+                               required 
+                               minlength="2"
+                               autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="userEmail">Email Address <span style="color: var(--danger);">*</span></label>
+                        <input type="email" 
+                               class="form-input" 
+                               id="userEmail" 
+                               placeholder="Enter your email address" 
+                               required
+                               autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="userPhone">Phone Number <span style="color: var(--danger);">*</span></label>
+                        <input type="tel" 
+                               class="form-input" 
+                               id="userPhone" 
+                               placeholder="Enter your phone number (e.g., +234...)" 
+                               required
+                               autocomplete="tel">
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="goToStep(6)" type="button">
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
+                        </button>
+                        <button class="btn btn-primary" style="flex: 1;" type="submit">
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i> Send My Report
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
     </div>
+							
 
     <script>
     // ==========================================
