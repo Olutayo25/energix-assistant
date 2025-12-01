@@ -3105,2142 +3105,2145 @@
     </div>
 
     <script>
-        // ==========================================
-        // APPLICATION STATE
-        // ==========================================
-        let currentStep = 1;
-        const totalSteps = 7;
+    // ==========================================
+    // APPLICATION STATE
+    // ==========================================
+    let currentStep = 1;
+    const totalSteps = 7;
+    let step5Initialized = false;
+    let usagePatternsListenersAdded = false;
 
-        const appState = {
-            houseType: null,
-            equipment: {},
-            usagePatterns: {},
-            location: {},
-            contactInfo: {}
+    const appState = {
+        houseType: null,
+        equipment: {},
+        usagePatterns: {},
+        location: {},
+        contactInfo: {}
+    };
+
+    // ==========================================
+    // EQUIPMENT DATABASE (Wattage Values)
+    // ==========================================
+    const equipmentDatabase = {
+        tv: {
+            samsung: { 
+                32: { led: 35, smart: 40, oled: 45 }, 
+                43: { led: 55, smart: 60, oled: 70 }, 
+                50: { led: 70, smart: 80, qled: 100 },
+                55: { led: 80, smart: 90, qled: 120, oled: 130 }, 
+                65: { led: 100, smart: 120, qled: 150, oled: 160 },
+                75: { led: 130, smart: 150, qled: 180, oled: 200 }
+            },
+            lg: { 
+                32: { led: 33, smart: 38 }, 
+                43: { led: 50, smart: 58 }, 
+                50: { led: 65, smart: 75, oled: 90 },
+                55: { led: 75, smart: 85, oled: 130 }, 
+                65: { led: 95, smart: 110, oled: 160 },
+                75: { led: 125, smart: 140, oled: 190 }
+            },
+            sony: { 
+                43: { led: 60, smart: 70 }, 
+                50: { led: 75, smart: 85 },
+                55: { led: 90, smart: 100, oled: 140 }, 
+                65: { led: 110, smart: 130, oled: 170 },
+                75: { led: 140, smart: 160, oled: 210 }
+            },
+            hisense: { 
+                32: { led: 30, smart: 35 }, 
+                43: { led: 45, smart: 50 }, 
+                50: { led: 60, smart: 70 },
+                55: { led: 70, smart: 80 },
+                65: { led: 90, smart: 100 }
+            },
+            tcl: { 
+                32: { led: 28, smart: 33 }, 
+                43: { led: 42, smart: 48 }, 
+                50: { led: 55, smart: 65 },
+                55: { led: 65, smart: 75 },
+                65: { led: 85, smart: 95 }
+            },
+            other: { 
+                32: { led: 35, smart: 40, plasma: 100 }, 
+                43: { led: 55, smart: 60, plasma: 150 }, 
+                50: { led: 70, smart: 80, plasma: 180 },
+                55: { led: 80, smart: 90, plasma: 200 }, 
+                65: { led: 100, smart: 120, plasma: 250 },
+                75: { led: 130, smart: 150, plasma: 300 }
+            }
+        },
+        ac: {
+            split: { 1: 900, 1.5: 1350, 2: 1800, 2.5: 2250 },
+            window: { 1: 1000, 1.5: 1500, 2: 2000 },
+            inverter: { 1: 600, 1.5: 900, 2: 1200, 2.5: 1500 },
+            portable: { 1: 1100, 1.5: 1650, 2: 2200 }
+        },
+        fan: {
+            ceiling: 75,
+            standing: 65,
+            table: 45,
+            exhaust: 40
+        },
+        refrigerator: {
+            'single-door': { 100: 80, 200: 100, 300: 120, 400: 140, 500: 160 },
+            'double-door': { 100: 100, 200: 150, 300: 180, 400: 200, 500: 250 },
+            'side-by-side': { 200: 180, 300: 220, 400: 250, 500: 300 },
+            'mini': { 100: 60, 200: 80 },
+            'inverter': { 100: 50, 200: 80, 300: 100, 400: 120, 500: 140 }
+        },
+        freezer: {
+            'chest': { 100: 80, 200: 120, 300: 150, 400: 180 },
+            'upright': { 100: 90, 200: 130, 300: 160, 400: 200 }
+        },
+        microwave: {
+            small: 800,
+            medium: 1000,
+            large: 1200
+        },
+        kettle: {
+            small: 1500,
+            medium: 1800,
+            large: 2200
+        },
+        blender: {
+            small: 300,
+            medium: 500,
+            large: 800
+        },
+        cooker: {
+            single: 1000,
+            double: 2000,
+            induction: 1800
+        },
+        'water-heater': {
+            instant: 3000,
+            'storage-25': 1500,
+            'storage-50': 2000,
+            'storage-100': 3000
+        },
+        'hair-dryer': {
+            standard: 1200,
+            professional: 1800
+        },
+        'exhaust-fan': {
+            small: 25,
+            medium: 40
+        },
+        'washing-machine': {
+            'top-manual': 350,
+            'top-auto': 500,
+            'front-auto': 500,
+            'front-inverter': 300
+        },
+        iron: {
+            dry: 1000,
+            steam: 1400,
+            cordless: 1800
+        },
+        'water-pump': {
+            0.5: 370,
+            1: 750,
+            1.5: 1100,
+            2: 1500
+        },
+        router: {
+            router: 12,
+            'modem-router': 15,
+            mesh: 25
+        },
+        decoder: {
+            dstv: 25,
+            gotv: 15,
+            startimes: 15,
+            other: 20
+        },
+        'security-light': {
+            led: 'wattage-based',
+            halogen: 'wattage-based',
+            sensor: 'wattage-based'
+        },
+        desktop: {
+            basic: 150,
+            gaming: 400,
+            workstation: 300
+        },
+        sound: {
+            soundbar: 50,
+            'home-theater': 150,
+            bluetooth: 20,
+            hifi: 100
+        },
+        bulb: {
+            led: 'wattage-based',
+            'energy-saving': 'wattage-based',
+            incandescent: 'wattage-based',
+            fluorescent: 'wattage-based'
+        },
+        charger: {
+            standard: 5,
+            fast: 18,
+            'super-fast': 45
+        },
+        laptop: {
+            ultrabook: 45,
+            standard: 65,
+            gaming: 150
+        }
+    };
+
+    // ==========================================
+    // UTILITY FUNCTIONS
+    // ==========================================
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
         };
+    }
 
-        // ==========================================
-        // EQUIPMENT DATABASE (Wattage Values)
-        // ==========================================
-        const equipmentDatabase = {
-            tv: {
-                samsung: { 
-                    32: { led: 35, smart: 40, oled: 45 }, 
-                    43: { led: 55, smart: 60, oled: 70 }, 
-                    50: { led: 70, smart: 80, qled: 100 },
-                    55: { led: 80, smart: 90, qled: 120, oled: 130 }, 
-                    65: { led: 100, smart: 120, qled: 150, oled: 160 },
-                    75: { led: 130, smart: 150, qled: 180, oled: 200 }
-                },
-                lg: { 
-                    32: { led: 33, smart: 38 }, 
-                    43: { led: 50, smart: 58 }, 
-                    50: { led: 65, smart: 75, oled: 90 },
-                    55: { led: 75, smart: 85, oled: 130 }, 
-                    65: { led: 95, smart: 110, oled: 160 },
-                    75: { led: 125, smart: 140, oled: 190 }
-                },
-                sony: { 
-                    43: { led: 60, smart: 70 }, 
-                    50: { led: 75, smart: 85 },
-                    55: { led: 90, smart: 100, oled: 140 }, 
-                    65: { led: 110, smart: 130, oled: 170 },
-                    75: { led: 140, smart: 160, oled: 210 }
-                },
-                hisense: { 
-                    32: { led: 30, smart: 35 }, 
-                    43: { led: 45, smart: 50 }, 
-                    50: { led: 60, smart: 70 },
-                    55: { led: 70, smart: 80 },
-                    65: { led: 90, smart: 100 }
-                },
-                tcl: { 
-                    32: { led: 28, smart: 33 }, 
-                    43: { led: 42, smart: 48 }, 
-                    50: { led: 55, smart: 65 },
-                    55: { led: 65, smart: 75 },
-                    65: { led: 85, smart: 95 }
-                },
-                other: { 
-                    32: { led: 35, smart: 40, plasma: 100 }, 
-                    43: { led: 55, smart: 60, plasma: 150 }, 
-                    50: { led: 70, smart: 80, plasma: 180 },
-                    55: { led: 80, smart: 90, plasma: 200 }, 
-                    65: { led: 100, smart: 120, plasma: 250 },
-                    75: { led: 130, smart: 150, plasma: 300 }
-                }
-            },
-            ac: {
-                split: { 1: 900, 1.5: 1350, 2: 1800, 2.5: 2250 },
-                window: { 1: 1000, 1.5: 1500, 2: 2000 },
-                inverter: { 1: 600, 1.5: 900, 2: 1200, 2.5: 1500 },
-                portable: { 1: 1100, 1.5: 1650, 2: 2200 }
-            },
-            fan: {
-                ceiling: 75,
-                standing: 65,
-                table: 45,
-                exhaust: 40
-            },
-            refrigerator: {
-                'single-door': { 100: 80, 200: 100, 300: 120, 400: 140, 500: 160 },
-                'double-door': { 100: 100, 200: 150, 300: 180, 400: 200, 500: 250 },
-                'side-by-side': { 200: 180, 300: 220, 400: 250, 500: 300 },
-                'mini': { 100: 60, 200: 80 },
-                'inverter': { 100: 50, 200: 80, 300: 100, 400: 120, 500: 140 }
-            },
-            freezer: {
-                'chest': { 100: 80, 200: 120, 300: 150, 400: 180 },
-                'upright': { 100: 90, 200: 130, 300: 160, 400: 200 }
-            },
-            microwave: {
-                small: 800,
-                medium: 1000,
-                large: 1200
-            },
-            kettle: {
-                small: 1500,
-                medium: 1800,
-                large: 2200
-            },
-            blender: {
-                small: 300,
-                medium: 500,
-                large: 800
-            },
-            cooker: {
-                single: 1000,
-                double: 2000,
-                induction: 1800
-            },
-            'water-heater': {
-                instant: 3000,
-                'storage-25': 1500,
-                'storage-50': 2000,
-                'storage-100': 3000
-            },
-            'hair-dryer': {
-                standard: 1200,
-                professional: 1800
-            },
-            'exhaust-fan': {
-                small: 25,
-                medium: 40
-            },
-            'washing-machine': {
-                'top-manual': 350,
-                'top-auto': 500,
-                'front-auto': 500,
-                'front-inverter': 300
-            },
-            iron: {
-                dry: 1000,
-                steam: 1400,
-                cordless: 1800
-            },
-            'water-pump': {
-                0.5: 370,
-                1: 750,
-                1.5: 1100,
-                2: 1500
-            },
-            router: {
-                router: 12,
-                'modem-router': 15,
-                mesh: 25
-            },
-            decoder: {
-                dstv: 25,
-                gotv: 15,
-                startimes: 15,
-                other: 20
-            },
-            'security-light': {
-                led: 'wattage-based',
-                halogen: 'wattage-based',
-                sensor: 'wattage-based'
-            },
-            desktop: {
-                basic: 150,
-                gaming: 400,
-                workstation: 300
-            },
-            sound: {
-                soundbar: 50,
-                'home-theater': 150,
-                bluetooth: 20,
-                hifi: 100
-            },
-            bulb: {
-                led: 'wattage-based',
-                'energy-saving': 'wattage-based',
-                incandescent: 'wattage-based',
-                fluorescent: 'wattage-based'
-            },
-			charger: {
-				standard: 5,
-				fast: 18,
-				'super-fast': 45
-			},
-			laptop: {
-				ultrabook: 45,
-				standard: 65,
-				gaming: 150
-			}
-        };
+    function formatNumber(num) {
+        return Math.round(num).toLocaleString();
+    }
 
-        // ==========================================
-        // NAVIGATION FUNCTIONS
-        // ==========================================
-        function updateStepCircles(activeStep) {
-            const circles = document.querySelectorAll('.step-circle');
-            circles.forEach((circle, index) => {
-                const stepNum = index + 1;
-                circle.classList.remove('active', 'completed');
+    // ==========================================
+    // STATE PERSISTENCE
+    // ==========================================
+    function saveState() {
+        try {
+            localStorage.setItem('energix_state', JSON.stringify(appState));
+        } catch (e) {
+            console.warn('Could not save state:', e);
+        }
+    }
+
+    function loadState() {
+        try {
+            const saved = localStorage.getItem('energix_state');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                Object.assign(appState, parsed);
+                return true;
+            }
+        } catch (e) {
+            console.warn('Could not load state:', e);
+        }
+        return false;
+    }
+
+    function restoreUIFromState() {
+        // Restore house type selection
+        if (appState.houseType) {
+            const houseOption = document.querySelector(`.house-option[data-value="${appState.houseType}"]`);
+            if (houseOption) {
+                houseOption.classList.add('selected');
+            }
+        }
+        
+        // Restore equipment toggles
+        Object.keys(appState.equipment).forEach(equipmentId => {
+            const card = document.querySelector(`.equipment-card[data-equipment="${equipmentId}"]`);
+            if (card) {
+                const toggle = card.querySelector('.equipment-toggle');
+                const details = card.querySelector('.equipment-details');
                 
-                if (stepNum < activeStep) {
-                    circle.classList.add('completed');
-                    circle.innerHTML = '<i class="fas fa-check"></i>';
-                } else if (stepNum === activeStep) {
-                    circle.classList.add('active');
-                    circle.textContent = stepNum;
-                } else {
-                    circle.textContent = stepNum;
+                if (toggle) {
+                    toggle.dataset.active = 'true';
+                    toggle.classList.add('active');
+                    toggle.setAttribute('aria-checked', 'true');
                 }
-            });
-        }
-
-        function validateCurrentStep() {
-            if (currentStep === 1 && !appState.houseType) {
-                alert('Please select your house type');
-                return false;
-            }
-            return true;
-        }
-
-        // ==========================================
-        // HOUSE TYPE SELECTION
-        // ==========================================
-        document.getElementById('houseGrid').addEventListener('click', function(e) {
-            const option = e.target.closest('.house-option');
-            if (!option) return;
-
-            // Remove selected from all
-            document.querySelectorAll('.house-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-
-            // Add selected to clicked
-            option.classList.add('selected');
-            appState.houseType = option.dataset.value;
-        });
-
-        // ==========================================
-        // ROOM TAB NAVIGATION
-        // ==========================================
-        document.getElementById('roomTabs').addEventListener('click', function(e) {
-            const tab = e.target.closest('.room-tab');
-            if (!tab) return;
-
-            const roomId = tab.dataset.room;
-
-            // Update active tab
-            document.querySelectorAll('.room-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            // Show corresponding room content
-            document.querySelectorAll('.room-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            const roomContent = document.getElementById(`room-${roomId}`);
-            if (roomContent) {
-                roomContent.classList.add('active');
+                if (details) {
+                    details.classList.add('show');
+                }
+                
+                // Restore quantity
+                const equip = appState.equipment[equipmentId];
+                const quantityEl = card.querySelector('.stepper-value');
+                if (quantityEl && equip.quantity) {
+                    quantityEl.textContent = equip.quantity;
+                }
+                
+                // Restore select values
+                if (equip.values) {
+                    Object.entries(equip.values).forEach(([field, value]) => {
+                        const select = card.querySelector(`select[data-field="${field}"]`);
+                        if (select && value) {
+                            select.value = value;
+                        }
+                    });
+                }
+                
+                // Recalculate wattage display
+                calculateAndDisplayWattage(card);
             }
         });
+    }
 
-        // ==========================================
-        // EQUIPMENT TOGGLE
-        // ==========================================
-        document.addEventListener('click', function(e) {
-            const toggle = e.target.closest('.equipment-toggle');
-            if (!toggle) return;
-
-            const isActive = toggle.dataset.active === 'true';
-            toggle.dataset.active = (!isActive).toString();
-            toggle.classList.toggle('active');
-
-            const card = toggle.closest('.equipment-card');
-            const details = card.querySelector('.equipment-details');
+    // ==========================================
+    // NAVIGATION FUNCTIONS
+    // ==========================================
+    function updateStepCircles(activeStep) {
+        const circles = document.querySelectorAll('.step-circle');
+        circles.forEach((circle, index) => {
+            const stepNum = index + 1;
+            circle.classList.remove('active', 'completed');
             
-            if (!isActive) {
-                details.classList.add('show');
+            if (stepNum < activeStep) {
+                circle.classList.add('completed');
+                circle.innerHTML = '<i class="fas fa-check"></i>';
+            } else if (stepNum === activeStep) {
+                circle.classList.add('active');
+                circle.textContent = stepNum;
             } else {
-                details.classList.remove('show');
+                circle.textContent = stepNum;
             }
-
-            // Update equipment state
-            updateEquipmentState(card);
         });
-		
-		// Update toggle click handler to support keyboard
-		document.addEventListener('keydown', function(e) {
-			if (e.key === 'Enter' || e.key === ' ') {
-				const toggle = e.target.closest('.equipment-toggle');
-				if (toggle) {
-					e.preventDefault();
-					toggle.click();
-				}
-			}
-		});
+    }
 
-		// Update aria-checked when toggling
-		const isActive = toggle.dataset.active === 'true';
-		toggle.setAttribute('aria-checked', (!isActive).toString());
+    function validateCurrentStep() {
+        if (currentStep === 1 && !appState.houseType) {
+            alert('Please select your house type');
+            return false;
+        }
+        return true;
+    }
 
-        // ==========================================
-        // QUANTITY STEPPER
-        // ==========================================
-        document.addEventListener('click', function(e) {
-            const stepperBtn = e.target.closest('.stepper-btn');
-            if (!stepperBtn) return;
-
-            const stepper = stepperBtn.closest('.quantity-stepper');
-            const valueDisplay = stepper.querySelector('.stepper-value');
-            let currentValue = parseInt(valueDisplay.textContent);
-
-            if (stepperBtn.dataset.action === 'increase') {
-                currentValue++;
-            } else if (stepperBtn.dataset.action === 'decrease' && currentValue > 1) {
-                currentValue--;
+    function goToStep(step) {
+        // Show loading for heavy calculations
+        if (step === 4 || step === 6) {
+            showLoadingState(step);
+        }
+        
+        // Validate before moving forward
+        if (step > currentStep) {
+            if (!validateCurrentStep()) {
+                return;
             }
-
-            valueDisplay.textContent = currentValue;
-
-            // Recalculate wattage
-            const card = stepperBtn.closest('.equipment-card');
-            calculateAndDisplayWattage(card);
-            updateEquipmentState(card);
-        });
-
-        // ==========================================
-        // DROPDOWN CHANGE HANDLER
-        // ==========================================
-        document.addEventListener('change', function(e) {
-            const select = e.target.closest('.detail-select');
-            if (!select) return;
-
-            const card = select.closest('.equipment-card');
-            calculateAndDisplayWattage(card);
-            updateEquipmentState(card);
-        });
-
-        // ==========================================
-        // WATTAGE CALCULATION
-        // ==========================================
-        function calculateAndDisplayWattage(card) {
-			if (!card) return;
-			
-			const equipmentType = card.dataset.equipment;
-			const selects = card.querySelectorAll('.detail-select');
-			const quantityEl = card.querySelector('.stepper-value');
-			const wattageDisplay = card.querySelector('.wattage-value');
-
-			if (!wattageDisplay) return;
-
-			const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
-			
-			// If no equipment type, try to calculate from direct wattage input
-			if (!equipmentType) {
-				const wattageInput = card.querySelector('input[data-field="wattage"]');
-				const wattageSelect = card.querySelector('select[data-field="wattage"]');
-				
-				if (wattageInput) {
-					const wattage = parseInt(wattageInput.value) || 0;
-					const total = wattage * quantity;
-					wattageDisplay.textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
-				} else if (wattageSelect) {
-					const wattage = parseInt(wattageSelect.value) || 0;
-					const total = wattage * quantity;
-					wattageDisplay.textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
-				}
-				return;
-			}
-			
-			// Collect all selected values
-			const values = {};
-			selects.forEach(select => {
-				const field = select.dataset.field;
-				if (field) {
-					values[field] = select.value;
-				}
-			});
-
-			let wattage = calculateWattage(equipmentType, values);
-			
-			if (wattage > 0) {
-				const totalWattage = wattage * quantity;
-				wattageDisplay.textContent = `${totalWattage.toLocaleString()} W`;
-			} else {
-				wattageDisplay.textContent = '-- W';
-			}
-		}
-
-        function calculateWattage(equipmentType, values) {
-			let wattage = 0;
-			
-			// Guard against undefined equipmentType
-			if (!equipmentType) {
-				if (values && values.wattage) {
-					return parseInt(values.wattage);
-				}
-				return 0;
-			}
-			
-			// Normalize equipment type (remove room prefix like "bedroom-")
-			const baseType = equipmentType.replace(/^(bedroom|kitchen|bathroom|general|livingroom)-/, '');
-			
-            switch (baseType) {
-                case 'tv':
-                    const brand = values.brand || 'other';
-                    const size = values.size;
-                    const tvType = values.type;
-                    
-                    if (brand && size && tvType && 
-                        equipmentDatabase.tv[brand] && 
-                        equipmentDatabase.tv[brand][size] && 
-                        equipmentDatabase.tv[brand][size][tvType]) {
-                        wattage = equipmentDatabase.tv[brand][size][tvType];
-                    }
-                    break;
-
-                case 'ac':
-                    const acType = values.type;
-                    const capacity = values.capacity;
-                    
-                    if (acType && capacity && 
-                        equipmentDatabase.ac[acType] && 
-                        equipmentDatabase.ac[acType][capacity]) {
-                        wattage = equipmentDatabase.ac[acType][capacity];
-                    }
-                    break;
-
-                case 'fan':
-                    const fanType = values.type;
-                    if (fanType && equipmentDatabase.fan[fanType]) {
-                        wattage = equipmentDatabase.fan[fanType];
-                    }
-                    break;
-
-                case 'refrigerator':
-                    const fridgeType = values.type;
-                    const fridgeSize = values.size;
-                    
-                    if (fridgeType && fridgeSize && 
-                        equipmentDatabase.refrigerator[fridgeType] && 
-                        equipmentDatabase.refrigerator[fridgeType][fridgeSize]) {
-                        wattage = equipmentDatabase.refrigerator[fridgeType][fridgeSize];
-                    }
-                    break;
-
-                case 'freezer':
-                    const freezerType = values.type;
-                    const freezerSize = values.size;
-                    
-                    if (freezerType && freezerSize && 
-                        equipmentDatabase.freezer[freezerType] && 
-                        equipmentDatabase.freezer[freezerType][freezerSize]) {
-                        wattage = equipmentDatabase.freezer[freezerType][freezerSize];
-                    }
-                    break;
-
-                case 'microwave':
-                    if (values.size && equipmentDatabase.microwave[values.size]) {
-                        wattage = equipmentDatabase.microwave[values.size];
-                    }
-                    break;
-
-                case 'kettle':
-                    if (values.size && equipmentDatabase.kettle[values.size]) {
-                        wattage = equipmentDatabase.kettle[values.size];
-                    }
-                    break;
-
-                case 'blender':
-                    if (values.type && equipmentDatabase.blender[values.type]) {
-                        wattage = equipmentDatabase.blender[values.type];
-                    }
-                    break;
-
-                case 'cooker':
-                    if (values.type && equipmentDatabase.cooker[values.type]) {
-                        wattage = equipmentDatabase.cooker[values.type];
-                    }
-                    break;
-
-                case 'water-heater':
-                    if (values.type && equipmentDatabase['water-heater'][values.type]) {
-                        wattage = equipmentDatabase['water-heater'][values.type];
-                    }
-                    break;
-
-                case 'hair-dryer':
-                    if (values.type && equipmentDatabase['hair-dryer'][values.type]) {
-                        wattage = equipmentDatabase['hair-dryer'][values.type];
-                    }
-                    break;
-
-                case 'exhaust-fan':
-                    if (values.size && equipmentDatabase['exhaust-fan'][values.size]) {
-                        wattage = equipmentDatabase['exhaust-fan'][values.size];
-                    }
-                    break;
-
-                case 'washing-machine':
-                    if (values.type && equipmentDatabase['washing-machine'][values.type]) {
-                        wattage = equipmentDatabase['washing-machine'][values.type];
-                    }
-                    break;
-
-                case 'iron':
-                    if (values.type && equipmentDatabase.iron[values.type]) {
-                        wattage = equipmentDatabase.iron[values.type];
-                    }
-                    break;
-
-                case 'water-pump':
-                    if (values.capacity && equipmentDatabase['water-pump'][values.capacity]) {
-                        wattage = equipmentDatabase['water-pump'][values.capacity];
-                    }
-                    break;
-
-                case 'router':
-                    if (values.type && equipmentDatabase.router[values.type]) {
-                        wattage = equipmentDatabase.router[values.type];
-                    }
-                    break;
-
-                case 'decoder':
-                    if (values.type && equipmentDatabase.decoder[values.type]) {
-                        wattage = equipmentDatabase.decoder[values.type];
-                    }
-                    break;
-
-                case 'desktop':
-                    if (values.type && equipmentDatabase.desktop[values.type]) {
-                        wattage = equipmentDatabase.desktop[values.type];
-                    }
-                    break;
-
-                case 'sound':
-                    if (values.type && equipmentDatabase.sound[values.type]) {
-                        wattage = equipmentDatabase.sound[values.type];
-                    }
-                    break;
-					
-				// Add inside the switch statement in calculateWattage function
-				case 'charger':
-					if (values.type && equipmentDatabase.charger[values.type]) {
-						wattage = equipmentDatabase.charger[values.type];
-					}
-					break;
-
-				case 'laptop':
-					if (values.type && equipmentDatabase.laptop[values.type]) {
-						wattage = equipmentDatabase.laptop[values.type];
-					}
-					break;
-
-                case 'bulb':
-                    // For bulbs, use the wattage field directly
-                    if (values.wattage) {
-                        wattage = parseInt(values.wattage);
-                    }
-                    break;
-
-                case 'security-light':
-                    // For security lights, use the wattage field directly
-                    if (values.wattage) {
-                        wattage = parseInt(values.wattage);
-                    }
-                    break;
-
-                default:
-                    // For custom equipment or unknown types
-                    if (values.wattage) {
-                        wattage = parseInt(values.wattage);
-                    }
-                    break;
-            }
-
-            return wattage;
         }
 
-        // ==========================================
-        // UPDATE EQUIPMENT STATE
-        // ==========================================
-        function updateEquipmentState(card) {
-			if (!card) return;
-			
-			const equipmentId = card.dataset.equipment;
-			if (!equipmentId) return;
-			
-			const toggle = card.querySelector('.equipment-toggle');
-			if (!toggle) return;
-			
-			const isActive = toggle.dataset.active === 'true';
+        // Hide current step
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        
+        // Show new step
+        document.getElementById(`step${step}`).classList.add('active');
+        
+        // Update progress bar
+        const progress = (step / totalSteps) * 100;
+        document.getElementById('progressFill').style.width = `${progress}%`;
+        
+        // Update step circles
+        updateStepCircles(step);
+        
+        // Update current step tracker
+        currentStep = step;
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
-			if (!isActive) {
-				delete appState.equipment[equipmentId];
-				return;
-			}
+        // Step-specific initialization
+        switch(step) {
+            case 3:
+                generateUsagePatterns();
+                break;
+            case 4:
+                generateAnalysisDashboard();
+                break;
+            case 5:
+                initializeStep5();
+                break;
+            case 6:
+                generateSolarRecommendations();
+                break;
+        }
+        
+        // Save state after each step
+        saveState();
+    }
 
-			const selects = card.querySelectorAll('.detail-select');
-			const quantityEl = card.querySelector('.stepper-value');
-			const wattageDisplay = card.querySelector('.wattage-value');
-
-			const values = {};
-			selects.forEach(select => {
-				const field = select.dataset.field;
-				if (field) {
-					values[field] = select.value;
-				}
-			});
-
-			const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
-			const wattageText = wattageDisplay ? wattageDisplay.textContent : '0 W';
-			const wattage = parseInt(wattageText.replace(/[^0-9]/g, '')) || 0;
-
-			// Get equipment name - handle both span and input elements
-			const nameSpan = card.querySelector('.equipment-name span');
-			const nameInput = card.querySelector('.equipment-name input');
-			let equipmentName = 'Custom Equipment';
-
-			if (nameSpan) {
-				equipmentName = nameSpan.textContent;
-			} else if (nameInput) {
-				equipmentName = nameInput.value || 'Custom Equipment';
-			}
-
-			appState.equipment[equipmentId] = {
-				name: equipmentName,
-				values: values,
-				quantity: quantity,
-				wattage: wattage
-			};
-		}
-
-        // ==========================================
-        // ADD CUSTOM EQUIPMENT
-        // ==========================================
-        document.addEventListener('click', function(e) {
-            const addBtn = e.target.closest('.add-equipment-btn');
-            if (!addBtn) return;
-
-            const roomId = addBtn.dataset.room;
-            const customId = `custom-${Date.now()}`;
-
-            const customCard = document.createElement('div');
-            customCard.className = 'equipment-card';
-            customCard.dataset.equipment = customId;
-            customCard.innerHTML = `
-                <div class="equipment-header">
-                    <div class="equipment-name">
-                        <i class="fas fa-plug"></i>
-                        <input type="text" class="custom-equipment-name" placeholder="Equipment name" data-field="name">
-                    </div>
-                    <div class="equipment-toggle active" data-active="true"></div>
+    function showLoadingState(step) {
+        const container = document.getElementById(`step${step}`);
+        const card = container.querySelector('.card');
+        
+        card.innerHTML = `
+            <div style="text-align: center; padding: 40px;">
+                <div class="typing-indicator" style="justify-content: center; display: flex;">
+                    <span></span><span></span><span></span>
                 </div>
-                <div class="equipment-details show">
-                    <div class="detail-group">
-                        <label class="detail-label">Power Rating (Watts)</label>
-                        <input type="number" class="detail-input" placeholder="e.g., 100" data-field="wattage">
+                <p style="margin-top: 20px; color: var(--gray);">Calculating your energy profile...</p>
+            </div>
+        `;
+    }
+
+    // ==========================================
+    // HOUSE TYPE SELECTION
+    // ==========================================
+    document.getElementById('houseGrid').addEventListener('click', function(e) {
+        const option = e.target.closest('.house-option');
+        if (!option) return;
+
+        // Remove selected from all
+        document.querySelectorAll('.house-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+
+        // Add selected to clicked
+        option.classList.add('selected');
+        appState.houseType = option.dataset.value;
+    });
+
+    // ==========================================
+    // ROOM TAB NAVIGATION
+    // ==========================================
+    document.getElementById('roomTabs').addEventListener('click', function(e) {
+        const tab = e.target.closest('.room-tab');
+        if (!tab) return;
+
+        const roomId = tab.dataset.room;
+
+        // Update active tab
+        document.querySelectorAll('.room-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Show corresponding room content
+        document.querySelectorAll('.room-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        const roomContent = document.getElementById(`room-${roomId}`);
+        if (roomContent) {
+            roomContent.classList.add('active');
+        }
+    });
+
+    // ==========================================
+    // EQUIPMENT TOGGLE
+    // ==========================================
+    document.addEventListener('click', function(e) {
+        const toggle = e.target.closest('.equipment-toggle');
+        if (!toggle) return;
+        
+        // Skip if this is the generator toggle (handled separately)
+        if (toggle.id === 'generatorToggle') return;
+
+        const isActive = toggle.dataset.active === 'true';
+        toggle.dataset.active = (!isActive).toString();
+        toggle.classList.toggle('active');
+        
+        // Update aria-checked for accessibility
+        toggle.setAttribute('aria-checked', (!isActive).toString());
+
+        const card = toggle.closest('.equipment-card');
+        const details = card.querySelector('.equipment-details');
+        
+        if (!isActive) {
+            details.classList.add('show');
+        } else {
+            details.classList.remove('show');
+        }
+
+        // Update equipment state
+        updateEquipmentState(card);
+    });
+    
+    // Keyboard support for equipment toggle
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            const toggle = e.target.closest('.equipment-toggle');
+            if (toggle) {
+                e.preventDefault();
+                toggle.click();
+            }
+        }
+    });
+
+    // ==========================================
+    // QUANTITY STEPPER
+    // ==========================================
+    document.addEventListener('click', function(e) {
+        const stepperBtn = e.target.closest('.stepper-btn');
+        if (!stepperBtn) return;
+
+        const stepper = stepperBtn.closest('.quantity-stepper');
+        const valueDisplay = stepper.querySelector('.stepper-value');
+        let currentValue = parseInt(valueDisplay.textContent);
+
+        if (stepperBtn.dataset.action === 'increase') {
+            currentValue++;
+        } else if (stepperBtn.dataset.action === 'decrease' && currentValue > 1) {
+            currentValue--;
+        }
+
+        valueDisplay.textContent = currentValue;
+
+        // Recalculate wattage
+        const card = stepperBtn.closest('.equipment-card');
+        calculateAndDisplayWattage(card);
+        updateEquipmentState(card);
+    });
+
+    // ==========================================
+    // DROPDOWN CHANGE HANDLER
+    // ==========================================
+    document.addEventListener('change', function(e) {
+        const select = e.target.closest('.detail-select');
+        if (!select) return;
+
+        const card = select.closest('.equipment-card');
+        calculateAndDisplayWattage(card);
+        updateEquipmentState(card);
+    });
+
+    // ==========================================
+    // WATTAGE CALCULATION
+    // ==========================================
+    function calculateAndDisplayWattage(card) {
+        if (!card) return;
+        
+        const equipmentType = card.dataset.equipment;
+        const selects = card.querySelectorAll('.detail-select');
+        const quantityEl = card.querySelector('.stepper-value');
+        const wattageDisplay = card.querySelector('.wattage-value');
+
+        if (!wattageDisplay) return;
+
+        const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
+        
+        // If no equipment type, try to calculate from direct wattage input
+        if (!equipmentType) {
+            const wattageInput = card.querySelector('input[data-field="wattage"]');
+            const wattageSelect = card.querySelector('select[data-field="wattage"]');
+            
+            if (wattageInput) {
+                const wattage = parseInt(wattageInput.value) || 0;
+                const total = wattage * quantity;
+                wattageDisplay.textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
+            } else if (wattageSelect) {
+                const wattage = parseInt(wattageSelect.value) || 0;
+                const total = wattage * quantity;
+                wattageDisplay.textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
+            }
+            return;
+        }
+        
+        // Collect all selected values
+        const values = {};
+        selects.forEach(select => {
+            const field = select.dataset.field;
+            if (field) {
+                values[field] = select.value;
+            }
+        });
+
+        let wattage = calculateWattage(equipmentType, values);
+        
+        if (wattage > 0) {
+            const totalWattage = wattage * quantity;
+            wattageDisplay.textContent = `${totalWattage.toLocaleString()} W`;
+        } else {
+            wattageDisplay.textContent = '-- W';
+        }
+    }
+
+    function calculateWattage(equipmentType, values) {
+        let wattage = 0;
+        
+        // Guard against undefined equipmentType
+        if (!equipmentType) {
+            if (values && values.wattage) {
+                return parseInt(values.wattage);
+            }
+            return 0;
+        }
+        
+        // Normalize equipment type (remove room prefix like "bedroom-")
+        const baseType = equipmentType.replace(/^(bedroom|kitchen|bathroom|general|livingroom)-/, '');
+        
+        switch (baseType) {
+            case 'tv':
+                const brand = values.brand || 'other';
+                const size = values.size;
+                const tvType = values.type;
+                
+                if (brand && size && tvType && 
+                    equipmentDatabase.tv[brand] && 
+                    equipmentDatabase.tv[brand][size] && 
+                    equipmentDatabase.tv[brand][size][tvType]) {
+                    wattage = equipmentDatabase.tv[brand][size][tvType];
+                }
+                break;
+
+            case 'ac':
+                const acType = values.type;
+                const capacity = values.capacity;
+                
+                if (acType && capacity && 
+                    equipmentDatabase.ac[acType] && 
+                    equipmentDatabase.ac[acType][capacity]) {
+                    wattage = equipmentDatabase.ac[acType][capacity];
+                }
+                break;
+
+            case 'fan':
+                const fanType = values.type;
+                if (fanType && equipmentDatabase.fan[fanType]) {
+                    wattage = equipmentDatabase.fan[fanType];
+                }
+                break;
+
+            case 'refrigerator':
+                const fridgeType = values.type;
+                const fridgeSize = values.size;
+                
+                if (fridgeType && fridgeSize && 
+                    equipmentDatabase.refrigerator[fridgeType] && 
+                    equipmentDatabase.refrigerator[fridgeType][fridgeSize]) {
+                    wattage = equipmentDatabase.refrigerator[fridgeType][fridgeSize];
+                }
+                break;
+
+            case 'freezer':
+                const freezerType = values.type;
+                const freezerSize = values.size;
+                
+                if (freezerType && freezerSize && 
+                    equipmentDatabase.freezer[freezerType] && 
+                    equipmentDatabase.freezer[freezerType][freezerSize]) {
+                    wattage = equipmentDatabase.freezer[freezerType][freezerSize];
+                }
+                break;
+
+            case 'microwave':
+                if (values.size && equipmentDatabase.microwave[values.size]) {
+                    wattage = equipmentDatabase.microwave[values.size];
+                }
+                break;
+
+            case 'kettle':
+                if (values.size && equipmentDatabase.kettle[values.size]) {
+                    wattage = equipmentDatabase.kettle[values.size];
+                }
+                break;
+
+            case 'blender':
+                if (values.type && equipmentDatabase.blender[values.type]) {
+                    wattage = equipmentDatabase.blender[values.type];
+                }
+                break;
+
+            case 'cooker':
+                if (values.type && equipmentDatabase.cooker[values.type]) {
+                    wattage = equipmentDatabase.cooker[values.type];
+                }
+                break;
+
+            case 'water-heater':
+                if (values.type && equipmentDatabase['water-heater'][values.type]) {
+                    wattage = equipmentDatabase['water-heater'][values.type];
+                }
+                break;
+
+            case 'hair-dryer':
+                if (values.type && equipmentDatabase['hair-dryer'][values.type]) {
+                    wattage = equipmentDatabase['hair-dryer'][values.type];
+                }
+                break;
+
+            case 'exhaust-fan':
+                if (values.size && equipmentDatabase['exhaust-fan'][values.size]) {
+                    wattage = equipmentDatabase['exhaust-fan'][values.size];
+                }
+                break;
+
+            case 'washing-machine':
+                if (values.type && equipmentDatabase['washing-machine'][values.type]) {
+                    wattage = equipmentDatabase['washing-machine'][values.type];
+                }
+                break;
+
+            case 'iron':
+                if (values.type && equipmentDatabase.iron[values.type]) {
+                    wattage = equipmentDatabase.iron[values.type];
+                }
+                break;
+
+            case 'water-pump':
+                if (values.capacity && equipmentDatabase['water-pump'][values.capacity]) {
+                    wattage = equipmentDatabase['water-pump'][values.capacity];
+                }
+                break;
+
+            case 'router':
+                if (values.type && equipmentDatabase.router[values.type]) {
+                    wattage = equipmentDatabase.router[values.type];
+                }
+                break;
+
+            case 'decoder':
+                if (values.type && equipmentDatabase.decoder[values.type]) {
+                    wattage = equipmentDatabase.decoder[values.type];
+                }
+                break;
+
+            case 'desktop':
+                if (values.type && equipmentDatabase.desktop[values.type]) {
+                    wattage = equipmentDatabase.desktop[values.type];
+                }
+                break;
+
+            case 'sound':
+                if (values.type && equipmentDatabase.sound[values.type]) {
+                    wattage = equipmentDatabase.sound[values.type];
+                }
+                break;
+                
+            case 'charger':
+                if (values.type && equipmentDatabase.charger[values.type]) {
+                    wattage = equipmentDatabase.charger[values.type];
+                }
+                break;
+
+            case 'laptop':
+                if (values.type && equipmentDatabase.laptop[values.type]) {
+                    wattage = equipmentDatabase.laptop[values.type];
+                }
+                break;
+
+            case 'bulb':
+                if (values.wattage) {
+                    wattage = parseInt(values.wattage);
+                }
+                break;
+
+            case 'security-light':
+                if (values.wattage) {
+                    wattage = parseInt(values.wattage);
+                }
+                break;
+
+            default:
+                if (values.wattage) {
+                    wattage = parseInt(values.wattage);
+                }
+                break;
+        }
+
+        return wattage;
+    }
+
+    // ==========================================
+    // UPDATE EQUIPMENT STATE
+    // ==========================================
+    function updateEquipmentState(card) {
+        if (!card) return;
+        
+        const equipmentId = card.dataset.equipment;
+        if (!equipmentId) return;
+        
+        const toggle = card.querySelector('.equipment-toggle');
+        if (!toggle) return;
+        
+        const isActive = toggle.dataset.active === 'true';
+
+        if (!isActive) {
+            delete appState.equipment[equipmentId];
+            return;
+        }
+
+        const selects = card.querySelectorAll('.detail-select');
+        const quantityEl = card.querySelector('.stepper-value');
+        const wattageDisplay = card.querySelector('.wattage-value');
+
+        const values = {};
+        selects.forEach(select => {
+            const field = select.dataset.field;
+            if (field) {
+                values[field] = select.value;
+            }
+        });
+
+        const quantity = quantityEl ? parseInt(quantityEl.textContent) : 1;
+        const wattageText = wattageDisplay ? wattageDisplay.textContent : '0 W';
+        const wattage = parseInt(wattageText.replace(/[^0-9]/g, '')) || 0;
+
+        // Get equipment name - handle both span and input elements
+        const nameSpan = card.querySelector('.equipment-name span');
+        const nameInput = card.querySelector('.equipment-name input');
+        let equipmentName = 'Custom Equipment';
+
+        if (nameSpan) {
+            equipmentName = nameSpan.textContent;
+        } else if (nameInput) {
+            equipmentName = nameInput.value || 'Custom Equipment';
+        }
+
+        appState.equipment[equipmentId] = {
+            name: equipmentName,
+            values: values,
+            quantity: quantity,
+            wattage: wattage
+        };
+    }
+
+    // ==========================================
+    // ADD CUSTOM EQUIPMENT
+    // ==========================================
+    document.addEventListener('click', function(e) {
+        const addBtn = e.target.closest('.add-equipment-btn');
+        if (!addBtn) return;
+
+        const roomId = addBtn.dataset.room;
+        const customId = `custom-${Date.now()}`;
+
+        const customCard = document.createElement('div');
+        customCard.className = 'equipment-card';
+        customCard.dataset.equipment = customId;
+        customCard.innerHTML = `
+            <div class="equipment-header">
+                <div class="equipment-name">
+                    <i class="fas fa-plug"></i>
+                    <input type="text" class="custom-equipment-name" placeholder="Equipment name" data-field="name">
+                </div>
+                <div class="equipment-toggle active" data-active="true" role="switch" aria-checked="true" tabindex="0"></div>
+            </div>
+            <div class="equipment-details show">
+                <div class="detail-group">
+                    <label class="detail-label">Power Rating (Watts)</label>
+                    <input type="number" class="detail-input" placeholder="e.g., 100" data-field="wattage" min="0" max="50000">
+                </div>
+                <div class="detail-group">
+                    <label class="detail-label">Quantity</label>
+                    <div class="quantity-stepper">
+                        <button class="stepper-btn" data-action="decrease">-</button>
+                        <span class="stepper-value">1</span>
+                        <button class="stepper-btn" data-action="increase">+</button>
                     </div>
-                    <div class="detail-group">
-                        <label class="detail-label">Quantity</label>
-                        <div class="quantity-stepper">
-                            <button class="stepper-btn" data-action="decrease">-</button>
-                            <span class="stepper-value">1</span>
-                            <button class="stepper-btn" data-action="increase">+</button>
+                </div>
+                <div class="wattage-display" style="grid-column: 1 / -1;">
+                    <span class="wattage-label">Total Power Rating</span>
+                    <span class="wattage-value">-- W</span>
+                </div>
+            </div>
+            <button class="btn btn-remove" onclick="removeEquipment(this)">
+                <i class="fas fa-trash"></i> Remove
+            </button>
+        `;
+
+        addBtn.parentNode.insertBefore(customCard, addBtn);
+
+        // Add event listener for custom wattage input
+        const wattageInput = customCard.querySelector('input[data-field="wattage"]');
+        wattageInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            
+            // Prevent negative values
+            if (value < 0) {
+                value = 0;
+                this.value = 0;
+            }
+            
+            // Cap at reasonable maximum
+            if (value > 50000) {
+                value = 50000;
+                this.value = 50000;
+            }
+            
+            const quantity = parseInt(customCard.querySelector('.stepper-value').textContent) || 1;
+            const total = value * quantity;
+            customCard.querySelector('.wattage-value').textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
+            updateEquipmentState(customCard);
+        });
+        
+        // Add event listener for custom equipment name
+        const nameInput = customCard.querySelector('input[data-field="name"]');
+        nameInput.addEventListener('input', function() {
+            updateEquipmentState(customCard);
+        });
+    });
+
+    function removeEquipment(btn) {
+        const card = btn.closest('.equipment-card');
+        const equipmentId = card.dataset.equipment;
+        delete appState.equipment[equipmentId];
+        card.remove();
+    }
+
+    // ==========================================
+    // GENERATE USAGE PATTERNS (Step 3)
+    // ==========================================
+    function generateUsagePatterns() {
+        const container = document.getElementById('usage-patterns-container');
+        const equipmentList = Object.entries(appState.equipment);
+
+        if (equipmentList.length === 0) {
+            container.innerHTML = `
+                <div class="ai-bubble">
+                    <p>⚠️ You haven't selected any equipment yet. Please go back and select at least one piece of equipment.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        equipmentList.forEach(([id, equip]) => {
+            const defaultHours = getDefaultHours(id);
+            const defaultPeriods = getDefaultPeriods(id);
+            const dailyWh = equip.wattage * defaultHours;
+            const dailyKwh = (dailyWh / 1000).toFixed(2);
+
+            html += `
+                <div class="equipment-card" data-usage-equipment="${id}" data-base-wattage="${equip.wattage}">
+                    <div class="equipment-header">
+                        <div class="equipment-name">
+                            <i class="fas fa-clock"></i>
+                            <span>${equip.name} ${equip.quantity > 1 ? `(×${equip.quantity})` : ''}</span>
+                        </div>
+                        <div class="usage-wattage-display">
+                            <span class="wattage-value">${equip.wattage.toLocaleString()} W</span>
+                            <span class="daily-kwh-value">${dailyKwh} kWh/day</span>
                         </div>
                     </div>
-                    <div class="wattage-display" style="grid-column: 1 / -1;">
-                        <span class="wattage-label">Total Power Rating</span>
-                        <span class="wattage-value">-- W</span>
+
+                    <div class="form-group">
+                        <label class="form-label">When do you typically use this?</label>
+                        <div class="usage-time-grid">
+                            <div class="time-option morning ${defaultPeriods.includes('morning') ? 'selected' : ''}" data-period="morning" data-hours="6">
+                                <i class="fas fa-sun"></i>
+                                <span>Morning<br>(6AM-12PM)</span>
+                            </div>
+                            <div class="time-option afternoon ${defaultPeriods.includes('afternoon') ? 'selected' : ''}" data-period="afternoon" data-hours="5">
+                                <i class="fas fa-cloud-sun"></i>
+                                <span>Afternoon<br>(12PM-5PM)</span>
+                            </div>
+                            <div class="time-option evening ${defaultPeriods.includes('evening') ? 'selected' : ''}" data-period="evening" data-hours="5">
+                                <i class="fas fa-moon"></i>
+                                <span>Evening<br>(5PM-10PM)</span>
+                            </div>
+                            <div class="time-option night ${defaultPeriods.includes('night') ? 'selected' : ''}" data-period="night" data-hours="8">
+                                <i class="fas fa-star"></i>
+                                <span>Night<br>(10PM-6AM)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Average hours per day: <strong class="hours-display">${defaultHours}</strong> hours</label>
+                        <div class="slider-container">
+                            <input type="range" class="slider hours-slider" min="0" max="24" value="${defaultHours}" data-equipment-id="${id}">
+                            <div class="slider-labels">
+                                <span>0h</span>
+                                <span>6h</span>
+                                <span>12h</span>
+                                <span>18h</span>
+                                <span>24h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Usage Frequency</label>
+                        <select class="form-select frequency-select" data-equipment-id="${id}">
+                            <option value="daily" selected>Daily</option>
+                            <option value="weekdays">Weekdays Only (5 days/week)</option>
+                            <option value="weekends">Weekends Only (2 days/week)</option>
+                            <option value="few-times">Few times a week (3 days/week)</option>
+                            <option value="monthly">Few times a month (4 days/month)</option>
+                        </select>
                     </div>
                 </div>
-                <button class="btn btn-remove" onclick="removeEquipment(this)">
-                    <i class="fas fa-trash"></i> Remove
-                </button>
             `;
-
-            addBtn.parentNode.insertBefore(customCard, addBtn);
-
-            // Add event listener for custom wattage input
-            const wattageInput = customCard.querySelector('input[data-field="wattage"]');
-            wattageInput.addEventListener('input', function() {
-				// ADD: Validate input
-				let value = parseInt(this.value) || 0;
-				
-				// Prevent negative values
-				if (value < 0) {
-					value = 0;
-					this.value = 0;
-				}
-				
-				// Cap at reasonable maximum
-				if (value > 50000) {
-					value = 50000;
-					this.value = 50000;
-				}
-				
-				const quantity = parseInt(customCard.querySelector('.stepper-value').textContent) || 1;
-				const total = value * quantity;
-				customCard.querySelector('.wattage-value').textContent = total > 0 ? `${total.toLocaleString()} W` : '-- W';
-				updateEquipmentState(customCard);
-			});
         });
 
-        function removeEquipment(btn) {
-            const card = btn.closest('.equipment-card');
-            const equipmentId = card.dataset.equipment;
-            delete appState.equipment[equipmentId];
-            card.remove();
+        container.innerHTML = html;
+
+        // Only add event listeners once using event delegation
+        if (!usagePatternsListenersAdded) {
+            container.addEventListener('input', function(e) {
+                if (e.target.classList.contains('hours-slider')) {
+                    const card = e.target.closest('.equipment-card');
+                    updateUsageCardDisplay(card, parseInt(e.target.value));
+                }
+            });
+
+            container.addEventListener('change', function(e) {
+                if (e.target.classList.contains('frequency-select')) {
+                    const card = e.target.closest('.equipment-card');
+                    const hours = parseInt(card.querySelector('.hours-slider').value);
+                    updateUsageCardDisplay(card, hours);
+                }
+            });
+
+            container.addEventListener('click', function(e) {
+                if (e.target.closest('.time-option')) {
+                    const option = e.target.closest('.time-option');
+                    option.classList.toggle('selected');
+                    const card = option.closest('.equipment-card');
+                    recalculateHoursFromPeriods(card);
+                }
+            });
+
+            usagePatternsListenersAdded = true;
         }
+    }
 
-        // ==========================================
-		// GENERATE USAGE PATTERNS (Step 3) - UPDATED
-		// ==========================================
-		function generateUsagePatterns() {
-			const container = document.getElementById('usage-patterns-container');
-			const equipmentList = Object.entries(appState.equipment);
-
-			if (equipmentList.length === 0) {
-				container.innerHTML = `
-					<div class="ai-bubble">
-						<p>⚠️ You haven't selected any equipment yet. Please go back and select at least one piece of equipment.</p>
-					</div>
-				`;
-				return;
-			}
-
-			let html = '';
-			equipmentList.forEach(([id, equip]) => {
-				const defaultHours = getDefaultHours(id);
-				const defaultPeriods = getDefaultPeriods(id);
-				const dailyWh = equip.wattage * defaultHours;
-				const dailyKwh = (dailyWh / 1000).toFixed(2);
-
-				html += `
-					<div class="equipment-card" data-usage-equipment="${id}" data-base-wattage="${equip.wattage}">
-						<div class="equipment-header">
-							<div class="equipment-name">
-								<i class="fas fa-clock"></i>
-								<span>${equip.name} ${equip.quantity > 1 ? `(×${equip.quantity})` : ''}</span>
-							</div>
-							<div class="usage-wattage-display">
-								<span class="wattage-value">${equip.wattage.toLocaleString()} W</span>
-								<span class="daily-kwh-value">${dailyKwh} kWh/day</span>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="form-label">When do you typically use this?</label>
-							<div class="usage-time-grid">
-								<div class="time-option morning ${defaultPeriods.includes('morning') ? 'selected' : ''}" data-period="morning" data-hours="6">
-									<i class="fas fa-sun"></i>
-									<span>Morning<br>(6AM-12PM)</span>
-								</div>
-								<div class="time-option afternoon ${defaultPeriods.includes('afternoon') ? 'selected' : ''}" data-period="afternoon" data-hours="5">
-									<i class="fas fa-cloud-sun"></i>
-									<span>Afternoon<br>(12PM-5PM)</span>
-								</div>
-								<div class="time-option evening ${defaultPeriods.includes('evening') ? 'selected' : ''}" data-period="evening" data-hours="5">
-									<i class="fas fa-moon"></i>
-									<span>Evening<br>(5PM-10PM)</span>
-								</div>
-								<div class="time-option night ${defaultPeriods.includes('night') ? 'selected' : ''}" data-period="night" data-hours="8">
-									<i class="fas fa-star"></i>
-									<span>Night<br>(10PM-6AM)</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="form-label">Average hours per day: <strong class="hours-display">${defaultHours}</strong> hours</label>
-							<div class="slider-container">
-								<input type="range" class="slider hours-slider" min="0" max="24" value="${defaultHours}" data-equipment-id="${id}">
-								<div class="slider-labels">
-									<span>0h</span>
-									<span>6h</span>
-									<span>12h</span>
-									<span>18h</span>
-									<span>24h</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="form-label">Usage Frequency</label>
-							<select class="form-select frequency-select" data-equipment-id="${id}">
-								<option value="daily" selected>Daily</option>
-								<option value="weekdays">Weekdays Only (5 days/week)</option>
-								<option value="weekends">Weekends Only (2 days/week)</option>
-								<option value="few-times">Few times a week (3 days/week)</option>
-								<option value="monthly">Few times a month (4 days/month)</option>
-							</select>
-						</div>
-					</div>
-				`;
-			});
-
-			container.innerHTML = html;
-
-			// Instead of adding listeners in generateUsagePatterns(), 
-			// use event delegation on the container:
-
-			document.getElementById('usage-patterns-container').addEventListener('input', function(e) {
-				if (e.target.classList.contains('hours-slider')) {
-					const card = e.target.closest('.equipment-card');
-					updateUsageCardDisplay(card, parseInt(e.target.value));
-				}
-			});
-
-			document.getElementById('usage-patterns-container').addEventListener('change', function(e) {
-				if (e.target.classList.contains('frequency-select')) {
-					const card = e.target.closest('.equipment-card');
-					const hours = parseInt(card.querySelector('.hours-slider').value);
-					updateUsageCardDisplay(card, hours);
-				}
-			});
-
-			document.getElementById('usage-patterns-container').addEventListener('click', function(e) {
-				if (e.target.closest('.time-option')) {
-					const option = e.target.closest('.time-option');
-					option.classList.toggle('selected');
-					const card = option.closest('.equipment-card');
-					recalculateHoursFromPeriods(card);
-				}
-			});
-		}
-
-		function updateUsageCardDisplay(card, hours) {
-			const baseWattage = parseInt(card.dataset.baseWattage);
-			const frequencySelect = card.querySelector('.frequency-select');
-			const frequency = frequencySelect ? frequencySelect.value : 'daily';
-			
-			// Update hours display
-			card.querySelector('.hours-display').textContent = hours;
-			
-			// Calculate daily kWh based on frequency
-			let freqMultiplier = 1;
-			switch(frequency) {
-				case 'weekdays': freqMultiplier = 5/7; break;
-				case 'weekends': freqMultiplier = 2/7; break;
-				case 'few-times': freqMultiplier = 3/7; break;
-				case 'monthly': freqMultiplier = 4/30; break;
-				default: freqMultiplier = 1;
-			}
-			
-			const dailyWh = baseWattage * hours * freqMultiplier;
-			const dailyKwh = (dailyWh / 1000).toFixed(2);
-			
-			// Update the daily kWh display
-			const kwhDisplay = card.querySelector('.daily-kwh-value');
-			if (kwhDisplay) {
-				kwhDisplay.textContent = `${dailyKwh} kWh/day`;
-			}
-		}
-
-		function recalculateHoursFromPeriods(card) {
-			const selectedPeriods = card.querySelectorAll('.time-option.selected');
-			let totalHours = 0;
-			
-			selectedPeriods.forEach(period => {
-				totalHours += parseInt(period.dataset.hours) || 0;
-			});
-			
-			// Cap at 24 hours
-			totalHours = Math.min(totalHours, 24);
-			
-			// Update slider
-			const slider = card.querySelector('.hours-slider');
-			slider.value = totalHours;
-			
-			// Update display
-			updateUsageCardDisplay(card, totalHours);
-		}
-		
-		function getDefaultHours(equipmentId) {
-			const defaults = {
-				'refrigerator': 8,
-				'freezer': 8,
-				'router': 24,
-				'decoder': 8,
-				'bulb': 5,
-				'livingroom-bulb': 5,  // ADD THIS
-				'bedroom-bulb': 4,
-				'kitchen-bulb': 2,
-				'bathroom-bulb': 1,
-				'security-light': 10,
-				'tv': 4,
-				'bedroom-tv': 3,
-				'ac': 6,
-				'bedroom-ac': 8,
-				'fan': 8,
-				'bedroom-fan': 8,
-				'charger': 3,
-				'laptop': 4,
-				'microwave': 0.5,
-				'kettle': 0.5,
-				'blender': 0.25,
-				'cooker': 2,
-				'water-heater': 1,
-				'hair-dryer': 0.25,
-				'exhaust-fan': 2,
-				'washing-machine': 1,
-				'iron': 1,
-				'water-pump': 1,
-				'sound': 3,
-				'desktop': 4
-			};
-			return defaults[equipmentId] || 4;
-		}
-
-		function getDefaultPeriods(equipmentId) {
-			const defaults = {
-				'refrigerator': ['morning', 'afternoon', 'evening', 'night'],
-				'freezer': ['morning', 'afternoon', 'evening', 'night'],
-				'router': ['morning', 'afternoon', 'evening', 'night'],
-				'decoder': ['morning', 'afternoon', 'evening', 'night'],
-				'bulb': ['evening', 'night'],
-				'livingroom-bulb': ['evening', 'night'],  // ADD
-				'bedroom-bulb': ['evening', 'night'],
-				'bathroom-bulb': ['evening', 'night'],
-				'kitchen-bulb': ['evening', 'night'],
-				'security-light': ['evening', 'night'],
-				'tv': ['evening'],
-				'bedroom-tv': ['night'],
-				'ac': ['afternoon', 'night'],
-				'bedroom-ac': ['night'],
-				'fan': ['afternoon', 'evening', 'night'],
-				'bedroom-fan': ['afternoon', 'evening', 'night'],
-				'charger': ['night'],
-				'laptop': ['morning', 'afternoon', 'evening'],
-				'microwave': ['morning', 'evening'],
-				'kettle': ['morning', 'evening'],
-				'blender': ['morning'],
-				'cooker': ['morning', 'evening'],
-				'water-heater': ['morning', 'evening'],
-				'hair-dryer': ['morning'],
-				'exhaust-fan': ['morning', 'evening'],
-				'washing-machine': ['morning'],
-				'iron': ['morning', 'afternoon'],
-				'water-pump': ['morning', 'evening'],
-				'sound': ['evening'],
-				'desktop': ['morning', 'afternoon', 'evening']
-			};
-			return defaults[equipmentId] || ['evening'];
-		}
-
-        // ==========================================
-// STEP 4: ANALYSIS DASHBOARD - COMPLETE
-// ==========================================
-function generateAnalysisDashboard() {
-    // First collect usage data from Step 3
-    collectUsageData();
-
-    const container = document.getElementById('analysis-dashboard');
-    const analysis = calculateEnergyAnalysis();
-
-    // Store analysis in appState for later steps
-    appState.analysis = analysis;
-
-    container.innerHTML = `
-        <div class="dashboard-grid">
-            <div class="stat-card">
-                <div class="stat-icon primary">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="stat-value">${analysis.dailyKwh.toFixed(2)} kWh</div>
-                <div class="stat-label">Daily Consumption</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon danger">
-                    <i class="fas fa-arrow-up"></i>
-                </div>
-                <div class="stat-value">${(analysis.peakLoad / 1000).toFixed(2)} kW</div>
-                <div class="stat-label">Peak Load</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon warning">
-                    <i class="fas fa-arrow-down"></i>
-                </div>
-                <div class="stat-value">${(analysis.baseLoad / 1000).toFixed(2)} kW</div>
-                <div class="stat-label">Base Load (24/7)</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon secondary">
-                    <i class="fas fa-calendar"></i>
-                </div>
-                <div class="stat-value">${analysis.monthlyKwh.toFixed(0)} kWh</div>
-                <div class="stat-label">Monthly Estimate</div>
-            </div>
-        </div>
-
-        <div class="breakdown-chart">
-            <h3 class="chart-title"><i class="fas fa-list"></i> Consumption by Equipment</h3>
-            ${generateBreakdownItems(analysis.breakdown)}
-        </div>
-
-        <div class="breakdown-chart" style="margin-top: 20px;">
-            <h3 class="chart-title"><i class="fas fa-clock"></i> Peak Consumption Hours</h3>
-            <div class="ai-bubble">
-                <p>⚡ Your highest energy usage occurs during <strong>${analysis.peakPeriod}</strong>. 
-                ${analysis.peakEquipment ? `Your <strong>${analysis.peakEquipment}</strong> is your biggest energy consumer.` : ''}
-                ${analysis.peakTip}</p>
-            </div>
-        </div>
-
-        <div class="breakdown-chart" style="margin-top: 20px;">
-            <h3 class="chart-title"><i class="fas fa-info-circle"></i> Energy Summary</h3>
-            <div class="energy-summary-grid">
-                <div class="summary-item">
-                    <span class="summary-label">Highest Hourly Consumption</span>
-                    <span class="summary-value">${(analysis.peakLoad / 1000).toFixed(2)} kWh</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Lowest Hourly Consumption</span>
-                    <span class="summary-value">${(analysis.baseLoad / 1000).toFixed(3)} kWh</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Average Hourly Consumption</span>
-                    <span class="summary-value">${(analysis.dailyKwh / 24).toFixed(3)} kWh</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Weekly Estimate</span>
-                    <span class="summary-value">${(analysis.dailyKwh * 7).toFixed(1)} kWh</span>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-function collectUsageData() {
-    document.querySelectorAll('[data-usage-equipment]').forEach(card => {
-        const equipmentId = card.dataset.usageEquipment;
-        const slider = card.querySelector('.hours-slider');
+    function updateUsageCardDisplay(card, hours) {
+        const baseWattage = parseInt(card.dataset.baseWattage);
         const frequencySelect = card.querySelector('.frequency-select');
-        
-        const hours = slider ? parseInt(slider.value) : 4;
         const frequency = frequencySelect ? frequencySelect.value : 'daily';
-        const periods = Array.from(card.querySelectorAll('.time-option.selected'))
-            .map(opt => opt.dataset.period);
-
-        appState.usagePatterns[equipmentId] = {
-            hours: hours,
-            frequency: frequency,
-            periods: periods
-        };
-    });
-}
-
-function calculateEnergyAnalysis() {
-	try{
-    let dailyKwh = 0;
-    let peakLoad = 0;
-    let baseLoad = 0;
-    let breakdown = [];
-    let periodLoads = { morning: 0, afternoon: 0, evening: 0, night: 0 };
-
-    Object.entries(appState.equipment).forEach(([id, equip]) => {
-        const usage = appState.usagePatterns[id] || { hours: 4, frequency: 'daily', periods: ['evening'] };
         
-        // Frequency multiplier
+        // Update hours display
+        card.querySelector('.hours-display').textContent = hours;
+        
+        // Calculate daily kWh based on frequency
         let freqMultiplier = 1;
-        switch(usage.frequency) {
+        switch(frequency) {
             case 'weekdays': freqMultiplier = 5/7; break;
             case 'weekends': freqMultiplier = 2/7; break;
             case 'few-times': freqMultiplier = 3/7; break;
             case 'monthly': freqMultiplier = 4/30; break;
             default: freqMultiplier = 1;
         }
-
-        const dailyWh = equip.wattage * usage.hours * freqMultiplier;
-        dailyKwh += dailyWh / 1000;
-
-        // Peak load is when everything could run simultaneously
-        peakLoad += equip.wattage;
-
-        // Base load is 24/7 equipment
-        if (usage.hours === 24 || ['refrigerator', 'freezer', 'router'].some(type => id.includes(type))) {
-            baseLoad += equip.wattage;
-        }
-
-        // Period loads
-        usage.periods.forEach(period => {
-            periodLoads[period] += equip.wattage;
-        });
-
-        breakdown.push({
-            id: id,
-            name: equip.name,
-            wattage: equip.wattage,
-            hours: usage.hours,
-            frequency: usage.frequency,
-            dailyKwh: dailyWh / 1000,
-            percentage: 0
-        });
-    });
-
-    // Calculate percentages
-    breakdown.forEach(item => {
-        item.percentage = dailyKwh > 0 ? (item.dailyKwh / dailyKwh * 100) : 0;
-    });
-
-    // Sort by consumption
-    breakdown.sort((a, b) => b.dailyKwh - a.dailyKwh);
-
-    // Find peak period
-    const peakPeriodEntry = Object.entries(periodLoads).sort((a, b) => b[1] - a[1])[0];
-    const periodNames = {
-        morning: 'morning hours (6AM-12PM)',
-        afternoon: 'afternoon hours (12PM-5PM)',
-        evening: 'evening hours (5PM-10PM)',
-        night: 'nighttime (10PM-6AM)'
-    };
-
-    // Find peak equipment
-    const peakEquipment = breakdown.length > 0 ? breakdown[0].name : null;
-
-    // Generate tip based on peak equipment
-    let peakTip = 'Consider shifting some usage to off-peak hours to balance your load.';
-    if (peakEquipment) {
-        if (peakEquipment.toLowerCase().includes('ac') || peakEquipment.toLowerCase().includes('air conditioner')) {
-            peakTip = 'Consider using an inverter AC or setting higher temperature (24-26°C) to reduce consumption by up to 40%.';
-        } else if (peakEquipment.toLowerCase().includes('refrigerator') || peakEquipment.toLowerCase().includes('freezer')) {
-            peakTip = 'Ensure proper ventilation around your fridge and avoid frequent door opening to optimize efficiency.';
-        } else if (peakEquipment.toLowerCase().includes('water heater')) {
-            peakTip = 'Consider using a timer to heat water only when needed, or switch to solar water heating.';
+        
+        const dailyWh = baseWattage * hours * freqMultiplier;
+        const dailyKwh = (dailyWh / 1000).toFixed(2);
+        
+        // Update the daily kWh display
+        const kwhDisplay = card.querySelector('.daily-kwh-value');
+        if (kwhDisplay) {
+            kwhDisplay.textContent = `${dailyKwh} kWh/day`;
         }
     }
 
-    return {
-        dailyKwh: dailyKwh,
-        monthlyKwh: dailyKwh * 30,
-        peakLoad: peakLoad,
-        baseLoad: baseLoad,
-        breakdown: breakdown,
-        periodLoads: periodLoads,
-        peakPeriod: periodNames[peakPeriodEntry[0]],
-        peakEquipment: peakEquipment,
-        peakTip: peakTip
-    };
-} catch (error) {
-        console.error('Error calculating energy analysis:', error);
-        return {
-            dailyKwh: 0,
-            monthlyKwh: 0,
-            peakLoad: 0,
-            baseLoad: 0,
-            breakdown: [],
-            periodLoads: { morning: 0, afternoon: 0, evening: 0, night: 0 },
-            peakPeriod: 'evening hours',
-            peakEquipment: null,
-            peakTip: 'Unable to calculate tips at this time.'
+    function recalculateHoursFromPeriods(card) {
+        const selectedPeriods = card.querySelectorAll('.time-option.selected');
+        let totalHours = 0;
+        
+        selectedPeriods.forEach(period => {
+            totalHours += parseInt(period.dataset.hours) || 0;
+        });
+        
+        // Cap at 24 hours
+        totalHours = Math.min(totalHours, 24);
+        
+        // Update slider
+        const slider = card.querySelector('.hours-slider');
+        slider.value = totalHours;
+        
+        // Update display
+        updateUsageCardDisplay(card, totalHours);
+    }
+    
+    function getDefaultHours(equipmentId) {
+        const defaults = {
+            'refrigerator': 8,
+            'freezer': 8,
+            'router': 24,
+            'decoder': 8,
+            'bulb': 5,
+            'livingroom-bulb': 5,
+            'bedroom-bulb': 4,
+            'kitchen-bulb': 2,
+            'bathroom-bulb': 1,
+            'security-light': 10,
+            'tv': 4,
+            'bedroom-tv': 3,
+            'ac': 6,
+            'bedroom-ac': 8,
+            'fan': 8,
+            'bedroom-fan': 8,
+            'charger': 3,
+            'laptop': 4,
+            'microwave': 0.5,
+            'kettle': 0.5,
+            'blender': 0.25,
+            'cooker': 2,
+            'water-heater': 1,
+            'hair-dryer': 0.25,
+            'exhaust-fan': 2,
+            'washing-machine': 1,
+            'iron': 1,
+            'water-pump': 1,
+            'sound': 3,
+            'desktop': 4
         };
+        return defaults[equipmentId] || 4;
     }
-}
 
+    function getDefaultPeriods(equipmentId) {
+        const defaults = {
+            'refrigerator': ['morning', 'afternoon', 'evening', 'night'],
+            'freezer': ['morning', 'afternoon', 'evening', 'night'],
+            'router': ['morning', 'afternoon', 'evening', 'night'],
+            'decoder': ['morning', 'afternoon', 'evening', 'night'],
+            'bulb': ['evening', 'night'],
+            'livingroom-bulb': ['evening', 'night'],
+            'bedroom-bulb': ['evening', 'night'],
+            'bathroom-bulb': ['evening', 'night'],
+            'kitchen-bulb': ['evening', 'night'],
+            'security-light': ['evening', 'night'],
+            'tv': ['evening'],
+            'bedroom-tv': ['night'],
+            'ac': ['afternoon', 'night'],
+            'bedroom-ac': ['night'],
+            'fan': ['afternoon', 'evening', 'night'],
+            'bedroom-fan': ['afternoon', 'evening', 'night'],
+            'charger': ['night'],
+            'laptop': ['morning', 'afternoon', 'evening'],
+            'microwave': ['morning', 'evening'],
+            'kettle': ['morning', 'evening'],
+            'blender': ['morning'],
+            'cooker': ['morning', 'evening'],
+            'water-heater': ['morning', 'evening'],
+            'hair-dryer': ['morning'],
+            'exhaust-fan': ['morning', 'evening'],
+            'washing-machine': ['morning'],
+            'iron': ['morning', 'afternoon'],
+            'water-pump': ['morning', 'evening'],
+            'sound': ['evening'],
+            'desktop': ['morning', 'afternoon', 'evening']
+        };
+        return defaults[equipmentId] || ['evening'];
+    }
 
-function generateBreakdownItems(breakdown) {
-    const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#84cc16'];
-    const icons = {
-        'tv': 'fa-tv',
-        'ac': 'fa-snowflake',
-        'fan': 'fa-fan',
-        'bulb': 'fa-lightbulb',
-        'refrigerator': 'fa-temperature-low',
-        'freezer': 'fa-snowflake',
-        'microwave': 'fa-fire',
-        'kettle': 'fa-mug-hot',
-        'iron': 'fa-tshirt',
-        'washing': 'fa-tshirt',
-        'pump': 'fa-water',
-        'router': 'fa-wifi',
-        'decoder': 'fa-satellite-dish',
-        'laptop': 'fa-laptop',
-        'desktop': 'fa-desktop',
-        'charger': 'fa-mobile-alt',
-        'heater': 'fa-hot-tub',
-        'default': 'fa-plug'
+    // ==========================================
+    // STEP 4: ANALYSIS DASHBOARD
+    // ==========================================
+    function generateAnalysisDashboard() {
+        // First collect usage data from Step 3
+        collectUsageData();
+
+        const container = document.getElementById('analysis-dashboard');
+        const analysis = calculateEnergyAnalysis();
+
+        // Store analysis in appState for later steps
+        appState.analysis = analysis;
+
+        container.innerHTML = `
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="stat-value">${analysis.dailyKwh.toFixed(2)} kWh</div>
+                    <div class="stat-label">Daily Consumption</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="stat-value">${(analysis.peakLoad / 1000).toFixed(2)} kW</div>
+                    <div class="stat-label">Peak Load</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="stat-value">${(analysis.baseLoad / 1000).toFixed(2)} kW</div>
+                    <div class="stat-label">Base Load (24/7)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon secondary">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-value">${analysis.monthlyKwh.toFixed(0)} kWh</div>
+                    <div class="stat-label">Monthly Estimate</div>
+                </div>
+            </div>
+
+            <div class="breakdown-chart">
+                <h3 class="chart-title"><i class="fas fa-list"></i> Consumption by Equipment</h3>
+                ${generateBreakdownItems(analysis.breakdown)}
+            </div>
+
+            <div class="breakdown-chart" style="margin-top: 20px;">
+                <h3 class="chart-title"><i class="fas fa-clock"></i> Peak Consumption Hours</h3>
+                <div class="ai-bubble">
+                    <p>⚡ Your highest energy usage occurs during <strong>${analysis.peakPeriod}</strong>. 
+                    ${analysis.peakEquipment ? `Your <strong>${analysis.peakEquipment}</strong> is your biggest energy consumer.` : ''}
+                    ${analysis.peakTip}</p>
+                </div>
+            </div>
+
+            <div class="breakdown-chart" style="margin-top: 20px;">
+                <h3 class="chart-title"><i class="fas fa-info-circle"></i> Energy Summary</h3>
+                <div class="energy-summary-grid">
+                    <div class="summary-item">
+                        <span class="summary-label">Highest Hourly Consumption</span>
+                        <span class="summary-value">${(analysis.peakLoad / 1000).toFixed(2)} kWh</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Lowest Hourly Consumption</span>
+                        <span class="summary-value">${(analysis.baseLoad / 1000).toFixed(3)} kWh</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Average Hourly Consumption</span>
+                        <span class="summary-value">${(analysis.dailyKwh / 24).toFixed(3)} kWh</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Weekly Estimate</span>
+                        <span class="summary-value">${(analysis.dailyKwh * 7).toFixed(1)} kWh</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function collectUsageData() {
+        document.querySelectorAll('[data-usage-equipment]').forEach(card => {
+            const equipmentId = card.dataset.usageEquipment;
+            const slider = card.querySelector('.hours-slider');
+            const frequencySelect = card.querySelector('.frequency-select');
+            
+            const hours = slider ? parseInt(slider.value) : 4;
+            const frequency = frequencySelect ? frequencySelect.value : 'daily';
+            const periods = Array.from(card.querySelectorAll('.time-option.selected'))
+                .map(opt => opt.dataset.period);
+
+            appState.usagePatterns[equipmentId] = {
+                hours: hours,
+                frequency: frequency,
+                periods: periods
+            };
+        });
+    }
+
+    function calculateEnergyAnalysis() {
+        try {
+            let dailyKwh = 0;
+            let peakLoad = 0;
+            let baseLoad = 0;
+            let breakdown = [];
+            let periodLoads = { morning: 0, afternoon: 0, evening: 0, night: 0 };
+
+            Object.entries(appState.equipment).forEach(([id, equip]) => {
+                const usage = appState.usagePatterns[id] || { hours: 4, frequency: 'daily', periods: ['evening'] };
+                
+                // Frequency multiplier
+                let freqMultiplier = 1;
+                switch(usage.frequency) {
+                    case 'weekdays': freqMultiplier = 5/7; break;
+                    case 'weekends': freqMultiplier = 2/7; break;
+                    case 'few-times': freqMultiplier = 3/7; break;
+                    case 'monthly': freqMultiplier = 4/30; break;
+                    default: freqMultiplier = 1;
+                }
+
+                const dailyWh = equip.wattage * usage.hours * freqMultiplier;
+                dailyKwh += dailyWh / 1000;
+
+                // Peak load is when everything could run simultaneously
+                peakLoad += equip.wattage;
+
+                // Base load is 24/7 equipment
+                if (usage.hours === 24 || ['refrigerator', 'freezer', 'router'].some(type => id.includes(type))) {
+                    baseLoad += equip.wattage;
+                }
+
+                // Period loads
+                usage.periods.forEach(period => {
+                    periodLoads[period] += equip.wattage;
+                });
+
+                breakdown.push({
+                    id: id,
+                    name: equip.name,
+                    wattage: equip.wattage,
+                    hours: usage.hours,
+                    frequency: usage.frequency,
+                    dailyKwh: dailyWh / 1000,
+                    percentage: 0
+                });
+            });
+
+            // Calculate percentages
+            breakdown.forEach(item => {
+                item.percentage = dailyKwh > 0 ? (item.dailyKwh / dailyKwh * 100) : 0;
+            });
+
+            // Sort by consumption
+            breakdown.sort((a, b) => b.dailyKwh - a.dailyKwh);
+
+            // Find peak period
+            const peakPeriodEntry = Object.entries(periodLoads).sort((a, b) => b[1] - a[1])[0];
+            const periodNames = {
+                morning: 'morning hours (6AM-12PM)',
+                afternoon: 'afternoon hours (12PM-5PM)',
+                evening: 'evening hours (5PM-10PM)',
+                night: 'nighttime (10PM-6AM)'
+            };
+
+            // Find peak equipment
+            const peakEquipment = breakdown.length > 0 ? breakdown[0].name : null;
+
+            // Generate tip based on peak equipment
+            let peakTip = 'Consider shifting some usage to off-peak hours to balance your load.';
+            if (peakEquipment) {
+                if (peakEquipment.toLowerCase().includes('ac') || peakEquipment.toLowerCase().includes('air conditioner')) {
+                    peakTip = 'Consider using an inverter AC or setting higher temperature (24-26°C) to reduce consumption by up to 40%.';
+                } else if (peakEquipment.toLowerCase().includes('refrigerator') || peakEquipment.toLowerCase().includes('freezer')) {
+                    peakTip = 'Ensure proper ventilation around your fridge and avoid frequent door opening to optimize efficiency.';
+                } else if (peakEquipment.toLowerCase().includes('water heater')) {
+                    peakTip = 'Consider using a timer to heat water only when needed, or switch to solar water heating.';
+                }
+            }
+
+            return {
+                dailyKwh: dailyKwh,
+                monthlyKwh: dailyKwh * 30,
+                peakLoad: peakLoad,
+                baseLoad: baseLoad,
+                breakdown: breakdown,
+                periodLoads: periodLoads,
+                peakPeriod: periodNames[peakPeriodEntry[0]],
+                peakEquipment: peakEquipment,
+                peakTip: peakTip
+            };
+        } catch (error) {
+            console.error('Error calculating energy analysis:', error);
+            return {
+                dailyKwh: 0,
+                monthlyKwh: 0,
+                peakLoad: 0,
+                baseLoad: 0,
+                breakdown: [],
+                periodLoads: { morning: 0, afternoon: 0, evening: 0, night: 0 },
+                peakPeriod: 'evening hours',
+                peakEquipment: null,
+                peakTip: 'Unable to calculate tips at this time.'
+            };
+        }
+    }
+
+    function generateBreakdownItems(breakdown) {
+        const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#84cc16'];
+        const icons = {
+            'tv': 'fa-tv',
+            'ac': 'fa-snowflake',
+            'fan': 'fa-fan',
+            'bulb': 'fa-lightbulb',
+            'refrigerator': 'fa-temperature-low',
+            'freezer': 'fa-snowflake',
+            'microwave': 'fa-fire',
+            'kettle': 'fa-mug-hot',
+            'iron': 'fa-tshirt',
+            'washing': 'fa-tshirt',
+            'pump': 'fa-water',
+            'router': 'fa-wifi',
+            'decoder': 'fa-satellite-dish',
+            'laptop': 'fa-laptop',
+            'desktop': 'fa-desktop',
+            'charger': 'fa-mobile-alt',
+            'heater': 'fa-hot-tub',
+            'default': 'fa-plug'
+        };
+
+        return breakdown.slice(0, 8).map((item, index) => {
+            // Find appropriate icon
+            let iconClass = icons.default;
+            for (const [key, value] of Object.entries(icons)) {
+                if (item.id.toLowerCase().includes(key) || item.name.toLowerCase().includes(key)) {
+                    iconClass = value;
+                    break;
+                }
+            }
+
+            return `
+                <div class="breakdown-item">
+                    <div class="breakdown-icon">
+                        <i class="fas ${iconClass}" style="color: ${colors[index % colors.length]};"></i>
+                    </div>
+                    <div class="breakdown-info">
+                        <div class="breakdown-name">${item.name}</div>
+                        <div class="breakdown-bar">
+                            <div class="breakdown-fill" style="width: ${Math.min(item.percentage, 100)}%; background: linear-gradient(90deg, ${colors[index % colors.length]}, ${colors[(index + 1) % colors.length]});"></div>
+                        </div>
+                    </div>
+                    <div class="breakdown-value">${item.dailyKwh.toFixed(2)} kWh (${item.percentage.toFixed(0)}%)</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ==========================================
+    // STEP 5: LOCATION & COST CALCULATION
+    // ==========================================
+    const tariffRates = {
+        a: { rate: 225, minHours: 20, name: 'Band A' },
+        b: { rate: 63, minHours: 16, name: 'Band B' },
+        c: { rate: 53, minHours: 12, name: 'Band C' },
+        d: { rate: 48, minHours: 8, name: 'Band D' },
+        e: { rate: 43, minHours: 4, name: 'Band E' }
     };
 
-    return breakdown.slice(0, 8).map((item, index) => {
-        // Find appropriate icon
-        let iconClass = icons.default;
-        for (const [key, value] of Object.entries(icons)) {
-            if (item.id.toLowerCase().includes(key) || item.name.toLowerCase().includes(key)) {
-                iconClass = value;
-                break;
+    const discoStates = {
+        'ekedc': ['lagos'],
+        'ikedc': ['lagos'],
+        'aedc': ['abuja', 'niger', 'kogi', 'nasarawa'],
+        'phedc': ['rivers', 'bayelsa', 'cross-river', 'akwa-ibom'],
+        'kedco': ['kano', 'jigawa', 'katsina'],
+        'ibedc': ['oyo', 'ogun', 'osun', 'kwara'],
+        'bedc': ['edo', 'delta', 'ondo', 'ekiti'],
+        'eedc': ['enugu', 'anambra', 'imo', 'abia', 'ebonyi']
+    };
+
+    const generatorFuelConsumption = {
+        1: { petrol: 0.5, diesel: 0.4 },
+        2.5: { petrol: 0.8, diesel: 0.6 },
+        5: { petrol: 1.2, diesel: 0.9 },
+        10: { petrol: 2.0, diesel: 1.5 },
+        15: { petrol: 3.0, diesel: 2.2 },
+        20: { petrol: 4.0, diesel: 3.0 }
+    };
+
+    // Debounced version of updateAllCosts
+    const debouncedUpdateCosts = debounce(updateAllCosts, 150);
+
+    function initializeStep5() {
+        // Prevent duplicate event listeners
+        if (!step5Initialized) {
+            const stateSelect = document.getElementById('stateSelect');
+            const discoSelect = document.getElementById('discoSelect');
+            const tariffSelect = document.getElementById('tariffBand');
+            const powerHoursSlider = document.getElementById('powerHours');
+            const generatorToggle = document.getElementById('generatorToggle');
+
+            // Auto-select DisCo based on state
+            if (stateSelect) {
+                stateSelect.addEventListener('change', function() {
+                    const state = this.value.toLowerCase();
+                    for (const [disco, states] of Object.entries(discoStates)) {
+                        if (states.includes(state)) {
+                            discoSelect.value = disco;
+                            break;
+                        }
+                    }
+                    debouncedUpdateCosts();
+                });
+            }
+
+            // Update cost when tariff changes
+            if (tariffSelect) {
+                tariffSelect.addEventListener('change', debouncedUpdateCosts);
+            }
+
+            // Update cost when power hours changes
+            if (powerHoursSlider) {
+                powerHoursSlider.addEventListener('input', function() {
+                    document.getElementById('power-hours-display').textContent = this.value;
+                    debouncedUpdateCosts();
+                });
+            }
+
+            // Generator toggle
+            if (generatorToggle) {
+                generatorToggle.addEventListener('click', function() {
+                    const isActive = this.dataset.active === 'true';
+                    const newState = !isActive;
+                    this.dataset.active = newState.toString();
+                    this.classList.toggle('active');
+                    
+                    const details = document.getElementById('generatorDetails');
+                    const genCostSection = document.getElementById('generatorCostSection');
+                    
+                    if (newState) {
+                        details.classList.add('show');
+                        details.style.display = 'grid';
+                        genCostSection.style.display = 'block';
+                    } else {
+                        details.classList.remove('show');
+                        details.style.display = 'none';
+                        genCostSection.style.display = 'none';
+                    }
+                    
+                    updateAllCosts();
+                });
+            }
+
+            // Generator hours slider
+            const genHoursSlider = document.getElementById('generatorHoursSlider');
+            if (genHoursSlider) {
+                genHoursSlider.addEventListener('input', function() {
+                    document.getElementById('gen-hours-display').textContent = this.value;
+                    updateGeneratorCosts();
+                    debouncedUpdateCosts();
+                });
+            }
+
+            // Generator input change listeners
+            const generatorInputs = [
+                'generatorSize', 'fuelType', 'generatorFrequency', 
+                'fuelPrice', 'litresPerFill', 'fillsPerWeek', 'generatorMaintenance'
+            ];
+            
+            generatorInputs.forEach(inputId => {
+                const element = document.getElementById(inputId);
+                if (element) {
+                    element.addEventListener('change', function() {
+                        updateGeneratorCosts();
+                        debouncedUpdateCosts();
+                    });
+                    element.addEventListener('input', function() {
+                        updateGeneratorCosts();
+                        debouncedUpdateCosts();
+                    });
+                }
+            });
+
+            step5Initialized = true;
+        }
+
+        // These should run EVERY time step 5 is visited
+        // Restore generator state if previously enabled
+        if (appState.costEstimate?.useGenerator) {
+            const toggle = document.getElementById('generatorToggle');
+            const details = document.getElementById('generatorDetails');
+            const genCostSection = document.getElementById('generatorCostSection');
+            
+            if (toggle && !toggle.classList.contains('active')) {
+                toggle.dataset.active = 'true';
+                toggle.classList.add('active');
+                details.classList.add('show');
+                details.style.display = 'grid';
+                genCostSection.style.display = 'block';
             }
         }
 
-        return `
-            <div class="breakdown-item">
-                <div class="breakdown-icon">
-                    <i class="fas ${iconClass}" style="color: ${colors[index % colors.length]};"></i>
-                </div>
-                <div class="breakdown-info">
-                    <div class="breakdown-name">${item.name}</div>
-                    <div class="breakdown-bar">
-                        <div class="breakdown-fill" style="width: ${Math.min(item.percentage, 100)}%; background: linear-gradient(90deg, ${colors[index % colors.length]}, ${colors[(index + 1) % colors.length]});"></div>
-                    </div>
-                </div>
-                <div class="breakdown-value">${item.dailyKwh.toFixed(2)} kWh (${item.percentage.toFixed(0)}%)</div>
-            </div>
-        `;
-    }).join('');
-}
+        // Initial calculations - always run
+        updateAllCosts();
+    }
 
-// ==========================================
-// STEP 5: LOCATION & COST CALCULATION (UPDATED WITH GENERATOR)
-// ==========================================
-const tariffRates = {
-    a: { rate: 225, minHours: 20, name: 'Band A' },
-    b: { rate: 63, minHours: 16, name: 'Band B' },
-    c: { rate: 53, minHours: 12, name: 'Band C' },
-    d: { rate: 48, minHours: 8, name: 'Band D' },
-    e: { rate: 43, minHours: 4, name: 'Band E' }
-};
+    function updateGeneratorCosts() {
+        const generatorToggle = document.getElementById('generatorToggle');
+        const useGenerator = generatorToggle?.dataset.active === 'true';
+        
+        if (!useGenerator) {
+            return { weekly: 0, monthly: 0, annual: 0 };
+        }
+        
+        const fuelPrice = parseFloat(document.getElementById('fuelPrice')?.value) || 700;
+        const litresPerFill = parseFloat(document.getElementById('litresPerFill')?.value) || 10;
+        const fillsPerWeek = parseFloat(document.getElementById('fillsPerWeek')?.value) || 2;
+        
+        const weeklyFuelCost = fuelPrice * litresPerFill * fillsPerWeek;
+        const monthlyFuelCost = weeklyFuelCost * 4.33;
+        const annualFuelCost = monthlyFuelCost * 12;
+        
+        const weeklyDisplay = document.getElementById('weeklyFuelCost');
+        const monthlyDisplay = document.getElementById('monthlyFuelCost');
+        const annualDisplay = document.getElementById('annualFuelCost');
+        
+        if (weeklyDisplay) weeklyDisplay.textContent = `₦${formatNumber(weeklyFuelCost)}`;
+        if (monthlyDisplay) monthlyDisplay.textContent = `₦${formatNumber(monthlyFuelCost)}`;
+        if (annualDisplay) annualDisplay.textContent = `₦${formatNumber(annualFuelCost)}`;
+        
+        return { weekly: weeklyFuelCost, monthly: monthlyFuelCost, annual: annualFuelCost };
+    }    
 
-const discoStates = {
-    'ekedc': ['lagos'],
-    'ikedc': ['lagos'],
-    'aedc': ['abuja', 'niger', 'kogi', 'nasarawa'],
-    'phedc': ['rivers', 'bayelsa', 'cross-river', 'akwa-ibom'],
-    'kedco': ['kano', 'jigawa', 'katsina'],
-    'ibedc': ['oyo', 'ogun', 'osun', 'kwara'],
-    'bedc': ['edo', 'delta', 'ondo', 'ekiti'],
-    'eedc': ['enugu', 'anambra', 'imo', 'abia', 'ebonyi']
-};
-
-// Generator fuel consumption rates (litres per hour based on load)
-const generatorFuelConsumption = {
-    1: { petrol: 0.5, diesel: 0.4 },      // Small gen
-    2.5: { petrol: 0.8, diesel: 0.6 },    // Medium gen
-    5: { petrol: 1.2, diesel: 0.9 },      // Large gen
-    10: { petrol: 2.0, diesel: 1.5 },     // Extra large
-    15: { petrol: 3.0, diesel: 2.2 },     // Industrial
-    20: { petrol: 4.0, diesel: 3.0 }      // Large industrial
-};
-
-// Track if Step 5 has been initialized
-let step5Initialized = false;
-
-function initializeStep5() {
-    // Prevent duplicate event listeners
-    if (!step5Initialized) {
-        const stateSelect = document.getElementById('stateSelect');
-        const discoSelect = document.getElementById('discoSelect');
+    function updateAllCosts() {
         const tariffSelect = document.getElementById('tariffBand');
         const powerHoursSlider = document.getElementById('powerHours');
         const generatorToggle = document.getElementById('generatorToggle');
-
-        // Auto-select DisCo based on state
-        if (stateSelect) {
-            stateSelect.addEventListener('change', function() {
-                const state = this.value.toLowerCase();
-                for (const [disco, states] of Object.entries(discoStates)) {
-                    if (states.includes(state)) {
-                        discoSelect.value = disco;
-                        break;
-                    }
-                }
-                updateAllCosts();
-            });
-        }
-
-        // Update cost when tariff changes
-        if (tariffSelect) {
-            tariffSelect.addEventListener('change', updateAllCosts);
-        }
-
-        // Update cost when power hours changes
-        if (powerHoursSlider) {
-            powerHoursSlider.addEventListener('input', function() {
-                document.getElementById('power-hours-display').textContent = this.value;
-                updateAllCosts();
-            });
-        }
-
-        // Generator toggle
-        if (generatorToggle) {
-            generatorToggle.addEventListener('click', function() {
-                const isActive = this.dataset.active === 'true';
-                const newState = !isActive;
-                this.dataset.active = newState.toString();
-                this.classList.toggle('active');
-                
-                const details = document.getElementById('generatorDetails');
-                const genCostSection = document.getElementById('generatorCostSection');
-                
-                if (newState) {
-                    details.classList.add('show');
-                    details.style.display = 'grid';
-                    genCostSection.style.display = 'block';
-                } else {
-                    details.classList.remove('show');
-                    details.style.display = 'none';
-                    genCostSection.style.display = 'none';
-                }
-                
-                updateAllCosts();
-            });
-        }
-
-        // Generator hours slider
-        const genHoursSlider = document.getElementById('generatorHoursSlider');
-        if (genHoursSlider) {
-            genHoursSlider.addEventListener('input', function() {
-                document.getElementById('gen-hours-display').textContent = this.value;
-                updateGeneratorCosts();
-                updateAllCosts();
-            });
-        }
-
-        // Generator input change listeners
-        const generatorInputs = [
-            'generatorSize', 'fuelType', 'generatorFrequency', 
-            'fuelPrice', 'litresPerFill', 'fillsPerWeek', 'generatorMaintenance'
-        ];
         
-        generatorInputs.forEach(inputId => {
-            const element = document.getElementById(inputId);
-            if (element) {
-                element.addEventListener('change', function() {
-                    updateGeneratorCosts();
-                    updateAllCosts();
-                });
-                element.addEventListener('input', function() {
-                    updateGeneratorCosts();
-                    updateAllCosts();
-                });
-            }
-        });
-
-        step5Initialized = true;
-    }
-
-    // These should run EVERY time step 5 is visited (not just first time)
-    // Restore generator state if previously enabled
-    if (appState.costEstimate?.useGenerator) {
-        const toggle = document.getElementById('generatorToggle');
-        const details = document.getElementById('generatorDetails');
-        const genCostSection = document.getElementById('generatorCostSection');
+        const band = tariffSelect?.value || 'b';
+        const powerHours = powerHoursSlider ? parseInt(powerHoursSlider.value) : 12;
+        const useGenerator = generatorToggle?.dataset.active === 'true';
         
-        if (toggle && !toggle.classList.contains('active')) {
-            toggle.dataset.active = 'true';
-            toggle.classList.add('active');
-            details.classList.add('show');
-            details.style.display = 'grid';
-            genCostSection.style.display = 'block';
+        const analysis = appState.analysis || { dailyKwh: 15, monthlyKwh: 450 };
+        const tariff = tariffRates[band] || tariffRates.b;
+        
+        const adjustedDailyKwh = (analysis.dailyKwh / 24) * powerHours;
+        const adjustedMonthlyKwh = adjustedDailyKwh * 30;
+        
+        const currentGridCost = adjustedMonthlyKwh * tariff.rate;
+        const fullDayGridCost = analysis.monthlyKwh * tariff.rate;
+        const bandACost = analysis.monthlyKwh * tariffRates.a.rate;
+
+        document.getElementById('costSubtitle').textContent = `Based on ${tariff.name} tariff @ ₦${tariff.rate}/kWh`;
+        document.getElementById('currentGridCost').textContent = `₦${formatNumber(currentGridCost)}`;
+        document.getElementById('currentGridLabel').textContent = `Grid (${powerHours}hrs)`;
+        document.getElementById('fullDayGridCost').textContent = `₦${formatNumber(fullDayGridCost)}`;
+        document.getElementById('bandACost').textContent = `₦${formatNumber(bandACost)}`;
+
+        let generatorCosts = { monthly: 0, maintenance: 0, total: 0 };
+
+        if (useGenerator) {
+            const fuelCosts = updateGeneratorCosts();
+            const maintenance = parseFloat(document.getElementById('generatorMaintenance')?.value) || 10000;
+            
+            generatorCosts = {
+                monthly: fuelCosts.monthly,
+                maintenance: maintenance,
+                total: fuelCosts.monthly + maintenance
+            };
+            
+            document.getElementById('genMonthlyCost').textContent = `₦${formatNumber(generatorCosts.monthly)}`;
+            document.getElementById('genMaintenanceCost').textContent = `₦${formatNumber(generatorCosts.maintenance)}`;
+            document.getElementById('genTotalCost').textContent = `₦${formatNumber(generatorCosts.total)}`;
+        } else {
+            const genMonthlyCost = document.getElementById('genMonthlyCost');
+            const genMaintenanceCost = document.getElementById('genMaintenanceCost');
+            const genTotalCost = document.getElementById('genTotalCost');
+            
+            if (genMonthlyCost) genMonthlyCost.textContent = `₦0`;
+            if (genMaintenanceCost) genMaintenanceCost.textContent = `₦0`;
+            if (genTotalCost) genTotalCost.textContent = `₦0`;
         }
-    }
 
-    // Initial calculations - always run
-    updateAllCosts();
-}
+        const totalMonthly = currentGridCost + (useGenerator ? generatorCosts.total : 0);
+        const totalAnnual = totalMonthly * 12;
 
-function updateGeneratorCosts() {
-    const generatorToggle = document.getElementById('generatorToggle');
-    const useGenerator = generatorToggle?.dataset.active === 'true';
-    
-    // If generator is not enabled, return zeros
-    if (!useGenerator) {
-        return {
-            weekly: 0,
-            monthly: 0,
-            annual: 0
+        document.getElementById('totalMonthlyCost').textContent = `₦${formatNumber(totalMonthly)}`;
+        document.getElementById('totalAnnualCost').textContent = `₦${formatNumber(totalAnnual)}`;
+
+        appState.costEstimate = {
+            band: band,
+            rate: tariff.rate,
+            powerHours: powerHours,
+            currentGridCost: currentGridCost,
+            fullDayGridCost: fullDayGridCost,
+            bandACost: bandACost,
+            monthlyKwh: adjustedMonthlyKwh,
+            useGenerator: useGenerator,
+            generator: useGenerator ? {
+                size: document.getElementById('generatorSize')?.value || '2.5',
+                fuelType: document.getElementById('fuelType')?.value || 'petrol',
+                fuelPrice: parseFloat(document.getElementById('fuelPrice')?.value) || 700,
+                litresPerFill: parseFloat(document.getElementById('litresPerFill')?.value) || 10,
+                fillsPerWeek: parseFloat(document.getElementById('fillsPerWeek')?.value) || 2,
+                hoursPerDay: parseFloat(document.getElementById('generatorHoursSlider')?.value) || 5,
+                monthlyFuelCost: generatorCosts.monthly,
+                maintenanceCost: generatorCosts.maintenance,
+                totalMonthlyCost: generatorCosts.total
+            } : null,
+            totalMonthlyCost: totalMonthly,
+            totalAnnualCost: totalAnnual
         };
     }
-    
-    const fuelPrice = parseFloat(document.getElementById('fuelPrice')?.value) || 700;
-    const litresPerFill = parseFloat(document.getElementById('litresPerFill')?.value) || 10;
-    const fillsPerWeek = parseFloat(document.getElementById('fillsPerWeek')?.value) || 2;
-    
-    const weeklyFuelCost = fuelPrice * litresPerFill * fillsPerWeek;
-    const monthlyFuelCost = weeklyFuelCost * 4.33; // Average weeks per month
-    const annualFuelCost = monthlyFuelCost * 12;
-    
-    // Update displays in generator section
-    const weeklyDisplay = document.getElementById('weeklyFuelCost');
-    const monthlyDisplay = document.getElementById('monthlyFuelCost');
-    const annualDisplay = document.getElementById('annualFuelCost');
-    
-    if (weeklyDisplay) weeklyDisplay.textContent = `₦${formatNumber(weeklyFuelCost)}`;
-    if (monthlyDisplay) monthlyDisplay.textContent = `₦${formatNumber(monthlyFuelCost)}`;
-    if (annualDisplay) annualDisplay.textContent = `₦${formatNumber(annualFuelCost)}`;
-    
-    return {
-        weekly: weeklyFuelCost,
-        monthly: monthlyFuelCost,
-        annual: annualFuelCost
-    };
-}    
 
-function updateAllCosts() {
-    const tariffSelect = document.getElementById('tariffBand');
-    const powerHoursSlider = document.getElementById('powerHours');
-    const generatorToggle = document.getElementById('generatorToggle');
-    
-    const band = tariffSelect?.value || 'b';
-    const powerHours = powerHoursSlider ? parseInt(powerHoursSlider.value) : 12;
-    const useGenerator = generatorToggle?.dataset.active === 'true';
-    
-    // Get analysis data
-    const analysis = appState.analysis || { dailyKwh: 15, monthlyKwh: 450 };
-    
-    // Get tariff rate
-    const tariff = tariffRates[band] || tariffRates.b;
-    
-    // Calculate grid costs
-    const adjustedDailyKwh = (analysis.dailyKwh / 24) * powerHours;
-    const adjustedMonthlyKwh = adjustedDailyKwh * 30;
-    
-    const currentGridCost = adjustedMonthlyKwh * tariff.rate;
-    const fullDayGridCost = analysis.monthlyKwh * tariff.rate;
-    const bandACost = analysis.monthlyKwh * tariffRates.a.rate;
+    // ==========================================
+    // SOLAR SYSTEM SIZING CALCULATIONS
+    // ==========================================
+    function calculateSystemSize(loadWatts, dailyKwh, backupHours) {
+        const inverterWatts = loadWatts * 1.25;
+        const inverterKva = getStandardInverterSize(inverterWatts / 1000);
+        
+        const dod = 0.5;
+        const efficiency = 0.85;
+        const batteryWh = (dailyKwh * 1000 * (backupHours / 24)) / (dod * efficiency);
+        
+        const batteryVoltage = inverterKva >= 5 ? 48 : (inverterKva >= 3 ? 48 : 24);
+        const batteryAh = batteryWh / batteryVoltage;
+        const batterySize = batteryAh > 150 ? '200Ah' : '100Ah';
+        const singleBatteryAh = batterySize === '200Ah' ? 200 : 100;
+        const batteriesInParallel = Math.ceil(batteryAh / singleBatteryAh);
+        const batteriesInSeries = batteryVoltage / 12;
+        const batteryCount = Math.max(batteriesInParallel * batteriesInSeries, 2);
+        
+        const peakSunHours = 5;
+        const systemLosses = 0.8;
+        const panelKw = dailyKwh / (peakSunHours * systemLosses);
+        const panelSize = 450;
+        const panelCount = Math.max(Math.ceil((panelKw * 1000) / panelSize), 2);
+        
+        const inverterCostPerKva = 180000;
+        const batteryCost = batterySize === '200Ah' ? 280000 : 150000;
+        const panelCostPerWatt = 350;
+        const installationPercent = 0.15;
+        const accessoriesCost = 100000;
+        
+        const equipmentCost = 
+            (inverterKva * inverterCostPerKva) + 
+            (batteryCount * batteryCost) + 
+            (panelCount * panelSize * panelCostPerWatt) +
+            accessoriesCost;
+        
+        const installationCost = equipmentCost * installationPercent;
+        const totalCost = equipmentCost + installationCost;
+        
+        const actualBackupHours = Math.round((batteryCount * singleBatteryAh * 12 * dod * efficiency) / loadWatts);
 
-    // Update grid cost displays
-    document.getElementById('costSubtitle').textContent = `Based on ${tariff.name} tariff @ ₦${tariff.rate}/kWh`;
-    document.getElementById('currentGridCost').textContent = `₦${formatNumber(currentGridCost)}`;
-    document.getElementById('currentGridLabel').textContent = `Grid (${powerHours}hrs)`;
-    document.getElementById('fullDayGridCost').textContent = `₦${formatNumber(fullDayGridCost)}`;
-    document.getElementById('bandACost').textContent = `₦${formatNumber(bandACost)}`;
-
-    // Calculate generator costs if enabled
-	let generatorCosts = { monthly: 0, maintenance: 0, total: 0 };
-
-	if (useGenerator) {
-		const fuelCosts = updateGeneratorCosts();
-		const maintenance = parseFloat(document.getElementById('generatorMaintenance')?.value) || 10000;
-		
-		generatorCosts = {
-			monthly: fuelCosts.monthly,
-			maintenance: maintenance,
-			total: fuelCosts.monthly + maintenance
-		};
-		
-		// Update generator cost displays
-		document.getElementById('genMonthlyCost').textContent = `₦${formatNumber(generatorCosts.monthly)}`;
-		document.getElementById('genMaintenanceCost').textContent = `₦${formatNumber(generatorCosts.maintenance)}`;
-		document.getElementById('genTotalCost').textContent = `₦${formatNumber(generatorCosts.total)}`;
-	} else {
-		// Reset generator displays when not active
-		const genMonthlyCost = document.getElementById('genMonthlyCost');
-		const genMaintenanceCost = document.getElementById('genMaintenanceCost');
-		const genTotalCost = document.getElementById('genTotalCost');
-		
-		if (genMonthlyCost) genMonthlyCost.textContent = `₦0`;
-		if (genMaintenanceCost) genMaintenanceCost.textContent = `₦0`;
-		if (genTotalCost) genTotalCost.textContent = `₦0`;
-	}
-
-    // Calculate total costs (only include generator if enabled)
-	const totalMonthly = currentGridCost + (useGenerator ? generatorCosts.total : 0);
-	const totalAnnual = totalMonthly * 12;
-
-    // Update total displays
-    document.getElementById('totalMonthlyCost').textContent = `₦${formatNumber(totalMonthly)}`;
-    document.getElementById('totalAnnualCost').textContent = `₦${formatNumber(totalAnnual)}`;
-
-    // Store for later use (including generator data)
-    appState.costEstimate = {
-        band: band,
-        rate: tariff.rate,
-        powerHours: powerHours,
-        currentGridCost: currentGridCost,
-        fullDayGridCost: fullDayGridCost,
-        bandACost: bandACost,
-        monthlyKwh: adjustedMonthlyKwh,
-        useGenerator: useGenerator,
-        generator: useGenerator ? {
-            size: document.getElementById('generatorSize')?.value || '2.5',
-            fuelType: document.getElementById('fuelType')?.value || 'petrol',
-            fuelPrice: parseFloat(document.getElementById('fuelPrice')?.value) || 700,
-            litresPerFill: parseFloat(document.getElementById('litresPerFill')?.value) || 10,
-            fillsPerWeek: parseFloat(document.getElementById('fillsPerWeek')?.value) || 2,
-            hoursPerDay: parseFloat(document.getElementById('generatorHoursSlider')?.value) || 5,
-            monthlyFuelCost: generatorCosts.monthly,
-            maintenanceCost: generatorCosts.maintenance,
-            totalMonthlyCost: generatorCosts.total
-        } : null,
-        totalMonthlyCost: totalMonthly,
-        totalAnnualCost: totalAnnual
-    };
-}
-
-function formatNumber(num) {
-    return Math.round(num).toLocaleString();
-}
-
-function updateSliderValue(slider, displayId) {
-    document.getElementById(displayId).textContent = slider.value;
-}
-
-// ==========================================
-// SOLAR SYSTEM SIZING CALCULATIONS
-// ==========================================
-function calculateSystemSize(loadWatts, dailyKwh, backupHours) {
-    // Inverter sizing (1.25x for safety margin, round to standard sizes)
-    const inverterWatts = loadWatts * 1.25;
-    const inverterKva = getStandardInverterSize(inverterWatts / 1000);
-    
-    // Battery sizing
-    // Battery Wh = (Daily kWh * 1000 * Backup Factor) / (DoD * Efficiency)
-    const dod = 0.5; // 50% depth of discharge for longevity
-    const efficiency = 0.85;
-    const batteryWh = (dailyKwh * 1000 * (backupHours / 24)) / (dod * efficiency);
-    
-    // Standard battery sizes
-    const batteryVoltage = inverterKva >= 5 ? 48 : (inverterKva >= 3 ? 48 : 24);
-    const batteryAh = batteryWh / batteryVoltage;
-    const batterySize = batteryAh > 150 ? '200Ah' : '100Ah';
-    const singleBatteryAh = batterySize === '200Ah' ? 200 : 100;
-    const batteriesInParallel = Math.ceil(batteryAh / singleBatteryAh);
-    const batteriesInSeries = batteryVoltage / 12;
-    const batteryCount = Math.max(batteriesInParallel * batteriesInSeries, 2);
-    
-    // Solar panel sizing
-    const peakSunHours = 5; // Average for Nigeria
-    const systemLosses = 0.8;
-    const panelKw = dailyKwh / (peakSunHours * systemLosses);
-    const panelSize = 450; // Standard panel wattage
-    const panelCount = Math.max(Math.ceil((panelKw * 1000) / panelSize), 2);
-    
-    // Cost estimation (Nigerian market prices 2024)
-    const inverterCostPerKva = 180000; // ₦180,000 per kVA for quality inverter
-    const batteryCost = batterySize === '200Ah' ? 280000 : 150000; // Per 12V battery
-    const panelCostPerWatt = 350; // ₦350 per watt
-    const installationPercent = 0.15;
-    const accessoriesCost = 100000; // Cables, breakers, mounting, etc.
-    
-    const equipmentCost = 
-        (inverterKva * inverterCostPerKva) + 
-        (batteryCount * batteryCost) + 
-        (panelCount * panelSize * panelCostPerWatt) +
-        accessoriesCost;
-    
-    const installationCost = equipmentCost * installationPercent;
-    const totalCost = equipmentCost + installationCost;
-    
-    // Calculate actual backup hours
-    const actualBackupHours = Math.round((batteryCount * singleBatteryAh * 12 * dod * efficiency) / loadWatts);
-
-    return {
-        inverterKva: inverterKva,
-        batteryCount: batteryCount,
-        batterySize: batterySize,
-        batteryVoltage: batteryVoltage + 'V',
-        panelCount: panelCount,
-        panelSize: panelSize,
-        totalPanelKw: (panelCount * panelSize / 1000).toFixed(1),
-        backupHours: Math.min(actualBackupHours, 24),
-        cost: totalCost,
-        paybackYears: 0,
-        monthlySavings: 0,
-        annualSavings: 0,
-        remainingGridCost: 0
-    };
-}
-
-function getStandardInverterSize(kva) {
-    const standardSizes = [1, 1.5, 2, 2.5, 3, 3.5, 5, 7.5, 10, 15, 20];
-    for (const size of standardSizes) {
-        if (kva <= size) return size;
+                return {
+            inverterKva: inverterKva,
+            batteryCount: batteryCount,
+            batterySize: batterySize,
+            batteryVoltage: batteryVoltage + 'V',
+            panelCount: panelCount,
+            panelSize: panelSize,
+            totalPanelKw: (panelCount * panelSize / 1000).toFixed(1),
+            backupHours: Math.min(actualBackupHours, 24),
+            cost: totalCost,
+            paybackYears: 0,
+            monthlySavings: 0,
+            annualSavings: 0,
+            remainingGridCost: 0
+        };
     }
-    return Math.ceil(kva);
-}
 
-function getEquipmentTip(equipmentName) {
-    const name = equipmentName.toLowerCase();
-    if (name.includes('ac') || name.includes('air conditioner')) {
-        return 'Consider upgrading to an inverter AC for 40-60% energy savings.';
-    } else if (name.includes('refrigerator') || name.includes('fridge')) {
-        return 'An inverter refrigerator can reduce consumption by up to 50%.';
-    } else if (name.includes('water heater')) {
-        return 'Solar water heaters can eliminate this load entirely.';
-    } else if (name.includes('freezer')) {
-        return 'Ensure proper insulation and avoid opening frequently.';
+    function getStandardInverterSize(kva) {
+        const standardSizes = [1, 1.5, 2, 2.5, 3, 3.5, 5, 7.5, 10, 15, 20];
+        for (const size of standardSizes) {
+            if (kva <= size) return size;
+        }
+        return Math.ceil(kva);
     }
-    return 'Consider energy-efficient alternatives when replacing.';
-}
 
-// ==========================================
-// STEP 6: SOLAR RECOMMENDATIONS (UPDATED WITH GENERATOR ROI)
-// ==========================================
-function generateSolarRecommendations() {
-    const container = document.getElementById('solar-recommendations');
-	
-	// ADD: Ensure analysis exists
-    if (!appState.analysis) {
-        generateAnalysisDashboard(); // Generate it if missing
+    function getEquipmentTip(equipmentName) {
+        const name = equipmentName.toLowerCase();
+        if (name.includes('ac') || name.includes('air conditioner')) {
+            return 'Consider upgrading to an inverter AC for 40-60% energy savings.';
+        } else if (name.includes('refrigerator') || name.includes('fridge')) {
+            return 'An inverter refrigerator can reduce consumption by up to 50%.';
+        } else if (name.includes('water heater')) {
+            return 'Solar water heaters can eliminate this load entirely.';
+        } else if (name.includes('freezer')) {
+            return 'Ensure proper insulation and avoid opening frequently.';
+        }
+        return 'Consider energy-efficient alternatives when replacing.';
     }
-	
-    const analysis = appState.analysis || calculateEnergyAnalysis();
-    const costData = appState.costEstimate || {};
-    const solar = calculateSolarRequirements(analysis, costData);
 
-    // Store for later
-    appState.solarRecommendation = solar;
+    // ==========================================
+    // STEP 6: SOLAR RECOMMENDATIONS
+    // ==========================================
+    function generateSolarRecommendations() {
+        const container = document.getElementById('solar-recommendations');
+        
+        // Ensure analysis exists
+        if (!appState.analysis) {
+            generateAnalysisDashboard();
+        }
+        
+        const analysis = appState.analysis || calculateEnergyAnalysis();
+        const costData = appState.costEstimate || {};
+        const solar = calculateSolarRequirements(analysis, costData);
 
-    const useGenerator = costData.useGenerator;
-    const generatorData = costData.generator;
+        // Store for later
+        appState.solarRecommendation = solar;
 
-    container.innerHTML = `
-        <!-- Current Energy Cost Summary -->
-        <div class="breakdown-chart" style="margin-bottom: 20px;">
-            <h3 class="chart-title"><i class="fas fa-money-bill-wave"></i> Your Current Energy Costs</h3>
-            <div class="current-costs-grid">
-                <div class="cost-item">
-                    <i class="fas fa-plug" style="color: var(--secondary);"></i>
-                    <div class="cost-details">
-                        <span class="cost-label">Grid Electricity</span>
-                        <span class="cost-value">₦${formatNumber(costData.currentGridCost || 0)}/month</span>
-                    </div>
-                </div>
-                ${useGenerator ? `
-                <div class="cost-item">
-                    <i class="fas fa-gas-pump" style="color: var(--warning);"></i>
-                    <div class="cost-details">
-                        <span class="cost-label">Generator (Fuel + Maintenance)</span>
-                        <span class="cost-value">₦${formatNumber(generatorData?.totalMonthlyCost || 0)}/month</span>
-                    </div>
-                </div>
-                ` : ''}
-                <div class="cost-item total">
-                    <i class="fas fa-calculator" style="color: var(--danger);"></i>
-                    <div class="cost-details">
-                        <span class="cost-label">Total Monthly Cost</span>
-                        <span class="cost-value" style="color: var(--danger); font-size: 1.2rem;">₦${formatNumber(costData.totalMonthlyCost || 0)}/month</span>
-                    </div>
-                </div>
-                <div class="cost-item total">
-                    <i class="fas fa-calendar-alt" style="color: var(--danger);"></i>
-                    <div class="cost-details">
-                        <span class="cost-label">Total Annual Cost</span>
-                        <span class="cost-value" style="color: var(--danger); font-size: 1.2rem;">₦${formatNumber(costData.totalAnnualCost || 0)}/year</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        const useGenerator = costData.useGenerator;
+        const generatorData = costData.generator;
 
-        <!-- Option 1: Essential Backup -->
-        <div class="solar-card">
-            <div class="solar-header">
-                <div class="solar-icon">⚡</div>
-                <div>
-                    <h3 class="solar-title">Essential Backup System</h3>
-                    <p class="solar-subtitle">Powers lights, fans, TV, phone charging, and small appliances</p>
+        container.innerHTML = `
+            <!-- Current Energy Cost Summary -->
+            <div class="breakdown-chart" style="margin-bottom: 20px;">
+                <h3 class="chart-title"><i class="fas fa-money-bill-wave"></i> Your Current Energy Costs</h3>
+                <div class="current-costs-grid">
+                    <div class="cost-item">
+                        <i class="fas fa-plug" style="color: var(--secondary);"></i>
+                        <div class="cost-details">
+                            <span class="cost-label">Grid Electricity</span>
+                            <span class="cost-value">₦${formatNumber(costData.currentGridCost || 0)}/month</span>
+                        </div>
+                    </div>
+                    ${useGenerator ? `
+                    <div class="cost-item">
+                        <i class="fas fa-gas-pump" style="color: var(--warning);"></i>
+                        <div class="cost-details">
+                            <span class="cost-label">Generator (Fuel + Maintenance)</span>
+                            <span class="cost-value">₦${formatNumber(generatorData?.totalMonthlyCost || 0)}/month</span>
+                        </div>
+                    </div>
+                    ` : ''}
+                    <div class="cost-item total">
+                        <i class="fas fa-calculator" style="color: var(--danger);"></i>
+                        <div class="cost-details">
+                            <span class="cost-label">Total Monthly Cost</span>
+                            <span class="cost-value" style="color: var(--danger); font-size: 1.2rem;">₦${formatNumber(costData.totalMonthlyCost || 0)}/month</span>
+                        </div>
+                    </div>
+                    <div class="cost-item total">
+                        <i class="fas fa-calendar-alt" style="color: var(--danger);"></i>
+                        <div class="cost-details">
+                            <span class="cost-label">Total Annual Cost</span>
+                            <span class="cost-value" style="color: var(--danger); font-size: 1.2rem;">₦${formatNumber(costData.totalAnnualCost || 0)}/year</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="solar-specs">
-                <div class="spec-item">
-                    <div class="spec-value">${solar.essential.inverterKva} kVA</div>
-                    <div class="spec-label">Inverter Size</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-value">${solar.essential.batteryCount} × ${solar.essential.batterySize}</div>
-                    <div class="spec-label">Battery Bank</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-value">${solar.essential.panelCount} × ${solar.essential.panelSize}W</div>
-                    <div class="spec-label">Solar Panels</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-value">₦${formatNumber(solar.essential.cost)}</div>
-                    <div class="spec-label">Est. Cost</div>
-                </div>
-            </div>
-            <div class="solar-details" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
-                <p style="font-size: 0.9rem; color: var(--gray);">
-                    <i class="fas fa-clock" style="color: var(--primary);"></i> 
-                    Backup Duration: <strong>${solar.essential.backupHours} hours</strong> at essential load
-                </p>
-            </div>
-        </div>
 
-        <!-- Option 2: Full Home -->
-        <div class="solar-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-color: rgba(59, 130, 246, 0.3);">
-            <div class="solar-header">
-                <div class="solar-icon" style="background: rgba(59, 130, 246, 0.2);">🔋</div>
-                <div>
-                    <h3 class="solar-title">Full Home Power System</h3>
-                    <p class="solar-subtitle">Powers everything including AC, refrigerator & heavy appliances</p>
-                </div>
-            </div>
-            <div class="solar-specs">
-                <div class="spec-item">
-                    <div class="spec-value" style="color: #3b82f6;">${solar.full.inverterKva} kVA</div>
-                    <div class="spec-label">Inverter Size</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-value" style="color: #3b82f6;">${solar.full.batteryCount} × ${solar.full.batterySize}</div>
-                    <div class="spec-label">Battery Bank</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-value" style="color: #3b82f6;">${solar.full.panelCount} × ${solar.full.panelSize}W</div>
-                    <div class="spec-label">Solar Panels</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-value" style="color: #3b82f6;">₦${formatNumber(solar.full.cost)}</div>
-                    <div class="spec-label">Est. Cost</div>
-                </div>
-            </div>
-            <div class="solar-details" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
-                <p style="font-size: 0.9rem; color: var(--gray);">
-                    <i class="fas fa-clock" style="color: #3b82f6;"></i> 
-                    Backup Duration: <strong>${solar.full.backupHours} hours</strong> at full load
-                </p>
-            </div>
-        </div>
-
-        <!-- Key Insights -->
-        <div class="breakdown-chart">
-            <h3 class="chart-title"><i class="fas fa-info-circle"></i> Key Insights</h3>
-            <ul style="list-style: none; padding: 0;">
-                ${generateSolarInsights(analysis, solar, costData)}
-            </ul>
-        </div>
-
-        <!-- Enhanced ROI Calculator -->
-        <div class="breakdown-chart" style="margin-top: 20px;">
-            <h3 class="chart-title"><i class="fas fa-calculator"></i> Return on Investment Analysis</h3>
-            
-            <div class="roi-comparison">
-                <div class="roi-section">
-                    <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-bolt"></i> Essential System ROI</h4>
-                    <div class="roi-grid">
-                        <div class="roi-item">
-                            <span class="roi-label">System Cost</span>
-                            <span class="roi-value" style="color: var(--light);">₦${formatNumber(solar.essential.cost)}</span>
-                        </div>
-                        <div class="roi-item">
-                            <span class="roi-label">Monthly Savings</span>
-                            <span class="roi-value">₦${formatNumber(solar.essential.monthlySavings)}</span>
-                        </div>
-                        <div class="roi-item">
-                            <span class="roi-label">Annual Savings</span>
-                            <span class="roi-value">₦${formatNumber(solar.essential.annualSavings)}</span>
-                        </div>
-                        <div class="roi-item highlight">
-                            <span class="roi-label">Payback Period</span>
-                            <span class="roi-value">${solar.essential.paybackYears} years</span>
-                        </div>
+            <!-- Option 1: Essential Backup -->
+            <div class="solar-card">
+                <div class="solar-header">
+                    <div class="solar-icon">⚡</div>
+                    <div>
+                        <h3 class="solar-title">Essential Backup System</h3>
+                        <p class="solar-subtitle">Powers lights, fans, TV, phone charging, and small appliances</p>
                     </div>
                 </div>
-                
-                <div class="roi-section" style="margin-top: 20px;">
-                    <h4 style="color: #3b82f6; margin-bottom: 15px;"><i class="fas fa-home"></i> Full System ROI</h4>
-                    <div class="roi-grid">
-                        <div class="roi-item">
-                            <span class="roi-label">System Cost</span>
-                            <span class="roi-value" style="color: var(--light);">₦${formatNumber(solar.full.cost)}</span>
-                        </div>
-                        <div class="roi-item">
-                            <span class="roi-label">Monthly Savings</span>
-                            <span class="roi-value">₦${formatNumber(solar.full.monthlySavings)}</span>
-                        </div>
-                        <div class="roi-item">
-                            <span class="roi-label">Annual Savings</span>
-                            <span class="roi-value">₦${formatNumber(solar.full.annualSavings)}</span>
-                        </div>
-                        <div class="roi-item highlight">
-                            <span class="roi-label">Payback Period</span>
-                            <span class="roi-value">${solar.full.paybackYears} years</span>
-                        </div>
+                <div class="solar-specs">
+                    <div class="spec-item">
+                        <div class="spec-value">${solar.essential.inverterKva} kVA</div>
+                        <div class="spec-label">Inverter Size</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value">${solar.essential.batteryCount} × ${solar.essential.batterySize}</div>
+                        <div class="spec-label">Battery Bank</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value">${solar.essential.panelCount} × ${solar.essential.panelSize}W</div>
+                        <div class="spec-label">Solar Panels</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value">₦${formatNumber(solar.essential.cost)}</div>
+                        <div class="spec-label">Est. Cost</div>
                     </div>
                 </div>
-            </div>
-            
-            ${useGenerator ? `
-            <div class="ai-bubble" style="margin-top: 20px;">
-                <p>🔥 <strong>Generator Savings:</strong> By going solar, you'll eliminate your generator fuel costs of <strong>₦${formatNumber(generatorData?.monthlyFuelCost || 0)}/month</strong> (₦${formatNumber((generatorData?.monthlyFuelCost || 0) * 12)}/year), plus maintenance costs. This significantly improves your ROI!</p>
-            </div>
-            ` : ''}
-            
-            <!-- 5-Year Projection -->
-            <div class="projection-section" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                <h4 style="margin-bottom: 15px;"><i class="fas fa-chart-line"></i> 5-Year Cost Projection</h4>
-                <div class="projection-grid">
-                    <div class="projection-item current">
-                        <span class="projection-label">Current Setup (No Solar)</span>
-                        <span class="projection-value" style="color: var(--danger);">₦${formatNumber(costData.totalAnnualCost * 5)}</span>
-                        <span class="projection-note">Over 5 years</span>
-                    </div>
-                    <div class="projection-item solar">
-                        <span class="projection-label">With Essential Solar</span>
-                        <span class="projection-value" style="color: var(--success);">₦${formatNumber(solar.essential.cost + (solar.essential.remainingGridCost * 5 * 12))}</span>
-                        <span class="projection-note">System + minimal grid</span>
-                    </div>
-                    <div class="projection-item solar">
-                        <span class="projection-label">With Full Solar</span>
-                        <span class="projection-value" style="color: var(--primary);">₦${formatNumber(solar.full.cost + (solar.full.remainingGridCost * 5 * 12))}</span>
-                        <span class="projection-note">System + minimal grid</span>
-                    </div>
-                </div>
-                <div class="savings-highlight" style="margin-top: 15px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
-                    <p style="text-align: center;">
-                        <strong style="color: var(--success); font-size: 1.1rem;">💰 5-Year Savings with Full Solar:</strong><br>
-                        <span style="font-size: 1.5rem; font-weight: 700; color: var(--success);">₦${formatNumber((costData.totalAnnualCost * 5) - (solar.full.cost + (solar.full.remainingGridCost * 5 * 12)))}</span>
+                <div class="solar-details" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="font-size: 0.9rem; color: var(--gray);">
+                        <i class="fas fa-clock" style="color: var(--primary);"></i> 
+                        Backup Duration: <strong>${solar.essential.backupHours} hours</strong> at essential load
                     </p>
                 </div>
             </div>
-        </div>
-    `;
-}
 
-function calculateSolarRequirements(analysis, costData) {
-    const dailyKwh = analysis.dailyKwh || 15;
-    const peakLoad = analysis.peakLoad || 2000;
-    const baseLoad = analysis.baseLoad || 500;
-    
-    // Essential load (lights, fans, TV, router, chargers) - typically 30% of total
-    const essentialLoad = Math.max(baseLoad * 1.5, peakLoad * 0.3);
-    const essentialDailyKwh = dailyKwh * 0.4;
-    
-    // Full load
-    const fullLoad = peakLoad;
-    const fullDailyKwh = dailyKwh;
-
-    // Calculate systems
-    const essential = calculateSystemSize(essentialLoad, essentialDailyKwh, 8);
-    const full = calculateSystemSize(fullLoad, fullDailyKwh, 6);
-
-    // Calculate savings based on current costs (grid + generator)
-    const totalMonthlyCost = costData.totalMonthlyCost || (dailyKwh * 30 * 100);
-    const generatorMonthlyCost = costData.generator?.totalMonthlyCost || 0;
-    
-    // Essential system savings (assumes 60% reduction in grid dependency, eliminates most generator use)
-    const essentialGridSavings = (costData.currentGridCost || 0) * 0.6;
-    const essentialGenSavings = generatorMonthlyCost * 0.7; // 70% reduction in generator use
-    essential.monthlySavings = essentialGridSavings + essentialGenSavings;
-    essential.annualSavings = essential.monthlySavings * 12;
-    essential.remainingGridCost = (costData.currentGridCost || 0) * 0.4;
-    essential.paybackYears = essential.monthlySavings > 0 
-        ? (essential.cost / essential.annualSavings).toFixed(1) 
-        : 'N/A';
-
-    // Full system savings (assumes 90% reduction in grid dependency, eliminates generator)
-    const fullGridSavings = (costData.currentGridCost || 0) * 0.9;
-    const fullGenSavings = generatorMonthlyCost; // 100% elimination
-    full.monthlySavings = fullGridSavings + fullGenSavings;
-    full.annualSavings = full.monthlySavings * 12;
-    full.remainingGridCost = (costData.currentGridCost || 0) * 0.1;
-    full.paybackYears = full.monthlySavings > 0 
-        ? (full.cost / full.annualSavings).toFixed(1) 
-        : 'N/A';
-
-    return {
-        essential,
-        full,
-        totalCurrentMonthlyCost: totalMonthlyCost,
-        dailyKwh,
-        peakLoad
-    };
-}
-
-function generateSolarInsights(analysis, solar, costData) {
-    const insights = [];
-    const useGenerator = costData.useGenerator;
-    const generatorData = costData.generator;
-    
-    // Generator insight
-    if (useGenerator && generatorData) {
-        insights.push({
-            icon: 'fa-gas-pump',
-            color: 'var(--warning)',
-            text: `You're spending <strong>₦${formatNumber(generatorData.monthlyFuelCost)}/month</strong> on generator fuel alone. Solar can eliminate this cost entirely!`
-        });
-    }
-    
-    // Find highest consuming equipment
-    if (analysis.breakdown && analysis.breakdown.length > 0) {
-        const topConsumer = analysis.breakdown[0];
-        if (topConsumer.percentage > 40) {
-            insights.push({
-                icon: 'fa-exclamation-triangle',
-                color: 'var(--warning)',
-                text: `Your <strong>${topConsumer.name}</strong> accounts for ${topConsumer.percentage.toFixed(0)}% of consumption. ${getEquipmentTip(topConsumer.name)}`
-            });
-        }
-    }
-
-    // ROI insight
-    insights.push({
-        icon: 'fa-chart-line',
-        color: 'var(--success)',
-        text: `With the full solar system, you'll save <strong>₦${formatNumber(solar.full.annualSavings)}</strong> annually and break even in <strong>${solar.full.paybackYears} years</strong>`
-    });
-
-    // Battery recommendation
-    insights.push({
-        icon: 'fa-battery-full',
-        color: 'var(--primary)',
-        text: `Lithium batteries (LiFePO4) recommended for 10+ years lifespan vs 3-5 years for lead-acid`
-    });
-
-    // Panel efficiency
-    insights.push({
-        icon: 'fa-solar-panel',
-        color: 'var(--secondary)',
-        text: `Monocrystalline panels recommended for better efficiency in limited space`
-    });
-
-    return insights.map(insight => `
-        <li style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-            <i class="fas ${insight.icon}" style="color: ${insight.color}; margin-right: 10px;"></i>
-            ${insight.text}
-        </li>
-    `).join('');
-}
-
-// ==========================================
-// STEP 7: FORM SUBMISSION
-// ==========================================
-function submitForm() {
-    const name = document.getElementById('userName').value.trim();
-    const email = document.getElementById('userEmail').value.trim();
-    const phone = document.getElementById('userPhone').value.trim();
-
-    if (!name || !email || !phone) {
-        alert('Please fill in all fields');
-        return;
-    }
-
-    // Name validation - at least 2 characters
-    if (name.length < 2) {
-        alert('Please enter a valid name');
-        return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address');
-        return;
-    }
-
-    // Phone validation - basic international format
-    // Allows: +, digits, spaces, dashes, parentheses
-    // Minimum 7 digits (shortest valid phone numbers)
-    const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
-    const phoneRegex = /^\+?[0-9]{7,15}$/;
-    
-    if (!phoneRegex.test(cleanPhone)) {
-        alert('Please enter a valid phone number (7-15 digits)');
-        return;
-    }
-
-    appState.contactInfo = { name, email, phone };
-
-    // Compile complete report data
-    const reportData = {
-        contactInfo: appState.contactInfo,
-        houseType: appState.houseType,
-        equipment: appState.equipment,
-        usagePatterns: appState.usagePatterns,
-        analysis: appState.analysis,
-        costEstimate: appState.costEstimate,
-        solarRecommendation: appState.solarRecommendation,
-        timestamp: new Date().toISOString()
-    };
-
-    console.log('Complete Report Data:', reportData);
-
-    // Show success
-    document.getElementById('step7').querySelector('.card').innerHTML = `
-        <div style="text-align: center;">
-            <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
-            <h2 class="card-title" style="justify-content: center;">Report Sent Successfully!</h2>
-            <p class="card-subtitle">Check your email for your personalized energy report</p>
-            
-            <div class="ai-bubble">
-                <p>Thank you for using EnergiX, <strong>${name}</strong>! Your comprehensive energy report has been sent to <strong>${email}</strong>.</p>
+            <!-- Option 2: Full Home -->
+            <div class="solar-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-color: rgba(59, 130, 246, 0.3);">
+                <div class="solar-header">
+                    <div class="solar-icon" style="background: rgba(59, 130, 246, 0.2);">🔋</div>
+                    <div>
+                        <h3 class="solar-title">Full Home Power System</h3>
+                        <p class="solar-subtitle">Powers everything including AC, refrigerator & heavy appliances</p>
+                    </div>
+                </div>
+                <div class="solar-specs">
+                    <div class="spec-item">
+                        <div class="spec-value" style="color: #3b82f6;">${solar.full.inverterKva} kVA</div>
+                        <div class="spec-label">Inverter Size</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value" style="color: #3b82f6;">${solar.full.batteryCount} × ${solar.full.batterySize}</div>
+                        <div class="spec-label">Battery Bank</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value" style="color: #3b82f6;">${solar.full.panelCount} × ${solar.full.panelSize}W</div>
+                        <div class="spec-label">Solar Panels</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-value" style="color: #3b82f6;">₦${formatNumber(solar.full.cost)}</div>
+                        <div class="spec-label">Est. Cost</div>
+                    </div>
+                </div>
+                <div class="solar-details" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="font-size: 0.9rem; color: var(--gray);">
+                        <i class="fas fa-clock" style="color: #3b82f6;"></i> 
+                        Backup Duration: <strong>${solar.full.backupHours} hours</strong> at full load
+                    </p>
+                </div>
             </div>
 
-            <div class="solar-card" style="text-align: left;">
-                <h3 style="margin-bottom: 15px;">📋 Your Report Summary:</h3>
+            <!-- Key Insights -->
+            <div class="breakdown-chart">
+                <h3 class="chart-title"><i class="fas fa-info-circle"></i> Key Insights</h3>
                 <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 8px 0;">✅ House Type: <strong>${formatHouseType(appState.houseType)}</strong></li>
-                    <li style="padding: 8px 0;">✅ Equipment Analyzed: <strong>${Object.keys(appState.equipment).length} items</strong></li>
-                    <li style="padding: 8px 0;">✅ Daily Consumption: <strong>${appState.analysis?.dailyKwh?.toFixed(2) || 'N/A'} kWh</strong></li>
-                    <li style="padding: 8px 0;">✅ Monthly Estimate: <strong>${appState.analysis?.monthlyKwh?.toFixed(0) || 'N/A'} kWh</strong></li>
-                    <li style="padding: 8px 0;">✅ Estimated Monthly Cost: <strong>₦${formatNumber(appState.costEstimate?.totalMonthlyCost || 0)}</strong></li>
+                    ${generateSolarInsights(analysis, solar, costData)}
                 </ul>
             </div>
-            
-            <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 20px;">
-                <i class="fas fa-redo"></i> Start New Analysis
-            </button>
-        </div>
-    `;
 
-    document.getElementById('progressFill').style.width = '100%';
-
-    // In production, send to backend
-    // sendToBackend(reportData);
-}
-
-function formatHouseType(type) {
-    const types = {
-        'self-contain': 'Self Contain',
-        '1-room-parlor': '1 Room & Parlor',
-        '2-bedroom': '2 Bedroom Flat',
-        '3-bedroom': '3 Bedroom Flat',
-        '4-bedroom': '4 Bedroom',
-        'duplex': 'Duplex',
-        'bungalow': 'Bungalow',
-        'office': 'Office Space'
-    };
-    return types[type] || type || 'Not specified';
-}
-
-// ==========================================
-// NAVIGATION UPDATE - Add step-specific initialization
-// ==========================================
-
-// Add localStorage persistence
-function saveState() {
-    try {
-        localStorage.setItem('energix_state', JSON.stringify(appState));
-    } catch (e) {
-        console.warn('Could not save state:', e);
+            <!-- Enhanced ROI Calculator -->
+            <div class="breakdown-chart" style="margin-top: 20px;">
+                <h3 class="chart-title"><i class="fas fa-calculator"></i> Return on Investment Analysis</h3>
+                
+                <div class="roi-comparison">
+                    <div class="roi-section">
+                        <h4 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-bolt"></i> Essential System ROI</h4>
+                        <div class="roi-grid">
+                            <div class="roi-item">
+                                <span class="roi-label">System Cost</span>
+                                <span class="roi-value" style="color: var(--light);">₦${formatNumber(solar.essential.cost)}</span>
+                            </div>
+                            <div class="roi-item">
+                                <span class="roi-label">Monthly Savings</span>
+                                <span class="roi-value">₦${formatNumber(solar.essential.monthlySavings)}</span>
+                            </div>
+                            <div class="roi-item">
+                                <span class="roi-label">Annual Savings</span>
+                                <span class="roi-value">₦${formatNumber(solar.essential.annualSavings)}</span>
+                            </div>
+                            <div class="roi-item highlight">
+                                <span class="roi-label">Payback Period</span>
+                                <span class="roi-value">${solar.essential.paybackYears} years</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="roi-section" style="margin-top: 20px;">
+                        <h4 style="color: #3b82f6; margin-bottom: 15px;"><i class="fas fa-home"></i> Full System ROI</h4>
+                        <div class="roi-grid">
+                            <div class="roi-item">
+                                <span class="roi-label">System Cost</span>
+                                <span class="roi-value" style="color: var(--light);">₦${formatNumber(solar.full.cost)}</span>
+                            </div>
+                            <div class="roi-item">
+                                <span class="roi-label">Monthly Savings</span>
+                                <span class="roi-value">₦${formatNumber(solar.full.monthlySavings)}</span>
+                            </div>
+                            <div class="roi-item">
+                                <span class="roi-label">Annual Savings</span>
+                                <span class="roi-value">₦${formatNumber(solar.full.annualSavings)}</span>
+                            </div>
+                            <div class="roi-item highlight">
+                                <span class="roi-label">Payback Period</span>
+                                <span class="roi-value">${solar.full.paybackYears} years</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                ${useGenerator ? `
+                <div class="ai-bubble" style="margin-top: 20px;">
+                    <p>🔥 <strong>Generator Savings:</strong> By going solar, you'll eliminate your generator fuel costs of <strong>₦${formatNumber(generatorData?.monthlyFuelCost || 0)}/month</strong> (₦${formatNumber((generatorData?.monthlyFuelCost || 0) * 12)}/year), plus maintenance costs. This significantly improves your ROI!</p>
+                </div>
+                ` : ''}
+                
+                <!-- 5-Year Projection -->
+                <div class="projection-section" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="margin-bottom: 15px;"><i class="fas fa-chart-line"></i> 5-Year Cost Projection</h4>
+                    <div class="projection-grid">
+                        <div class="projection-item current">
+                            <span class="projection-label">Current Setup (No Solar)</span>
+                            <span class="projection-value" style="color: var(--danger);">₦${formatNumber((costData.totalAnnualCost || 0) * 5)}</span>
+                            <span class="projection-note">Over 5 years</span>
+                        </div>
+                        <div class="projection-item solar">
+                            <span class="projection-label">With Essential Solar</span>
+                            <span class="projection-value" style="color: var(--success);">₦${formatNumber(solar.essential.cost + (solar.essential.remainingGridCost * 5 * 12))}</span>
+                            <span class="projection-note">System + minimal grid</span>
+                        </div>
+                        <div class="projection-item solar">
+                            <span class="projection-label">With Full Solar</span>
+                            <span class="projection-value" style="color: var(--primary);">₦${formatNumber(solar.full.cost + (solar.full.remainingGridCost * 5 * 12))}</span>
+                            <span class="projection-note">System + minimal grid</span>
+                        </div>
+                    </div>
+                    <div class="savings-highlight" style="margin-top: 15px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                        <p style="text-align: center;">
+                            <strong style="color: var(--success); font-size: 1.1rem;">💰 5-Year Savings with Full Solar:</strong><br>
+                            <span style="font-size: 1.5rem; font-weight: 700; color: var(--success);">₦${formatNumber(((costData.totalAnnualCost || 0) * 5) - (solar.full.cost + (solar.full.remainingGridCost * 5 * 12)))}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
     }
-}
 
-function loadState() {
-    try {
-        const saved = localStorage.getItem('energix_state');
-        if (saved) {
-            const parsed = JSON.parse(saved);
-            Object.assign(appState, parsed);
-            return true;
+    function calculateSolarRequirements(analysis, costData) {
+        const dailyKwh = analysis.dailyKwh || 15;
+        const peakLoad = analysis.peakLoad || 2000;
+        const baseLoad = analysis.baseLoad || 500;
+        
+        // Essential load (lights, fans, TV, router, chargers) - typically 30% of total
+        const essentialLoad = Math.max(baseLoad * 1.5, peakLoad * 0.3);
+        const essentialDailyKwh = dailyKwh * 0.4;
+        
+        // Full load
+        const fullLoad = peakLoad;
+        const fullDailyKwh = dailyKwh;
+
+        // Calculate systems
+        const essential = calculateSystemSize(essentialLoad, essentialDailyKwh, 8);
+        const full = calculateSystemSize(fullLoad, fullDailyKwh, 6);
+
+        // Calculate savings based on current costs (grid + generator)
+        const totalMonthlyCost = costData.totalMonthlyCost || (dailyKwh * 30 * 100);
+        const generatorMonthlyCost = costData.generator?.totalMonthlyCost || 0;
+        
+        // Essential system savings (assumes 60% reduction in grid dependency, eliminates most generator use)
+        const essentialGridSavings = (costData.currentGridCost || 0) * 0.6;
+        const essentialGenSavings = generatorMonthlyCost * 0.7;
+        essential.monthlySavings = essentialGridSavings + essentialGenSavings;
+        essential.annualSavings = essential.monthlySavings * 12;
+        essential.remainingGridCost = (costData.currentGridCost || 0) * 0.4;
+        essential.paybackYears = essential.monthlySavings > 0 
+            ? (essential.cost / essential.annualSavings).toFixed(1) 
+            : 'N/A';
+
+        // Full system savings (assumes 90% reduction in grid dependency, eliminates generator)
+        const fullGridSavings = (costData.currentGridCost || 0) * 0.9;
+        const fullGenSavings = generatorMonthlyCost;
+        full.monthlySavings = fullGridSavings + fullGenSavings;
+        full.annualSavings = full.monthlySavings * 12;
+        full.remainingGridCost = (costData.currentGridCost || 0) * 0.1;
+        full.paybackYears = full.monthlySavings > 0 
+            ? (full.cost / full.annualSavings).toFixed(1) 
+            : 'N/A';
+
+        return {
+            essential,
+            full,
+            totalCurrentMonthlyCost: totalMonthlyCost,
+            dailyKwh,
+            peakLoad
+        };
+    }
+
+    function generateSolarInsights(analysis, solar, costData) {
+        const insights = [];
+        const useGenerator = costData.useGenerator;
+        const generatorData = costData.generator;
+        
+        // Generator insight
+        if (useGenerator && generatorData) {
+            insights.push({
+                icon: 'fa-gas-pump',
+                color: 'var(--warning)',
+                text: `You're spending <strong>₦${formatNumber(generatorData.monthlyFuelCost)}/month</strong> on generator fuel alone. Solar can eliminate this cost entirely!`
+            });
         }
-    } catch (e) {
-        console.warn('Could not load state:', e);
-    }
-    return false;
-}
+        
+        // Find highest consuming equipment
+        if (analysis.breakdown && analysis.breakdown.length > 0) {
+            const topConsumer = analysis.breakdown[0];
+            if (topConsumer.percentage > 40) {
+                insights.push({
+                    icon: 'fa-exclamation-triangle',
+                    color: 'var(--warning)',
+                    text: `Your <strong>${topConsumer.name}</strong> accounts for ${topConsumer.percentage.toFixed(0)}% of consumption. ${getEquipmentTip(topConsumer.name)}`
+                });
+            }
+        }
 
-// Call on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (loadState()) {
-        // Restore UI state
-        restoreUIFromState();
-    }
-});
+        // ROI insight
+        insights.push({
+            icon: 'fa-chart-line',
+            color: 'var(--success)',
+            text: `With the full solar system, you'll save <strong>₦${formatNumber(solar.full.annualSavings)}</strong> annually and break even in <strong>${solar.full.paybackYears} years</strong>`
+        });
 
-// Call after each step
-function goToStep(step) {
-    // Show loading for heavy calculations
-    if (step === 4 || step === 6) {
-        showLoadingState(step);
+        // Battery recommendation
+        insights.push({
+            icon: 'fa-battery-full',
+            color: 'var(--primary)',
+            text: `Lithium batteries (LiFePO4) recommended for 10+ years lifespan vs 3-5 years for lead-acid`
+        });
+
+        // Panel efficiency
+        insights.push({
+            icon: 'fa-solar-panel',
+            color: 'var(--secondary)',
+            text: `Monocrystalline panels recommended for better efficiency in limited space`
+        });
+
+        return insights.map(insight => `
+            <li style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <i class="fas ${insight.icon}" style="color: ${insight.color}; margin-right: 10px;"></i>
+                ${insight.text}
+            </li>
+        `).join('');
     }
-	
-    // Validate before moving forward
-    if (step > currentStep) {
-        if (!validateCurrentStep()) {
+
+    // ==========================================
+    // STEP 7: FORM SUBMISSION
+    // ==========================================
+    function submitForm() {
+        const name = document.getElementById('userName').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        const phone = document.getElementById('userPhone').value.trim();
+
+        if (!name || !email || !phone) {
+            alert('Please fill in all fields');
             return;
         }
-    }
 
-    // Hide current step
-    document.getElementById(`step${currentStep}`).classList.remove('active');
-    
-    // Show new step
-    document.getElementById(`step${step}`).classList.add('active');
-    
-    // Update progress bar
-    const progress = (step / totalSteps) * 100;
-    document.getElementById('progressFill').style.width = `${progress}%`;
-    
-    // Update step circles
-    updateStepCircles(step);
-    
-    // Update current step tracker
-    currentStep = step;
-    
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Name validation - at least 2 characters
+        if (name.length < 2) {
+            alert('Please enter a valid name');
+            return;
+        }
 
-    // Step-specific initialization
-    switch(step) {
-        case 3:
-            generateUsagePatterns();
-            break;
-        case 4:
-            generateAnalysisDashboard();
-            break;
-        case 5:
-            initializeStep5();
-            break;
-        case 6:
-            generateSolarRecommendations();
-            break;
-    }
-}
-    saveState();
-}
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('Please enter a valid email address');
+            return;
+        }
 
-function showLoadingState(step) {
-    const container = document.getElementById(`step${step}`);
-    const card = container.querySelector('.card');
-    const originalContent = card.innerHTML;
-    
-    card.innerHTML = `
-        <div style="text-align: center; padding: 40px;">
-            <div class="typing-indicator" style="justify-content: center;">
-                <span></span><span></span><span></span>
-            </div>
-            <p style="margin-top: 20px; color: var(--gray);">Calculating your energy profile...</p>
-        </div>
-    `;
-    
-    // Restore after calculation (use Promise or callback in real implementation)
-    setTimeout(() => {
-        card.innerHTML = originalContent;
-    }, 100);
-}
+        // Phone validation - basic international format
+        const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+        const phoneRegex = /^\+?[0-9]{7,15}$/;
+        
+        if (!phoneRegex.test(cleanPhone)) {
+            alert('Please enter a valid phone number (7-15 digits)');
+            return;
+        }
 
-// ==========================================
-// UTILITY FUNCTIONS
-// ==========================================
-// debounce utility
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
+        appState.contactInfo = { name, email, phone };
+
+        // Compile complete report data
+        const reportData = {
+            contactInfo: appState.contactInfo,
+            houseType: appState.houseType,
+            equipment: appState.equipment,
+            usagePatterns: appState.usagePatterns,
+            analysis: appState.analysis,
+            costEstimate: appState.costEstimate,
+            solarRecommendation: appState.solarRecommendation,
+            timestamp: new Date().toISOString()
         };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
 
-// Use for sliders that trigger heavy calculations
-const debouncedUpdateCosts = debounce(updateAllCosts, 150);
+        console.log('Complete Report Data:', reportData);
 
-// In initializeStep5():
-if (powerHoursSlider) {
-    powerHoursSlider.addEventListener('input', function() {
-        document.getElementById('power-hours-display').textContent = this.value;
-        debouncedUpdateCosts(); // Use debounced version
+        // Show success
+        document.getElementById('step7').querySelector('.card').innerHTML = `
+            <div style="text-align: center;">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+                <h2 class="card-title" style="justify-content: center;">Report Sent Successfully!</h2>
+                <p class="card-subtitle">Check your email for your personalized energy report</p>
+                
+                <div class="ai-bubble">
+                    <p>Thank you for using EnergiX, <strong>${name}</strong>! Your comprehensive energy report has been sent to <strong>${email}</strong>.</p>
+                </div>
+
+                <div class="solar-card" style="text-align: left;">
+                    <h3 style="margin-bottom: 15px;">📋 Your Report Summary:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✅ House Type: <strong>${formatHouseType(appState.houseType)}</strong></li>
+                        <li style="padding: 8px 0;">✅ Equipment Analyzed: <strong>${Object.keys(appState.equipment).length} items</strong></li>
+                        <li style="padding: 8px 0;">✅ Daily Consumption: <strong>${appState.analysis?.dailyKwh?.toFixed(2) || 'N/A'} kWh</strong></li>
+                        <li style="padding: 8px 0;">✅ Monthly Estimate: <strong>${appState.analysis?.monthlyKwh?.toFixed(0) || 'N/A'} kWh</strong></li>
+                        <li style="padding: 8px 0;">✅ Estimated Monthly Cost: <strong>₦${formatNumber(appState.costEstimate?.totalMonthlyCost || 0)}</strong></li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 20px;">
+                    <i class="fas fa-redo"></i> Start New Analysis
+                </button>
+            </div>
+        `;
+
+        document.getElementById('progressFill').style.width = '100%';
+        
+        // Clear saved state after successful submission
+        localStorage.removeItem('energix_state');
+
+        // In production, send to backend
+        // sendToBackend(reportData);
+    }
+
+    function formatHouseType(type) {
+        const types = {
+            'self-contain': 'Self Contain',
+            '1-room-parlor': '1 Room & Parlor',
+            '2-bedroom': '2 Bedroom Flat',
+            '3-bedroom': '3 Bedroom Flat',
+            '4-bedroom': '4 Bedroom',
+            'duplex': 'Duplex',
+            'bungalow': 'Bungalow',
+            'office': 'Office Space'
+        };
+        return types[type] || type || 'Not specified';
+    }
+
+    // ==========================================
+    // INITIALIZATION
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', function() {
+        // Try to load saved state
+        if (loadState()) {
+            restoreUIFromState();
+        }
     });
-}
-
-    </script>
+</script>
 </body>
 </html>
